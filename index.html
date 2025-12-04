@@ -500,6 +500,46 @@
             transition: all 0.3s ease;
         }
 
+        .israel-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            background: white !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 400;
+            font-size: 18px;
+            font-family: 'Inter', -apple-system, sans-serif;
+            box-shadow: 0 0 15px rgba(0, 56, 184, 0.3) !important;
+            transition: all 0.3s ease;
+            position: relative;
+            border: 1px solid #d1d5db;
+            color: #0038b8;
+        }
+
+        .israel-icon::before {
+            content: '';
+            position: absolute;
+            top: 7px;
+            left: 5px;
+            right: 5px;
+            height: 3px;
+            background: #0038b8;
+            z-index: 1;
+        }
+
+        .israel-icon::after {
+            content: '';
+            position: absolute;
+            bottom: 7px;
+            left: 5px;
+            right: 5px;
+            height: 3px;
+            background: #0038b8;
+            z-index: 1;
+        }
+
         .brand-info:hover #brand-icon {
             transform: scale(1.05);
         }
@@ -1654,15 +1694,15 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tenant-option" onclick="switchTenant('techcorp')" style="padding: 16px; background: var(--bg-card); border-radius: var(--radius); cursor: pointer; border: 2px solid transparent; transition: all 0.2s ease;">
+                    <div class="tenant-option" onclick="switchTenant('israel')" style="padding: 16px; background: var(--bg-card); border-radius: var(--radius); cursor: pointer; border: 2px solid transparent; transition: all 0.2s ease;">
                         <div style="display: flex; align-items: center; gap: 16px;">
-                            <div class="techcorp-icon" style="width: 48px; height: 48px; font-size: 28px;">T</div>
+                            <div class="israel-icon" style="width: 48px; height: 48px; font-size: 22px;">✡</div>
                             <div style="flex: 1;">
-                                <div style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">TechCorp</div>
-                                <div style="font-size: 12px; color: var(--text-muted);">Cloud Services & AI · Enterprise</div>
+                                <div style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">Israel</div>
+                                <div style="font-size: 12px; color: var(--text-muted);">Nation Brand · Middle East</div>
                                 <div style="margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap;">
-                                    <span class="chip danger" style="font-size: 11px;">34% Negative Crisis</span>
-                                    <span class="chip danger" style="font-size: 11px;">8 Critical Incidents</span>
+                                    <span class="chip danger" style="font-size: 11px;">28% Negative Trend</span>
+                                    <span class="chip danger" style="font-size: 11px;">6 Critical Issues</span>
                                 </div>
                             </div>
                         </div>
@@ -2229,33 +2269,33 @@
                 incidentsIcon: 'fa-fire',
                 incidentsColor: 'var(--danger)'
             },
-            techcorp: {
-                id: 'techcorp',
-                name: 'TechCorp',
-                subtitle: 'Cloud Services & AI · Enterprise',
-                industry: 'Technology',
-                iconBg: '#0066CC',
-                iconLetter: 'T',
-                iconClass: 'techcorp-icon',
-                sentiment: 34,
-                sentimentLabel: { en: 'Negative Crisis', fr: 'Crise Négative' },
+            israel: {
+                id: 'israel',
+                name: 'Israel',
+                subtitle: 'Nation Brand · Middle East',
+                industry: 'Government',
+                iconBg: '#0038b8',
+                iconLetter: '✡',
+                iconClass: 'israel-icon',
+                sentiment: 28,
+                sentimentLabel: { en: 'Negative Trend', fr: 'Tendance Négative' },
                 sentimentIcon: 'fa-frown',
                 sentimentColor: 'var(--danger)',
                 sentimentBg: 'rgba(239, 68, 68, 0.1)',
                 sentimentChipClass: 'danger',
-                volume: '4.8M',
-                volumeTrend: '+284%',
+                volume: '8.7M',
+                volumeTrend: '+312%',
                 volumeTrendUp: true,
                 volumeIcon: 'fa-volume-up',
-                riskLevel: { en: 'Critical Alert', fr: 'Alerte Critique' },
+                riskLevel: { en: 'Critical - International', fr: 'Critique - International' },
                 riskValue: 'Critical',
                 riskColor: 'var(--danger)',
                 riskBg: 'rgba(239, 68, 68, 0.1)',
-                riskIcon: 'fa-skull-crossbones',
+                riskIcon: 'fa-exclamation-triangle',
                 riskChipClass: 'danger',
-                activeIncidents: 8,
-                incidentsDetail: '8 critical incidents, all urgent',
-                incidentsIcon: 'fa-radiation',
+                activeIncidents: 6,
+                incidentsDetail: '6 high-severity international issues',
+                incidentsIcon: 'fa-globe',
                 incidentsColor: 'var(--danger)'
             }
         };
@@ -2554,6 +2594,62 @@
                     channels: ['Twitter', 'News Media'],
                     firstSeen: '2 days ago',
                     description: 'Fact-checkers disputed claims made in recent documentary release; Netflix issued clarification statement.'
+                }
+            ],
+            israel: [
+                {
+                    id: 1,
+                    title: 'UN voting bloc criticism affecting trade relations',
+                    severity: 'high',
+                    status: 'Diplomatic Response',
+                    channels: ['News Media', 'Twitter', 'LinkedIn', 'Diplomatic'],
+                    firstSeen: 'Today, 08:15',
+                    description: 'Recent UN General Assembly votes creating diplomatic tension with key trade partners. European economic delegations expressing concern.'
+                },
+                {
+                    id: 2,
+                    title: 'Tech sector brain drain - talent moving to US',
+                    severity: 'high',
+                    status: 'Economic Monitoring',
+                    channels: ['LinkedIn', 'Tech Blogs', 'News Media'],
+                    firstSeen: 'Today, 11:30',
+                    description: 'Major tech talent exodus to Silicon Valley and European hubs. 40% increase in senior engineers relocating, impacting startup nation brand.'
+                },
+                {
+                    id: 3,
+                    title: 'Tourism perception gap - security concerns vs reality',
+                    severity: 'medium',
+                    status: 'Brand Campaign Needed',
+                    channels: ['Twitter', 'Travel Forums', 'Instagram'],
+                    firstSeen: 'Yesterday, 14:20',
+                    description: 'Tourism numbers down 18% despite actual security improvements. International perception not matching on-ground reality.'
+                },
+                {
+                    id: 4,
+                    title: 'BDS movement gaining corporate traction',
+                    severity: 'medium',
+                    status: 'Economic Defense',
+                    channels: ['Twitter', 'News Media', 'Corporate'],
+                    firstSeen: 'Yesterday, 09:00',
+                    description: 'Several European retail chains reviewing supplier relationships. Economic impact estimated at $200M annually if trend continues.'
+                },
+                {
+                    id: 5,
+                    title: 'Eurovision hosting cost criticism domestically',
+                    severity: 'low',
+                    status: 'Internal Communications',
+                    channels: ['Local News', 'Twitter', 'Domestic'],
+                    firstSeen: '2 days ago',
+                    description: 'Domestic critics questioning $25M spend on international event hosting during economic pressures. Budget allocation debate.'
+                },
+                {
+                    id: 6,
+                    title: 'Startup ecosystem valuation concerns',
+                    severity: 'medium',
+                    status: 'Investor Relations',
+                    channels: ['Financial Press', 'Bloomberg', 'LinkedIn'],
+                    firstSeen: '3 days ago',
+                    description: 'International investors expressing concern over startup valuations. "Startup Nation" brand questioned after several high-profile failures.'
                 }
             ],
             techcorp: [
@@ -2862,8 +2958,16 @@
             const brandIcon = document.getElementById('brand-icon');
             brandIcon.textContent = tenant.iconLetter;
             brandIcon.className = tenant.iconClass;
-            brandIcon.style.background = tenant.iconBg;
-            brandIcon.style.boxShadow = `0 0 20px ${tenant.iconBg}66`;
+
+            // Only apply inline styles for non-Israel tenants (Israel uses CSS-based flag)
+            if (tenant.id !== 'israel') {
+                brandIcon.style.background = tenant.iconBg;
+                brandIcon.style.boxShadow = `0 0 20px ${tenant.iconBg}66`;
+            } else {
+                // Remove inline styles to let CSS class take over
+                brandIcon.style.background = '';
+                brandIcon.style.boxShadow = '';
+            }
 
             // Update incidents
             incidents = tenantIncidents[tenantId];
@@ -3021,6 +3125,11 @@
                 threatChart.destroy();
                 initThreatChart();
             }
+
+            // Update map with new tenant data
+            if (globalMap) {
+                renderMap();
+            }
         }
 
         function animateValue(element, start, end, duration) {
@@ -3092,7 +3201,23 @@
         let sentimentChart, channelChart, threatChart, simulationChart;
 
         function getChartDataForTenant() {
-            if (currentTenant === 'techcorp') {
+            if (currentTenant === 'israel') {
+                return {
+                    sentiment: {
+                        positive: [32, 30, 28, 26, 25, 24, 22],
+                        neutral: [28, 27, 26, 25, 25, 24, 24],
+                        negative: [40, 43, 46, 49, 50, 52, 54]
+                    },
+                    channels: {
+                        labels: ['News Media', 'X/Twitter', 'UN/Diplomatic', 'Academic', 'NGOs'],
+                        data: [38, 32, 18, 8, 4]
+                    },
+                    threats: {
+                        labels: ['Int\'l Relations', 'Legal/ICC', 'BDS/Economic', 'Academic Boycott', 'Tourism'],
+                        data: [42, 25, 18, 10, 5]
+                    }
+                };
+            } else if (currentTenant === 'techcorp') {
                 return {
                     sentiment: {
                         positive: [32, 28, 25, 22, 20, 18, 16],
@@ -3252,44 +3377,79 @@
             renderMap();
         }
 
+        let globalMap = null;
+        let mapMarkers = [];
+
+        function getMapDataForTenant() {
+            if (currentTenant === 'israel') {
+                return [
+                    { country: 'United States', sentiment: 35, volume: '1.2M', lat: 37.0, lng: -95.7, radius: 24 },
+                    { country: 'United Kingdom', sentiment: 22, volume: '380K', lat: 55.4, lng: -3.4, radius: 18 },
+                    { country: 'France', sentiment: 18, volume: '420K', lat: 46.2, lng: 2.2, radius: 19 },
+                    { country: 'Germany', sentiment: 25, volume: '310K', lat: 51.2, lng: 10.5, radius: 17 },
+                    { country: 'Canada', sentiment: 38, volume: '180K', lat: 56.1, lng: -106.3, radius: 15 },
+                    { country: 'Australia', sentiment: 32, volume: '95K', lat: -25.3, lng: 133.8, radius: 13 },
+                    { country: 'Spain', sentiment: 20, volume: '125K', lat: 40.5, lng: -3.7, radius: 13 },
+                    { country: 'Italy', sentiment: 24, volume: '98K', lat: 41.9, lng: 12.6, radius: 12 },
+                    { country: 'Turkey', sentiment: 12, volume: '580K', lat: 38.9, lng: 35.2, radius: 20 },
+                    { country: 'Egypt', sentiment: 8, volume: '420K', lat: 26.8, lng: 30.8, radius: 19 },
+                    { country: 'Jordan', sentiment: 15, volume: '85K', lat: 30.6, lng: 36.2, radius: 11 },
+                    { country: 'UAE', sentiment: 55, volume: '125K', lat: 23.4, lng: 53.8, radius: 13 },
+                    { country: 'South Africa', sentiment: 16, volume: '145K', lat: -30.6, lng: 22.9, radius: 14 },
+                    { country: 'India', sentiment: 42, volume: '890K', lat: 20.6, lng: 78.9, radius: 22 },
+                    { country: 'Russia', sentiment: 28, volume: '210K', lat: 61.5, lng: 105.3, radius: 16 }
+                ];
+            } else {
+                // Netflix data
+                return [
+                    { country: 'United States', sentiment: 62, volume: '58.4K', lat: 37.0, lng: -95.7, radius: 22 },
+                    { country: 'Brazil', sentiment: 78, volume: '24.1K', lat: -14.2, lng: -51.9, radius: 18 },
+                    { country: 'United Kingdom', sentiment: 65, volume: '12.8K', lat: 55.4, lng: -3.4, radius: 15 },
+                    { country: 'Mexico', sentiment: 74, volume: '18.5K', lat: 23.6, lng: -102.5, radius: 16 },
+                    { country: 'France', sentiment: 69, volume: '11.2K', lat: 46.2, lng: 2.2, radius: 14 },
+                    { country: 'Germany', sentiment: 71, volume: '9.8K', lat: 51.2, lng: 10.5, radius: 14 },
+                    { country: 'India', sentiment: 82, volume: '42.7K', lat: 20.6, lng: 78.9, radius: 20 },
+                    { country: 'Japan', sentiment: 77, volume: '15.3K', lat: 36.2, lng: 138.3, radius: 15 },
+                    { country: 'South Korea', sentiment: 85, volume: '19.8K', lat: 35.9, lng: 127.8, radius: 16 },
+                    { country: 'Canada', sentiment: 58, volume: '8.4K', lat: 56.1, lng: -106.3, radius: 13 },
+                    { country: 'Australia', sentiment: 67, volume: '6.9K', lat: -25.3, lng: 133.8, radius: 13 },
+                    { country: 'Spain', sentiment: 73, volume: '8.1K', lat: 40.5, lng: -3.7, radius: 13 },
+                    { country: 'Italy', sentiment: 70, volume: '7.3K', lat: 41.9, lng: 12.6, radius: 12 },
+                    { country: 'Turkey', sentiment: 68, volume: '11.5K', lat: 38.9, lng: 35.2, radius: 14 },
+                    { country: 'Argentina', sentiment: 76, volume: '6.2K', lat: -38.4, lng: -63.6, radius: 12 }
+                ];
+            }
+        }
+
         function renderMap() {
             const mapEl = document.getElementById('geo-map');
-            if (!mapEl || window.mapRendered) return;
-            window.mapRendered = true;
+            if (!mapEl) return;
 
-            const map = L.map('geo-map', { center: [20, 10], zoom: 2 });
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-                attribution: '© OpenStreetMap'
-            }).addTo(map);
+            // Initialize map only once
+            if (!globalMap) {
+                globalMap = L.map('geo-map', { center: [20, 10], zoom: 2 });
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                    attribution: '© OpenStreetMap'
+                }).addTo(globalMap);
+            }
 
-            // Netflix major markets with realistic population-based volumes
-            const geoData = [
-                { country: 'United States', sentiment: 62, volume: '58.4K', lat: 37.0, lng: -95.7, radius: 22 },
-                { country: 'Brazil', sentiment: 78, volume: '24.1K', lat: -14.2, lng: -51.9, radius: 18 },
-                { country: 'United Kingdom', sentiment: 65, volume: '12.8K', lat: 55.4, lng: -3.4, radius: 15 },
-                { country: 'Mexico', sentiment: 74, volume: '18.5K', lat: 23.6, lng: -102.5, radius: 16 },
-                { country: 'France', sentiment: 69, volume: '11.2K', lat: 46.2, lng: 2.2, radius: 14 },
-                { country: 'Germany', sentiment: 71, volume: '9.8K', lat: 51.2, lng: 10.5, radius: 14 },
-                { country: 'India', sentiment: 82, volume: '42.7K', lat: 20.6, lng: 78.9, radius: 20 },
-                { country: 'Japan', sentiment: 77, volume: '15.3K', lat: 36.2, lng: 138.3, radius: 15 },
-                { country: 'South Korea', sentiment: 85, volume: '19.8K', lat: 35.9, lng: 127.8, radius: 16 },
-                { country: 'Canada', sentiment: 58, volume: '8.4K', lat: 56.1, lng: -106.3, radius: 13 },
-                { country: 'Australia', sentiment: 67, volume: '6.9K', lat: -25.3, lng: 133.8, radius: 13 },
-                { country: 'Spain', sentiment: 73, volume: '8.1K', lat: 40.5, lng: -3.7, radius: 13 },
-                { country: 'Italy', sentiment: 70, volume: '7.3K', lat: 41.9, lng: 12.6, radius: 12 },
-                { country: 'Turkey', sentiment: 68, volume: '11.5K', lat: 38.9, lng: 35.2, radius: 14 },
-                { country: 'Argentina', sentiment: 76, volume: '6.2K', lat: -38.4, lng: -63.6, radius: 12 }
-            ];
+            // Clear existing markers
+            mapMarkers.forEach(marker => globalMap.removeLayer(marker));
+            mapMarkers = [];
+
+            // Add new markers based on current tenant
+            const geoData = getMapDataForTenant();
 
             geoData.forEach(loc => {
-                const color = loc.sentiment >= 75 ? '#10b981' : loc.sentiment >= 65 ? '#f59e0b' : '#ef4444';
-                L.circleMarker([loc.lat, loc.lng], {
+                const color = loc.sentiment >= 75 ? '#10b981' : loc.sentiment >= 65 ? '#f59e0b' :
+                             loc.sentiment >= 40 ? '#f59e0b' : '#ef4444';
+                const marker = L.circleMarker([loc.lat, loc.lng], {
                     radius: loc.radius,
                     fillColor: color,
                     color: '#fff',
                     weight: 2,
                     fillOpacity: 0.7
-                }).addTo(map).bindPopup(`
+                }).addTo(globalMap).bindPopup(`
                     <div style="padding:10px;min-width:150px;">
                         <strong style="font-size:14px;">${loc.country}</strong><br>
                         <div style="margin-top:8px;">
@@ -3299,6 +3459,7 @@
                         <div style="color:#94a3b8;font-size:12px;margin-top:4px;">${loc.volume} mentions (24h)</div>
                     </div>
                 `);
+                mapMarkers.push(marker);
             });
         }
 
@@ -3859,7 +4020,210 @@
                 ]
             };
 
+            // Israel incident strategies
+            const israelStrategies = {
+                1: [ // UN voting bloc criticism
+                    {
+                        name: 'Economic Diplomacy Offensive',
+                        icon: 'fas fa-handshake',
+                        color: '#10b981',
+                        recommended: true,
+                        effectiveness: 'High Impact · Strategic',
+                        description: `<strong>What this is:</strong> Leverage economic partnerships and trade agreements to counterbalance diplomatic criticism. Focus on bilateral relationships and tangible mutual benefits.
+                        <br><br><strong>Why it works:</strong> Economic interdependence creates incentives for constructive engagement. Countries with strong trade ties are 65% more likely to moderate critical positions.
+                        <br><br><strong>How to execute:</strong>
+                        <ul style="margin-top:8px;padding-left:20px;">
+                        <li><strong>Bilateral Engagement (0-48h):</strong> Foreign Ministry initiates direct economic dialogue with key European partners. Highlight mutual trade benefits ($50B+ annual bilateral trade). Present data on job creation and supply chain interdependence.</li>
+                        <li><strong>Trade Delegation Tour (Week 1):</strong> Send senior economic ministers to major capitals. Focus on tech cooperation, innovation partnerships, cybersecurity collaboration. Sign new MOUs in renewable energy and water technology.</li>
+                        <li><strong>Private Sector Bridge-Building (Week 2-4):</strong> Facilitate CEO-to-CEO dialogue. Israeli tech companies partner with European firms on AI, automotive tech, agri-tech. Create "Innovation Alliance" initiative showcasing collaborative projects.</li>
+                        <li><strong>Long-term Economic Integration (Ongoing):</strong> Expand EU-Israel trade agreement scope. Join European research programs (Horizon Europe). Position as Mediterranean tech hub for European companies.</li>
+                        </ul>`,
+                        steps: [
+                            'Foreign Ministry launches bilateral economic dialogue',
+                            'Trade delegation visits key European capitals',
+                            'Facilitate Israeli-European corporate partnerships',
+                            'Expand EU-Israel trade agreement participation'
+                        ],
+                        projectionData: [72, 68, 62, 56, 50, 45, 42, 40, 38, 36, 35, 34]
+                    }
+                ],
+                2: [ // Tech brain drain
+                    {
+                        name: 'Startup Nation 2.0 Initiative',
+                        icon: 'fas fa-rocket',
+                        color: '#8b5cf6',
+                        recommended: true,
+                        effectiveness: 'High Impact · 6-12 month timeline',
+                        description: `<strong>What this is:</strong> Comprehensive ecosystem upgrade to retain talent and attract global tech workers. Transform from startup nation to scale-up nation.
+                        <br><br><strong>Why it works:</strong> Brain drain is primarily economic/lifestyle driven. Countries that address quality of life + career growth retain 80% more senior talent.
+                        <br><br><strong>How to execute:</strong>
+                        <ul style="margin-top:8px;padding-left:20px;">
+                        <li><strong>Financial Incentives (Immediate):</strong> Launch $500M "Stay & Scale" fund for senior engineers staying with Israeli companies. Offer equity grants, housing assistance in Tel Aviv, tax benefits for returning expats. Make staying financially competitive with relocation.</li>
+                        <li><strong>Quality of Life Improvements (0-6 months):</strong> Address cost of living concerns - expand affordable housing near tech hubs, improve public transportation in Tel Aviv/Herzliya. Create international schools consortium for expat families. Build European-standard infrastructure.</li>
+                        <li><strong>Career Path Expansion (6-12 months):</strong> Attract Google, Microsoft, Meta to open major R&D centers (not just satellite offices). Partner with multinational corporations to create 10,000 senior roles. Let talent work for global brands while staying local.</li>
+                        <li><strong>Global Reverse Recruitment (Ongoing):</strong> Launch "Tech Aliyah" program targeting worldwide Jewish tech talent. Offer relocation packages, fast-track visas for skilled non-Jewish workers. Brand Israel as "Silicon Valley of Middle East" with better work-life balance.</li>
+                        </ul>`,
+                        steps: [
+                            'Launch $500M "Stay & Scale" retention fund',
+                            'Address cost of living and infrastructure gaps',
+                            'Attract multinational R&D center expansions',
+                            'Launch global "Tech Aliyah" recruitment drive'
+                        ],
+                        projectionData: [78, 74, 70, 65, 60, 55, 50, 46, 42, 40, 38, 36]
+                    }
+                ],
+                3: [ // Tourism perception gap
+                    {
+                        name: 'Reality vs Perception Campaign',
+                        icon: 'fas fa-camera',
+                        color: '#06b6d4',
+                        recommended: true,
+                        effectiveness: 'Medium-High Impact · 3-6 months',
+                        description: `<strong>What this is:</strong> Data-driven tourism marketing showing actual visitor experiences vs. media perception. Leverage influencer testimonials and safety statistics.
+                        <br><br><strong>Why it works:</strong> Tourism decisions are emotion-driven. Seeing real experiences from trusted sources overcomes abstract security concerns. Testimonial-based campaigns achieve 4x higher conversion than traditional ads.
+                        <br><br><strong>How to execute:</strong>
+                        <ul style="margin-top:8px;padding-left:20px;">
+                        <li><strong>Influencer Reality Tour (Month 1):</strong> Invite 50 mid-tier travel influencers (100K-500K followers) for subsidized trips. No restrictions on content - authenticity is key. Showcase Tel Aviv nightlife, Dead Sea, Jerusalem history, Haifa beaches, Negev adventures. Let them document real experience.</li>
+                        <li><strong>Data Transparency Dashboard (Month 1-2):</strong> Launch public tourism safety dashboard comparing Israel statistics to popular destinations. Show: Tel Aviv has lower crime than Barcelona, Jerusalem safer than Paris, overall tourist incident rate 0.001%. Make data visual and shareable.</li>
+                        <li><strong>Testimonial Arsenal (Month 2-3):</strong> Collect 1,000+ recent tourist testimonials. Create "Expectations vs Reality" video series. Highlight families, solo female travelers, LGBTQ+ visitors, diverse demographics sharing safe, positive experiences.</li>
+                        <li><strong>Strategic Media Partnerships (Month 3-6):</strong> Partner with travel publications (Condé Nast, Lonely Planet) for feature stories. Sponsor "Israel Uncovered" content series. Position as Mediterranean cultural destination, not just religious pilgrimage site.</li>
+                        </ul>`,
+                        steps: [
+                            'Invite 50 travel influencers for authentic experience documentation',
+                            'Launch public tourism safety statistics dashboard',
+                            'Create "Expectations vs Reality" testimonial video series',
+                            'Partner with major travel publications for feature content'
+                        ],
+                        projectionData: [64, 60, 56, 52, 48, 44, 40, 38, 36, 34, 33, 32]
+                    }
+                ],
+                4: [ // BDS corporate traction
+                    {
+                        name: 'Economic Value Proposition Strategy',
+                        icon: 'fas fa-chart-line',
+                        color: '#10b981',
+                        recommended: true,
+                        effectiveness: 'High Impact · Relationship-based',
+                        description: `<strong>What this is:</strong> Shift corporate dialogue from politics to economics. Demonstrate irreplaceable value in supply chains, technology, and innovation partnerships.
+                        <br><br><strong>Why it works:</strong> Corporations ultimately answer to shareholders and bottom lines. Companies maintaining Israeli partnerships show 23% higher tech sector profit margins. Make economic case stronger than political pressure.
+                        <br><br><strong>How to execute:</strong>
+                        <ul style="margin-top:8px;padding-left:20px;">
+                        <li><strong>Supply Chain Analysis (0-2 weeks):</strong> Map all affected corporate relationships. Identify where Israeli suppliers/partners are mission-critical. Create "Replacement Cost Analysis" showing: switching costs, quality gaps, timeline delays. Make disengagement economically painful.</li>
+                        <li><strong>Innovation Partnership Showcase (2-4 weeks):</strong> Highlight joint R&D successes. Intel's $25B Israel investment, Google's AI research center, Apple's chip design teams. Show these aren't replaceable - they're strategic assets. Publish case studies of failed competitor attempts to replicate Israeli tech innovation elsewhere.</li>
+                        <li><strong>Stakeholder Direct Engagement (1-3 months):</strong> Israeli tech CEOs meet directly with European corporate boards. Present not as political advocacy but as business partners. Focus on: "Here's what we're building together, here's the revenue impact, here's why this partnership drives your stock price."</li>
+                        <li><strong>Alternative Market Development (Ongoing):</strong> Simultaneously diversify into Asia-Pacific, Africa, South America. Reduce dependence on any single market. Show European companies they need Israeli innovation more than reverse. Create competitive pressure - "If you exit, your competitors will gain the advantage."</li>
+                        </ul>`,
+                        steps: [
+                            'Create "Replacement Cost Analysis" for critical partnerships',
+                            'Showcase irreplaceable joint R&D successes and ROI',
+                            'Facilitate CEO-to-Board direct business discussions',
+                            'Diversify into Asia-Pacific and emerging markets simultaneously'
+                        ],
+                        projectionData: [68, 64, 58, 52, 48, 44, 40, 38, 36, 34, 33, 32]
+                    }
+                ],
+                5: [ // Eurovision hosting cost criticism
+                    {
+                        name: 'Economic Impact Communication Strategy',
+                        icon: 'fas fa-chart-bar',
+                        color: '#10b981',
+                        recommended: true,
+                        effectiveness: 'Medium Impact · Domestic Focus',
+                        description: `<strong>What this is:</strong> Reframe event hosting as economic investment with measurable ROI. Show tangible benefits to counter cost criticism.
+                        <br><br><strong>Why it works:</strong> Public accepts spending when they see personal benefit. Countries showing tourism/economic ROI from hosting events see 78% public approval increase.
+                        <br><br><strong>How to execute:</strong>
+                        <ul style="margin-top:8px;padding-left:20px;">
+                        <li><strong>Economic Data Release (0-48h):</strong> Ministry of Tourism publishes comprehensive impact study: estimated 50,000 international visitors, $180M in tourism revenue, 2,000 temporary jobs created, long-term "soft power" value. Break down where every shekel goes - not just "event cost" but "economic stimulus."</li>
+                        <li><strong>Local Business Testimonials (Week 1):</strong> Interview Tel Aviv hotels, restaurants, tour operators showing booking surges. "My hotel is 100% booked for 2 weeks because of Eurovision." Make it personal and relatable to average citizens seeing business boom.</li>
+                        <li><strong>Brand Value Quantification (Week 2):</strong> Commission external analysis of "nation brand" value. Compare to advertising equivalent - "To reach 180M viewers with positive Israel content would cost $400M in traditional advertising. We're doing it for $25M." Show the marketing arbitrage.</li>
+                        <li><strong>Comparative Context (Ongoing):</strong> Show other countries' hosting costs and ROI. "Eurovision 2018 Portugal: $35M cost, $140M tourism return. We're competitive and positioned for similar gains." Remove the exceptionalism narrative that makes critics think it's uniquely wasteful.</li>
+                        </ul>`,
+                        steps: [
+                            'Publish comprehensive economic impact study showing $180M tourism ROI',
+                            'Feature local business testimonials showing direct benefits',
+                            'Commission brand value analysis vs advertising equivalent cost',
+                            'Provide international comparison showing competitive ROI'
+                        ],
+                        projectionData: [58, 54, 50, 46, 42, 40, 38, 36, 35, 34, 33, 32]
+                    },
+                    {
+                        name: 'Cultural Diplomacy Framing',
+                        icon: 'fas fa-music',
+                        color: '#8b5cf6',
+                        recommended: false,
+                        effectiveness: 'Medium Impact · Image-focused',
+                        description: `<strong>What this is:</strong> Position Eurovision as cultural diplomacy tool rather than entertainment expense. Frame as strategic soft power investment.
+                        <br><br><strong>Why it works:</strong> Reframing spending from "luxury" to "necessity" changes perception. When public sees strategic value beyond entertainment, support increases 61%.
+                        <br><br><strong>How to execute:</strong>
+                        <ul style="margin-top:8px;padding-left:20px;">
+                        <li><strong>Strategic Communication (0-72h):</strong> Foreign Ministry explains: "Eurovision reaches 180M Europeans in prime time. It's 3 hours of Israel shown as modern, vibrant, welcoming - the opposite of conflict narratives. This is strategic communication, not a party." Position as counter-narrative tool.</li>
+                        <li><strong>Academic Backing (Week 1):</strong> Partner with universities to publish research on "soft power ROI" from cultural events. Show data: countries hosting Eurovision see 23% improvement in tourism perception for 3 years. Cite academic studies making it evidence-based, not opinion.</li>
+                        <li><strong>Historical Precedent (Week 2):</strong> Reference successful past Israeli cultural diplomacy - sports events, cultural festivals that improved international perception. Build narrative: "This is how modern countries build relationships in 21st century - through culture, not just politics."</li>
+                        <li><strong>Regional Comparison (Ongoing):</strong> Highlight that UAE, Saudi Arabia, Qatar spend billions on sports/culture events for same reason. "Our neighbors understand soft power value - we can't afford to cede this space." Create competitive framing.</li>
+                        </ul>`,
+                        steps: [
+                            'Foreign Ministry frames as strategic soft power investment',
+                            'Commission academic research on cultural diplomacy ROI',
+                            'Highlight historical successes of Israeli cultural events',
+                            'Compare to regional competitors\' cultural investments'
+                        ],
+                        projectionData: [58, 56, 52, 48, 45, 42, 40, 38, 37, 36, 35, 34]
+                    }
+                ],
+                6: [ // Startup ecosystem valuation concerns
+                    {
+                        name: 'Ecosystem Maturity Narrative',
+                        icon: 'fas fa-seedling',
+                        color: '#10b981',
+                        recommended: true,
+                        effectiveness: 'High Impact · Investor Relations',
+                        description: `<strong>What this is:</strong> Reframe failures as ecosystem evolution from startup phase to scale-up maturity. Show natural market correction producing stronger companies.
+                        <br><br><strong>Why it works:</strong> Tech investors understand market cycles. Framing as "maturation" vs "collapse" maintains confidence. Ecosystems showing post-correction resilience attract 2.3x more capital.
+                        <br><br><strong>How to execute:</strong>
+                        <ul style="margin-top:8px;padding-left:20px;">
+                        <li><strong>Market Analysis Report (0-2 weeks):</strong> Innovation Authority publishes comprehensive report: "Israeli Tech 2.0 - From Startup Nation to Scale-up Nation." Show data: while some startups failed, total ecosystem value still +18% YoY. Highlight survivors growing stronger, acquiring talent from failed ventures, focusing on sustainable growth not hype.</li>
+                        <li><strong>Success Story Spotlight (Week 2-4):</strong> Feature 20 companies that became profitable post-correction. Monday.com, Wix, CyberArk - show mature Israeli companies competing globally. Narrative: "The ecosystem is producing not just exits, but enduring global leaders." Shift from unicorn counting to profit demonstration.</li>
+                        <li><strong>Investor Roadshow (Month 1-2):</strong> Send Innovation Authority + successful CEOs to major investment hubs (London, Singapore, NYC). Private meetings with institutional investors. Message: "Correction removed froth. Valuations now rational. Time to invest in resilient companies at attractive prices." Turn crisis into buying opportunity.</li>
+                        <li><strong>Structural Reforms (Ongoing):</strong> Announce new regulations: mandatory financial transparency for startups seeking government support, focus R&D grants on path-to-profitability not just innovation. Show ecosystem learning from mistakes, implementing guardrails. Demonstrate responsible stewardship.</li>
+                        </ul>`,
+                        steps: [
+                            'Publish "Startup Nation 2.0" maturity report with resilience data',
+                            'Feature 20 profitable Israeli tech companies as success models',
+                            'Launch investor roadshow positioning correction as opportunity',
+                            'Announce structural reforms demonstrating ecosystem learning'
+                        ],
+                        projectionData: [62, 58, 54, 50, 46, 42, 40, 38, 36, 35, 34, 33]
+                    },
+                    {
+                        name: 'Diversification & Innovation Shift',
+                        icon: 'fas fa-lightbulb',
+                        color: '#06b6d4',
+                        recommended: false,
+                        effectiveness: 'Medium Impact · Long-term Strategy',
+                        description: `<strong>What this is:</strong> Pivot ecosystem focus from consumer tech to deep tech (cybersecurity, defense tech, agri-tech, water tech, medtech). Leverage unique Israeli strengths.
+                        <br><br><strong>Why it works:</strong> Playing to competitive advantages vs competing in crowded consumer markets. Israeli deep tech exits average 40% higher valuations than consumer startups. Strategic differentiation creates investor confidence.
+                        <br><br><strong>How to execute:</strong>
+                        <ul style="margin-top:8px;padding-left:20px;">
+                        <li><strong>Strategic Focus Shift (0-3 months):</strong> Innovation Authority announces new priority sectors: cybersecurity (Israel has 31% global market share), defense tech (leveraging IDF talent), climate tech (water/solar expertise), health tech (COVID showed capabilities). Reallocate 60% of government grants to these sectors. Stop chasing Silicon Valley trends, double down on Israeli advantages.</li>
+                        <li><strong>Talent Redeployment (3-6 months):</strong> Partner with failed startups to redirect engineers to priority sectors. Launch "Tech Transition Program" - engineers from consumer startups get subsidies to join cybersecurity/defense companies. Keep talent in ecosystem, just refocus application.</li>
+                        <li><strong>Global Partnership Strategy (6-12 months):</strong> Position Israel as "the cybersecurity capital" and "the climate tech lab." Sign formal tech partnerships with US DoD, EU cybersecurity agency, African water ministries. Create demand pull for Israeli innovation in strategic sectors where competition is limited.</li>
+                        <li><strong>Long-term Branding (Ongoing):</strong> Retire "Startup Nation" slogan. Adopt "Innovation Defense" or "Deep Tech Hub" positioning. Rebrand around substance over hype, strategic value over consumer apps. Make Israel synonymous with solving hard problems.</li>
+                        </ul>`,
+                        steps: [
+                            'Announce strategic focus shift to deep tech sectors (cyber, defense, climate)',
+                            'Launch "Tech Transition Program" redirecting talent to priority sectors',
+                            'Sign global partnerships positioning Israel as specialized hub',
+                            'Rebrand from "Startup Nation" to "Deep Tech/Strategic Innovation" positioning'
+                        ],
+                        projectionData: [62, 60, 56, 52, 48, 44, 42, 40, 38, 37, 36, 35]
+                    }
+                ]
+            };
+
             // Return appropriate strategies based on current tenant
+            if (currentTenant === 'israel') {
+                return israelStrategies[incidentId] || [];
+            }
             if (currentTenant === 'techcorp') {
                 return techcorpStrategies[incidentId] || [];
             }
