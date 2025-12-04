@@ -388,29 +388,91 @@
         }
 
         .language-toggle {
-            display: flex;
-            background: rgba(30, 41, 59, 0.5);
-            border-radius: 20px;
-            padding: 4px;
-            border: 1px solid var(--border-color);
+            position: relative;
+            display: inline-block;
         }
 
-        .language-toggle button {
-            padding: 6px 16px;
-            border: none;
-            background: transparent;
-            color: var(--text-secondary);
+        .language-toggle-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            color: var(--text-primary);
             font-size: 13px;
             font-weight: 600;
-            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .language-toggle-btn:hover {
+            background: rgba(30, 41, 59, 0.8);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .language-toggle-btn i {
+            font-size: 10px;
+            color: var(--text-secondary);
+            transition: transform 0.3s ease;
+        }
+
+        .language-toggle.open .language-toggle-btn i {
+            transform: rotate(180deg);
+        }
+
+        .language-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            min-width: 160px;
+            background: rgba(30, 41, 59, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 8px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .language-toggle.open .language-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .language-dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            color: var(--text-primary);
+            font-size: 13px;
+            font-weight: 500;
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.2s ease;
         }
 
-        .language-toggle button.active {
+        .language-dropdown-item:hover {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--primary-color);
+        }
+
+        .language-dropdown-item.active {
             background: var(--primary-color);
             color: white;
             box-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        .language-dropdown-item .flag {
+            font-size: 16px;
         }
 
         .notification-bell {
@@ -615,6 +677,28 @@
             to {
                 opacity: 1;
                 transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(100px);
             }
         }
 
@@ -1000,6 +1084,38 @@
 
         .data-table tbody tr:hover {
             background: rgba(59, 130, 246, 0.05);
+        }
+
+        /* Report Button */
+        .btn-report {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: #dc2626;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
+        }
+
+        .btn-report:hover {
+            background: #b91c1c;
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.5);
+            transform: translateY(-1px);
+        }
+
+        .btn-report:active {
+            transform: translateY(0);
+            box-shadow: 0 1px 4px rgba(220, 38, 38, 0.4);
+        }
+
+        .btn-report i {
+            font-size: 12px;
         }
 
         /* Cards */
@@ -1640,9 +1756,22 @@
                 </div>
                 <div class="top-bar-right">
                     <!-- Language Toggle -->
-                    <div class="language-toggle">
-                        <button class="active" data-lang="en" onclick="setLanguage('en')">🇺🇸 EN</button>
-                        <button data-lang="fr" onclick="setLanguage('fr')">🇫🇷 FR</button>
+                    <div class="language-toggle" id="language-toggle">
+                        <div class="language-toggle-btn" onclick="toggleLanguageDropdown()">
+                            <span class="flag" id="current-language-flag">🇺🇸</span>
+                            <span id="current-language-code">EN</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="language-dropdown">
+                            <div class="language-dropdown-item active" data-lang="en" onclick="selectLanguage('en')">
+                                <span class="flag">🇺🇸</span>
+                                <span>English</span>
+                            </div>
+                            <div class="language-dropdown-item" data-lang="fr" onclick="selectLanguage('fr')">
+                                <span class="flag">🇫🇷</span>
+                                <span>Français</span>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Notification Bell -->
@@ -1936,6 +2065,7 @@
                                     <th data-i18n="inf-followers">Followers</th>
                                     <th data-i18n="inf-stance">Stance</th>
                                     <th data-i18n="inf-impact">Impact Score</th>
+                                    <th data-i18n="inf-action">Action</th>
                                 </tr>
                             </thead>
                             <tbody id="influencers-table">
@@ -2354,6 +2484,7 @@
                 'inf-followers': 'Followers',
                 'inf-stance': 'Stance',
                 'inf-impact': 'Impact Score',
+                'inf-action': 'Action',
                 'inf-communities': 'Audience Communities & Clusters',
                 'sim-title': 'Response Impact Simulator',
                 'sim-subtitle': 'Predict the impact of different response strategies',
@@ -2449,6 +2580,7 @@
                 'inf-followers': 'Abonnés',
                 'inf-stance': 'Position',
                 'inf-impact': 'Score d\'Impact',
+                'inf-action': 'Action',
                 'inf-communities': 'Communautés d\'Audience & Groupes',
                 'sim-title': 'Simulateur d\'Impact de Réponse',
                 'sim-subtitle': 'Prédisez l\'impact de différentes stratégies de réponse',
@@ -2731,7 +2863,9 @@
         // Default to current tenant's incidents
         let incidents = tenantIncidents[currentTenant];
 
-        const influencers = [
+        // Tenant-specific influencers
+        const tenantInfluencers = {
+            netflix: [
             {
                 id: 1,
                 handle: '@TechCritic',
@@ -2816,17 +2950,118 @@
                 topics: ['Price Tracking', 'Subscription Deals', 'Platform Comparisons'],
                 bio: 'Tracking and comparing streaming subscription prices across all platforms. Helping consumers find the best value.'
             }
-        ];
+            ],
+            israel: [
+                {
+                    id: 1,
+                    handle: '@MiddleEastWatch',
+                    followers: '3.2M',
+                    stance: 'Critical',
+                    impact: 96,
+                    stanceClass: 'danger',
+                    name: 'Middle East Monitor',
+                    platform: 'Twitter/X',
+                    recentPosts: 12453,
+                    engagement: '11.2%',
+                    topics: ['Middle East Politics', 'Human Rights', 'International Relations'],
+                    bio: 'Independent news organization covering Middle East affairs with focus on political accountability and international law.'
+                },
+                {
+                    id: 2,
+                    handle: '@GlobalDiplomat',
+                    followers: '2.8M',
+                    stance: 'Critical',
+                    impact: 89,
+                    stanceClass: 'danger',
+                    name: 'Dr. Sarah Al-Mansouri',
+                    platform: 'Twitter/X',
+                    recentPosts: 8742,
+                    engagement: '9.4%',
+                    topics: ['UN Affairs', 'International Law', 'Diplomatic Relations'],
+                    bio: 'Former UN diplomat and international relations professor. Analyzing global diplomatic trends and voting patterns.'
+                },
+                {
+                    id: 3,
+                    handle: '@TechTelAviv',
+                    followers: '1.5M',
+                    stance: 'Supportive',
+                    impact: 82,
+                    stanceClass: 'success',
+                    name: 'Tel Aviv Tech Hub',
+                    platform: 'LinkedIn',
+                    recentPosts: 5621,
+                    engagement: '7.8%',
+                    topics: ['Israeli Innovation', 'Startup Ecosystem', 'Tech Investment'],
+                    bio: 'Promoting Israeli technology innovation and startup ecosystem. Highlighting success stories from the "Startup Nation".'
+                },
+                {
+                    id: 4,
+                    handle: '@BDSMovement',
+                    followers: '890K',
+                    stance: 'Critical',
+                    impact: 91,
+                    stanceClass: 'danger',
+                    name: 'BDS Global Network',
+                    platform: 'Instagram',
+                    recentPosts: 9384,
+                    engagement: '15.7%',
+                    topics: ['Boycott Campaigns', 'Economic Pressure', 'Solidarity Actions'],
+                    bio: 'Global BDS movement coordination. Organizing boycotts, divestment campaigns, and economic sanctions advocacy.'
+                },
+                {
+                    id: 5,
+                    handle: '@IsraelTourism',
+                    followers: '1.2M',
+                    stance: 'Supportive',
+                    impact: 74,
+                    stanceClass: 'success',
+                    name: 'Discover Israel',
+                    platform: 'Instagram',
+                    recentPosts: 7234,
+                    engagement: '10.3%',
+                    topics: ['Travel', 'Cultural Heritage', 'Tourism Promotion'],
+                    bio: 'Official tourism promotion account. Showcasing historical sites, cultural experiences, and travel opportunities.'
+                },
+                {
+                    id: 6,
+                    handle: '@AcademicBoycott',
+                    followers: '650K',
+                    stance: 'Critical',
+                    impact: 78,
+                    stanceClass: 'danger',
+                    name: 'Academic Freedom Coalition',
+                    platform: 'Twitter/X',
+                    recentPosts: 4892,
+                    engagement: '6.9%',
+                    topics: ['Academic Boycott', 'University Campaigns', 'Research Ethics'],
+                    bio: 'Coalition of academics advocating for boycott of Israeli academic institutions. Organizing campus campaigns and petition drives.'
+                }
+            ]
+        };
+
+        // Default to current tenant's influencers
+        let influencers = tenantInfluencers[currentTenant];
 
         // ========================================
         // LANGUAGE SWITCHING
         // ========================================
+        // Language data with flags
+        const languages = {
+            en: { code: 'EN', flag: '🇺🇸', name: 'English' },
+            fr: { code: 'FR', flag: '🇫🇷', name: 'Français' }
+        };
+
         function setLanguage(lang) {
             currentLanguage = lang;
 
-            // Update language toggle buttons
-            document.querySelectorAll('.language-toggle button').forEach(btn => {
-                btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+            // Update current language display
+            const langData = languages[lang];
+            document.getElementById('current-language-flag').textContent = langData.flag;
+            document.getElementById('current-language-code').textContent = langData.code;
+
+            // Update dropdown items active state
+            document.querySelectorAll('.language-dropdown-item').forEach(item => {
+                item.classList.toggle('active', item.getAttribute('data-lang') === lang);
             });
 
             // Update settings dropdown
@@ -2846,6 +3081,25 @@
             // Update notification times
             renderNotifications();
         }
+
+        function toggleLanguageDropdown() {
+            const toggle = document.getElementById('language-toggle');
+            toggle.classList.toggle('open');
+        }
+
+        function selectLanguage(lang) {
+            setLanguage(lang);
+            // Close dropdown after selection
+            document.getElementById('language-toggle').classList.remove('open');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const toggle = document.getElementById('language-toggle');
+            if (toggle && !toggle.contains(event.target)) {
+                toggle.classList.remove('open');
+            }
+        });
 
         // ========================================
         // NAVIGATION
@@ -2867,9 +3121,11 @@
             });
             document.getElementById(page + '-screen').classList.add('active');
 
-            // Update page title
+            // Update page title using data-i18n
             const pageTitleKey = 'page-title-' + page;
-            document.getElementById('page-title').textContent = translations[currentLanguage][pageTitleKey];
+            const pageTitle = document.getElementById('page-title');
+            pageTitle.setAttribute('data-i18n', pageTitleKey);
+            pageTitle.textContent = translations[currentLanguage][pageTitleKey];
 
             // Close mobile sidebar if open
             document.getElementById('sidebar').classList.remove('mobile-open');
@@ -2972,11 +3228,20 @@
             // Update incidents
             incidents = tenantIncidents[tenantId];
 
+            // Update influencers
+            influencers = tenantInfluencers[tenantId];
+
             // Close switcher
             toggleTenantSwitcher();
 
             // Re-render incidents (works regardless of current page)
             renderIncidents();
+
+            // Re-render influencers if on influencers page
+            if (currentPage === 'influencers') {
+                window.influencersRendered = false;
+                renderInfluencers();
+            }
 
             // Clear incident detail if one is selected
             const incidentDetail = document.getElementById('incident-detail');
@@ -4322,6 +4587,12 @@
                     <td>${inf.followers}</td>
                     <td><span class="chip ${inf.stanceClass}">${inf.stance}</span></td>
                     <td><strong>${inf.impact}</strong>/100</td>
+                    <td>
+                        <button class="btn-report" onclick="reportInfluencer(event, ${inf.id}, '${inf.handle}')" title="Report this influencer">
+                            <i class="fas fa-flag"></i>
+                            <span class="report-text">Report</span>
+                        </button>
+                    </td>
                 </tr>
             `).join('');
         }
@@ -4344,7 +4615,7 @@
                         <div style="flex:1;">
                             <h3 style="font-size:20px;font-weight:700;margin-bottom:4px;">${influencer.name}</h3>
                             <p style="color:var(--text-muted);font-size:14px;margin-bottom:8px;">${influencer.handle} • ${influencer.platform}</p>
-                            <span class="chip ${influencer.stanceClass}">${influencer.stance} towards Netflix</span>
+                            <span class="chip ${influencer.stanceClass}">${influencer.stance} towards ${tenants[currentTenant].name}</span>
                         </div>
                     </div>
                 </div>
@@ -4392,6 +4663,110 @@
             `;
 
             modal.classList.add('active');
+        }
+
+        function reportInfluencer(event, influencerId, handle) {
+            // Stop event propagation to prevent row click
+            event.stopPropagation();
+
+            const influencer = influencers.find(i => i.id === influencerId);
+            if (!influencer) return;
+
+            // Show confirmation modal
+            const modal = document.getElementById('modal-overlay');
+            const title = document.getElementById('modal-title');
+            const content = document.getElementById('modal-content');
+
+            title.innerHTML = '<i class="fas fa-flag" style="color:#dc2626;margin-right:8px;"></i> Report Influencer';
+            content.innerHTML = `
+                <div style="margin-bottom:24px;">
+                    <p style="color:var(--text-secondary);line-height:1.7;margin-bottom:16px;">
+                        You are about to flag <strong style="color:var(--text-primary);">${handle}</strong> for review.
+                        This influencer will be marked for investigation by the moderation team.
+                    </p>
+                    <div style="background:rgba(220, 38, 38, 0.1);border-left:3px solid #dc2626;padding:16px;border-radius:8px;margin-bottom:20px;">
+                        <div style="color:var(--text-primary);font-weight:600;margin-bottom:8px;">
+                            <i class="fas fa-exclamation-triangle" style="color:#dc2626;margin-right:8px;"></i>
+                            Report Details
+                        </div>
+                        <div style="color:var(--text-secondary);font-size:14px;line-height:1.6;">
+                            <strong>Handle:</strong> ${influencer.handle}<br>
+                            <strong>Name:</strong> ${influencer.name}<br>
+                            <strong>Platform:</strong> ${influencer.platform}<br>
+                            <strong>Followers:</strong> ${influencer.followers}<br>
+                            <strong>Impact Score:</strong> ${influencer.impact}/100
+                        </div>
+                    </div>
+                    <label style="display:block;color:var(--text-secondary);font-size:13px;font-weight:600;margin-bottom:8px;">
+                        Reason for Report (Optional)
+                    </label>
+                    <textarea id="report-reason"
+                              style="width:100%;min-height:100px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:8px;padding:12px;color:var(--text-primary);font-family:inherit;font-size:14px;resize:vertical;"
+                              placeholder="Describe why this influencer should be flagged for review..."></textarea>
+                </div>
+                <div style="display:flex;gap:12px;justify-content:flex-end;">
+                    <button onclick="closeModal()" style="padding:10px 24px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:8px;color:var(--text-primary);font-weight:600;cursor:pointer;transition:all 0.2s ease;">
+                        Cancel
+                    </button>
+                    <button onclick="confirmReport(${influencerId}, '${handle}')" style="padding:10px 24px;background:#dc2626;border:none;border-radius:8px;color:white;font-weight:600;cursor:pointer;transition:all 0.2s ease;box-shadow:0 2px 8px rgba(220, 38, 38, 0.3);">
+                        <i class="fas fa-flag" style="margin-right:6px;"></i>
+                        Confirm Report
+                    </button>
+                </div>
+            `;
+
+            modal.classList.add('active');
+        }
+
+        function confirmReport(influencerId, handle) {
+            const reason = document.getElementById('report-reason').value;
+
+            // Show success notification
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 80px;
+                right: 20px;
+                background: #dc2626;
+                color: white;
+                padding: 16px 24px;
+                border-radius: 12px;
+                box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+                z-index: 10000;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.innerHTML = `
+                <i class="fas fa-check-circle" style="font-size:20px;"></i>
+                <div>
+                    <div style="font-size:14px;">Report Submitted</div>
+                    <div style="font-size:12px;opacity:0.9;font-weight:normal;margin-top:2px;">
+                        ${handle} has been flagged for review
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(notification);
+
+            // Auto-remove notification after 4 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 4000);
+
+            // Close modal
+            closeModal();
+
+            // Log to console (in production, this would send to backend)
+            console.log('Influencer reported:', {
+                id: influencerId,
+                handle: handle,
+                reason: reason || 'No reason provided',
+                timestamp: new Date().toISOString()
+            });
         }
 
         function viewCommunityDetail(communityId) {
