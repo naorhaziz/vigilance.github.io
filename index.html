@@ -2079,51 +2079,8 @@
                         <div class="card-header">
                             <h3 class="card-title" data-i18n="inf-communities">Audience Communities & Clusters</h3>
                         </div>
-                        <div class="kpi-grid">
-                            <div class="kpi-card clickable-card" onclick="viewCommunityDetail('reddit')">
-                                <div class="kpi-icon" style="background: rgba(239, 68, 68, 0.1); color: var(--danger);">
-                                    <i class="fas fa-users"></i>
-                                </div>
-                                <div class="kpi-label">r/Netflix Subreddit</div>
-                                <div class="kpi-value" style="font-size: 24px;">8.4M</div>
-                                <span class="chip danger">72% Critical on Pricing</span>
-                            </div>
-
-                            <div class="kpi-card clickable-card" onclick="viewCommunityDetail('kdrama')">
-                                <div class="kpi-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--success);">
-                                    <i class="fas fa-heart"></i>
-                                </div>
-                                <div class="kpi-label">K-Drama Fans</div>
-                                <div class="kpi-value" style="font-size: 24px;">12.3M</div>
-                                <span class="chip success">Highly Supportive</span>
-                            </div>
-
-                            <div class="kpi-card clickable-card" onclick="viewCommunityDetail('truecrime')">
-                                <div class="kpi-icon" style="background: rgba(139, 92, 246, 0.1); color: var(--accent-purple);">
-                                    <i class="fas fa-mask"></i>
-                                </div>
-                                <div class="kpi-label">True Crime Community</div>
-                                <div class="kpi-value" style="font-size: 24px;">6.8M</div>
-                                <span class="chip success">Engaged & Positive</span>
-                            </div>
-
-                            <div class="kpi-card clickable-card" onclick="viewCommunityDetail('anime')">
-                                <div class="kpi-icon" style="background: rgba(6, 182, 212, 0.1); color: var(--accent-cyan);">
-                                    <i class="fas fa-dragon"></i>
-                                </div>
-                                <div class="kpi-label">Anime Watchers</div>
-                                <div class="kpi-value" style="font-size: 24px;">9.2M</div>
-                                <span class="chip info">Content-Focused</span>
-                            </div>
-
-                            <div class="kpi-card clickable-card" onclick="viewCommunityDetail('family')">
-                                <div class="kpi-icon" style="background: rgba(245, 158, 11, 0.1); color: var(--warning);">
-                                    <i class="fas fa-child"></i>
-                                </div>
-                                <div class="kpi-label">Family Subscribers</div>
-                                <div class="kpi-value" style="font-size: 24px;">18.5M</div>
-                                <span class="chip warning">Concerned About Pricing</span>
-                            </div>
+                        <div class="kpi-grid" id="communities-grid">
+                            <!-- Populated by JavaScript -->
                         </div>
                     </div>
                 </section>
@@ -3042,6 +2999,147 @@
         // Default to current tenant's influencers
         let influencers = tenantInfluencers[currentTenant];
 
+        // Tenant-specific communities
+        const tenantCommunities = {
+            netflix: {
+                reddit: {
+                    name: 'r/Netflix Subreddit',
+                    icon: 'fas fa-users',
+                    color: '#ef4444',
+                    members: '8.4M',
+                    sentiment: '28% Positive',
+                    activity: 'Very High',
+                    description: 'The largest Netflix community on Reddit. Currently showing high activity around pricing changes and password sharing policies.',
+                    keyTopics: ['Price Increases', 'Password Sharing', 'Content Recommendations', 'Technical Issues'],
+                    sentiment_breakdown: { positive: 28, neutral: 15, negative: 57 },
+                    recent_activity: 'Major spike in negative discussions following recent price increase announcement. Active moderation required.',
+                    recommendation: 'Deploy community manager to address concerns transparently. Consider AMA with product team to rebuild trust.'
+                },
+                kdrama: {
+                    name: 'K-Drama Fans',
+                    icon: 'fas fa-heart',
+                    color: '#10b981',
+                    members: '12.3M',
+                    sentiment: '89% Positive',
+                    activity: 'High',
+                    description: 'Highly engaged community passionate about Korean dramas and Netflix\'s K-content investments.',
+                    keyTopics: ['New K-Drama Releases', 'Korean Content', 'Subtitles Quality', 'Regional Availability'],
+                    sentiment_breakdown: { positive: 89, neutral: 8, negative: 3 },
+                    recent_activity: 'Consistently positive engagement. Strong anticipation for upcoming K-drama releases.',
+                    recommendation: 'Leverage as brand ambassadors. Provide early access to K-content news and exclusive behind-the-scenes content.'
+                },
+                truecrime: {
+                    name: 'True Crime Community',
+                    icon: 'fas fa-mask',
+                    color: '#8b5cf6',
+                    members: '6.8M',
+                    sentiment: '81% Positive',
+                    activity: 'Medium-High',
+                    description: 'Dedicated fans of true crime documentaries and series. Highly engaged with Netflix originals in this genre.',
+                    keyTopics: ['Documentary Quality', 'New Cases', 'Series Renewals', 'Accuracy Concerns'],
+                    sentiment_breakdown: { positive: 81, neutral: 12, negative: 7 },
+                    recent_activity: 'Strong positive buzz around recent documentary releases. Minor concerns about factual accuracy on some series.',
+                    recommendation: 'Maintain high content quality standards. Consider fact-checking partnerships to address accuracy concerns proactively.'
+                },
+                anime: {
+                    name: 'Anime Watchers',
+                    icon: 'fas fa-dragon',
+                    color: '#06b6d4',
+                    members: '9.2M',
+                    sentiment: '72% Positive',
+                    activity: 'High',
+                    description: 'Growing community of anime enthusiasts. Focused on both licensed content and Netflix originals.',
+                    keyTopics: ['Anime Catalog', 'Simulcast Releases', 'Dub Quality', 'Licensing Agreements'],
+                    sentiment_breakdown: { positive: 72, neutral: 18, negative: 10 },
+                    recent_activity: 'Mixed sentiment on catalog depth compared to competitors. Positive reception of Netflix originals.',
+                    recommendation: 'Expand anime catalog and improve release timing. Engage community for content preference feedback.'
+                },
+                family: {
+                    name: 'Family Subscribers',
+                    icon: 'fas fa-child',
+                    color: '#f59e0b',
+                    members: '18.5M',
+                    sentiment: '54% Positive',
+                    activity: 'Medium',
+                    description: 'Parents and families using Netflix for kids and family content. Primary concern is value for money.',
+                    keyTopics: ['Kids Content', 'Parental Controls', 'Family Plans', 'Price Sensitivity'],
+                    sentiment_breakdown: { positive: 54, neutral: 22, negative: 24 },
+                    recent_activity: 'Increased concerns about pricing and password sharing affecting family sharing arrangements.',
+                    recommendation: 'Emphasize kids content value. Consider family-specific retention offers and improved parental control features.'
+                }
+            },
+            israel: {
+                diaspora: {
+                    name: 'Jewish Diaspora Communities',
+                    icon: 'fas fa-globe',
+                    color: '#3b82f6',
+                    members: '24.8M',
+                    sentiment: '42% Positive',
+                    activity: 'Very High',
+                    description: 'Global Jewish communities with varying perspectives on Israeli policies. Active discussion on social media and community platforms.',
+                    keyTopics: ['Government Policies', 'Two-State Solution', 'Human Rights', 'Identity & Pride'],
+                    sentiment_breakdown: { positive: 42, neutral: 18, negative: 40 },
+                    recent_activity: 'Increasingly polarized discussions. Younger diaspora showing more critical stance on policies.',
+                    recommendation: 'Engage with progressive diaspora leaders. Emphasize shared values and democratic principles. Create listening sessions.'
+                },
+                academic: {
+                    name: 'Academic & Research Networks',
+                    icon: 'fas fa-university',
+                    color: '#ef4444',
+                    members: '3.2M',
+                    activity: 'High',
+                    sentiment: '31% Positive',
+                    description: 'International academic community including universities, research institutions, and scholarly associations.',
+                    keyTopics: ['Academic Boycott', 'Research Ethics', 'Academic Freedom', 'University Partnerships'],
+                    sentiment_breakdown: { positive: 31, neutral: 22, negative: 47 },
+                    recent_activity: 'Growing support for academic boycott campaigns. Multiple university associations passing BDS resolutions.',
+                    recommendation: 'Highlight collaborative research achievements. Partner with international universities on humanitarian projects.'
+                },
+                business: {
+                    name: 'International Business Community',
+                    icon: 'fas fa-briefcase',
+                    color: '#10b981',
+                    members: '8.6M',
+                    sentiment: '68% Positive',
+                    activity: 'Medium-High',
+                    description: 'Tech companies, investors, and business leaders engaged with Israeli startup ecosystem and innovation.',
+                    keyTopics: ['Tech Innovation', 'Startup Investments', 'Trade Relations', 'ESG Concerns'],
+                    sentiment_breakdown: { positive: 68, neutral: 19, negative: 13 },
+                    recent_activity: 'Strong interest in Israeli tech sector. Some ESG concerns from institutional investors regarding regional operations.',
+                    recommendation: 'Emphasize innovation success stories. Address ESG concerns proactively with transparency reports.'
+                },
+                tourism: {
+                    name: 'Travel & Tourism Communities',
+                    icon: 'fas fa-plane',
+                    color: '#f59e0b',
+                    members: '14.2M',
+                    sentiment: '38% Positive',
+                    activity: 'Medium',
+                    description: 'Travel bloggers, tourism forums, and potential visitors discussing Israel as a destination.',
+                    keyTopics: ['Safety Concerns', 'Historical Sites', 'Cultural Experience', 'Political Climate'],
+                    sentiment_breakdown: { positive: 38, neutral: 28, negative: 34 },
+                    recent_activity: 'Safety concerns dominating discussions. Positive reviews of cultural and historical attractions from those who visited.',
+                    recommendation: 'Launch safety-focused PR campaign. Partner with travel influencers. Showcase diverse cultural experiences.'
+                },
+                ngos: {
+                    name: 'NGO & Advocacy Networks',
+                    icon: 'fas fa-hands-helping',
+                    color: '#dc2626',
+                    members: '6.4M',
+                    sentiment: '19% Positive',
+                    activity: 'Very High',
+                    description: 'Human rights organizations, advocacy groups, and international NGOs monitoring regional policies.',
+                    keyTopics: ['Human Rights', 'International Law', 'Humanitarian Aid', 'Advocacy Campaigns'],
+                    sentiment_breakdown: { positive: 19, neutral: 11, negative: 70 },
+                    recent_activity: 'High-volume critical reports and campaigns. Multiple UN resolutions and international pressure.',
+                    recommendation: 'Engage with moderate human rights organizations. Commission independent human rights assessments. Increase transparency.'
+                }
+            }
+        };
+
+        // Default to current tenant's communities
+        let communities = tenantCommunities[currentTenant];
+
         // ========================================
         // LANGUAGE SWITCHING
         // ========================================
@@ -3231,16 +3329,22 @@
             // Update influencers
             influencers = tenantInfluencers[tenantId];
 
+            // Update communities
+            communities = tenantCommunities[tenantId];
+
             // Close switcher
             toggleTenantSwitcher();
 
             // Re-render incidents (works regardless of current page)
             renderIncidents();
 
-            // Re-render influencers if on influencers page
+            // Re-render influencers and communities if on influencers page
             if (currentPage === 'influencers') {
                 window.influencersRendered = false;
                 renderInfluencers();
+            } else {
+                // If not on influencers page, just re-render communities for next visit
+                renderCommunities();
             }
 
             // Clear incident detail if one is selected
@@ -4595,6 +4699,54 @@
                     </td>
                 </tr>
             `).join('');
+
+            // Also render communities
+            renderCommunities();
+        }
+
+        function renderCommunities() {
+            const grid = document.getElementById('communities-grid');
+            if (!grid) return;
+
+            const communityKeys = Object.keys(communities);
+            const chipClasses = {
+                reddit: 'danger',
+                kdrama: 'success',
+                truecrime: 'success',
+                anime: 'info',
+                family: 'warning',
+                diaspora: 'warning',
+                academic: 'danger',
+                business: 'success',
+                tourism: 'warning',
+                ngos: 'danger'
+            };
+            const chipLabels = {
+                reddit: '72% Critical on Pricing',
+                kdrama: 'Highly Supportive',
+                truecrime: 'Engaged & Positive',
+                anime: 'Content-Focused',
+                family: 'Concerned About Pricing',
+                diaspora: 'Mixed Sentiment',
+                academic: 'Growing Opposition',
+                business: 'Strong Interest',
+                tourism: 'Safety Concerns',
+                ngos: 'Highly Critical'
+            };
+
+            grid.innerHTML = communityKeys.map(key => {
+                const comm = communities[key];
+                return `
+                    <div class="kpi-card clickable-card" onclick="viewCommunityDetail('${key}')">
+                        <div class="kpi-icon" style="background: ${comm.color}20; color: ${comm.color};">
+                            <i class="${comm.icon}"></i>
+                        </div>
+                        <div class="kpi-label">${comm.name}</div>
+                        <div class="kpi-value" style="font-size: 24px;">${comm.members}</div>
+                        <span class="chip ${chipClasses[key] || 'info'}">${chipLabels[key] || comm.sentiment}</span>
+                    </div>
+                `;
+            }).join('');
         }
 
         function viewInfluencerDetail(influencerId) {
@@ -4698,11 +4850,47 @@
                         </div>
                     </div>
                     <label style="display:block;color:var(--text-secondary);font-size:13px;font-weight:600;margin-bottom:8px;">
-                        Reason for Report (Optional)
+                        <i class="fas fa-robot" style="color:var(--primary-color);margin-right:6px;"></i>
+                        AI-Suggested Report Reasons
+                    </label>
+                    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
+                        <button onclick="setReportReason('Spreading misinformation or false narratives about ${tenants[currentTenant].name}. Content lacks factual basis and may damage brand reputation.')"
+                                style="padding:8px 14px;background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.3);border-radius:8px;color:var(--primary-color);font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s ease;">
+                            <i class="fas fa-exclamation-circle" style="margin-right:4px;"></i>
+                            Misinformation
+                        </button>
+                        <button onclick="setReportReason('Coordinating harassment campaigns or encouraging negative pile-on behavior against ${tenants[currentTenant].name}. Pattern of aggressive targeting detected.')"
+                                style="padding:8px 14px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:8px;color:#ef4444;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s ease;">
+                            <i class="fas fa-users-slash" style="margin-right:4px;"></i>
+                            Coordinated Harassment
+                        </button>
+                        <button onclick="setReportReason('Suspected bot or inauthentic account. Engagement patterns and posting behavior suggest automated or paid activity rather than genuine audience.')"
+                                style="padding:8px 14px;background:rgba(251,146,60,0.1);border:1px solid rgba(251,146,60,0.3);border-radius:8px;color:#fb923c;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s ease;">
+                            <i class="fas fa-robot" style="margin-right:4px;"></i>
+                            Suspected Bot
+                        </button>
+                        <button onclick="setReportReason('Promoting harmful content, hate speech, or extremist views related to ${tenants[currentTenant].name}. Content violates community standards and poses reputational risk.')"
+                                style="padding:8px 14px;background:rgba(220,38,38,0.1);border:1px solid rgba(220,38,38,0.3);border-radius:8px;color:#dc2626;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s ease;">
+                            <i class="fas fa-ban" style="margin-right:4px;"></i>
+                            Harmful Content
+                        </button>
+                        <button onclick="setReportReason('Violating intellectual property rights by using ${tenants[currentTenant].name} branded content without authorization. Potential trademark/copyright infringement.')"
+                                style="padding:8px 14px;background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.3);border-radius:8px;color:#8b5cf6;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s ease;">
+                            <i class="fas fa-copyright" style="margin-right:4px;"></i>
+                            IP Violation
+                        </button>
+                        <button onclick="setReportReason('Manipulating engagement metrics through fake followers, paid likes, or other inauthentic amplification methods. Inflated impact score.')"
+                                style="padding:8px 14px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:8px;color:#10b981;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s ease;">
+                            <i class="fas fa-chart-line" style="margin-right:4px;"></i>
+                            Fake Engagement
+                        </button>
+                    </div>
+                    <label style="display:block;color:var(--text-secondary);font-size:13px;font-weight:600;margin-bottom:8px;">
+                        Additional Details (Optional)
                     </label>
                     <textarea id="report-reason"
                               style="width:100%;min-height:100px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:8px;padding:12px;color:var(--text-primary);font-family:inherit;font-size:14px;resize:vertical;"
-                              placeholder="Describe why this influencer should be flagged for review..."></textarea>
+                              placeholder="Add custom reason or additional context..."></textarea>
                 </div>
                 <div style="display:flex;gap:12px;justify-content:flex-end;">
                     <button onclick="closeModal()" style="padding:10px 24px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:8px;color:var(--text-primary);font-weight:600;cursor:pointer;transition:all 0.2s ease;">
@@ -4769,75 +4957,20 @@
             });
         }
 
-        function viewCommunityDetail(communityId) {
-            const communities = {
-                reddit: {
-                    name: 'r/Netflix Subreddit',
-                    icon: 'fas fa-users',
-                    color: '#ef4444',
-                    members: '8.4M',
-                    sentiment: '28% Positive',
-                    activity: 'Very High',
-                    description: 'The largest Netflix community on Reddit. Currently showing high activity around pricing changes and password sharing policies.',
-                    keyTopics: ['Price Increases', 'Password Sharing', 'Content Recommendations', 'Technical Issues'],
-                    sentiment_breakdown: { positive: 28, neutral: 15, negative: 57 },
-                    recent_activity: 'Major spike in negative discussions following recent price increase announcement. Active moderation required.',
-                    recommendation: 'Deploy community manager to address concerns transparently. Consider AMA with product team to rebuild trust.'
-                },
-                kdrama: {
-                    name: 'K-Drama Fans',
-                    icon: 'fas fa-heart',
-                    color: '#10b981',
-                    members: '12.3M',
-                    sentiment: '89% Positive',
-                    activity: 'High',
-                    description: 'Highly engaged community passionate about Korean dramas and Netflix\'s K-content investments.',
-                    keyTopics: ['New K-Drama Releases', 'Korean Content', 'Subtitles Quality', 'Regional Availability'],
-                    sentiment_breakdown: { positive: 89, neutral: 8, negative: 3 },
-                    recent_activity: 'Consistently positive engagement. Strong anticipation for upcoming K-drama releases.',
-                    recommendation: 'Leverage as brand ambassadors. Provide early access to K-content news and exclusive behind-the-scenes content.'
-                },
-                truecrime: {
-                    name: 'True Crime Community',
-                    icon: 'fas fa-mask',
-                    color: '#8b5cf6',
-                    members: '6.8M',
-                    sentiment: '81% Positive',
-                    activity: 'Medium-High',
-                    description: 'Dedicated fans of true crime documentaries and series. Highly engaged with Netflix originals in this genre.',
-                    keyTopics: ['Documentary Quality', 'New Cases', 'Series Renewals', 'Accuracy Concerns'],
-                    sentiment_breakdown: { positive: 81, neutral: 12, negative: 7 },
-                    recent_activity: 'Strong positive buzz around recent documentary releases. Minor concerns about factual accuracy on some series.',
-                    recommendation: 'Maintain high content quality standards. Consider fact-checking partnerships to address accuracy concerns proactively.'
-                },
-                anime: {
-                    name: 'Anime Watchers',
-                    icon: 'fas fa-dragon',
-                    color: '#06b6d4',
-                    members: '9.2M',
-                    sentiment: '72% Positive',
-                    activity: 'High',
-                    description: 'Growing community of anime enthusiasts. Focused on both licensed content and Netflix originals.',
-                    keyTopics: ['Anime Catalog', 'Simulcast Releases', 'Dub Quality', 'Licensing Agreements'],
-                    sentiment_breakdown: { positive: 72, neutral: 18, negative: 10 },
-                    recent_activity: 'Mixed sentiment on catalog depth compared to competitors. Positive reception of Netflix originals.',
-                    recommendation: 'Expand anime catalog and improve release timing. Engage community for content preference feedback.'
-                },
-                family: {
-                    name: 'Family Subscribers',
-                    icon: 'fas fa-child',
-                    color: '#f59e0b',
-                    members: '18.5M',
-                    sentiment: '54% Positive',
-                    activity: 'Medium',
-                    description: 'Parents and families using Netflix for kids and family content. Primary concern is value for money.',
-                    keyTopics: ['Kids Content', 'Parental Controls', 'Family Plans', 'Price Sensitivity'],
-                    sentiment_breakdown: { positive: 54, neutral: 22, negative: 24 },
-                    recent_activity: 'Increased concerns about pricing and password sharing affecting family sharing arrangements.',
-                    recommendation: 'Emphasize kids content value. Consider family-specific retention offers and improved parental control features.'
-                }
-            };
+        function setReportReason(reason) {
+            const textarea = document.getElementById('report-reason');
+            if (textarea) {
+                textarea.value = reason;
+                // Visual feedback
+                textarea.style.borderColor = 'var(--primary-color)';
+                setTimeout(() => {
+                    textarea.style.borderColor = '';
+                }, 1000);
+            }
+        }
 
+        function viewCommunityDetail(communityId) {
+            // Use tenant-specific communities
             const community = communities[communityId];
             if (!community) return;
 
