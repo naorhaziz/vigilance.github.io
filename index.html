@@ -481,6 +481,27 @@
             font-family: 'Netflix Sans', 'Helvetica Neue', Arial, sans-serif;
             letter-spacing: -1px;
             box-shadow: 0 0 20px rgba(229, 9, 20, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .techcorp-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            background: #0066CC;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 24px;
+            color: white;
+            font-family: 'Inter', -apple-system, sans-serif;
+            box-shadow: 0 0 20px rgba(0, 102, 204, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .brand-info:hover #brand-icon {
+            transform: scale(1.05);
         }
 
         .brand-details {
@@ -521,6 +542,29 @@
 
         .notification-panel.active {
             display: flex;
+        }
+
+        .tenant-switcher-panel {
+            position: fixed;
+            top: 70px;
+            right: var(--spacing-xl);
+            width: 420px;
+            max-height: 600px;
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            z-index: 1001;
+            flex-direction: column;
+            animation: slideDown 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .tenant-option:hover {
+            background: var(--bg-card-hover) !important;
+            border-color: var(--primary-color) !important;
+            transform: translateY(-2px);
         }
 
         @keyframes slideDown {
@@ -685,6 +729,11 @@
             justify-content: center;
             font-size: 22px;
             margin-bottom: var(--spacing-md);
+            transition: all 0.5s ease;
+        }
+
+        .kpi-icon i {
+            transition: all 0.5s ease;
         }
 
         .kpi-label {
@@ -702,6 +751,7 @@
             color: var(--text-primary);
             margin-bottom: var(--spacing-sm);
             line-height: 1;
+            transition: all 0.5s ease;
         }
 
         .chip {
@@ -713,6 +763,7 @@
             font-size: 11px;
             font-weight: 600;
             border: 1px solid;
+            transition: all 0.5s ease;
         }
 
         .chip.success {
@@ -1561,14 +1612,15 @@
                     </div>
 
                     <!-- Brand Info -->
-                    <div class="brand-info">
+                    <div class="brand-info" id="brand-info" onclick="toggleTenantSwitcher()" style="cursor: pointer; user-select: none;" title="Click to switch tenant">
                         <div class="brand-avatar">
-                            <div class="netflix-n-icon">N</div>
+                            <div id="brand-icon" class="netflix-n-icon">N</div>
                         </div>
                         <div class="brand-details">
-                            <div class="brand-name">Netflix</div>
-                            <div class="brand-subtitle">Streaming Entertainment · Global</div>
+                            <div class="brand-name" id="brand-name">Netflix</div>
+                            <div class="brand-subtitle" id="brand-subtitle">Streaming Entertainment · Global</div>
                         </div>
+                        <i class="fas fa-chevron-down" style="margin-left: 12px; color: var(--text-muted); font-size: 12px;"></i>
                     </div>
                 </div>
             </header>
@@ -1583,13 +1635,48 @@
                 </div>
             </div>
 
+            <!-- Tenant Switcher Dropdown -->
+            <div class="tenant-switcher-panel" id="tenant-switcher" style="display: none;">
+                <div class="notification-header">
+                    <h3>Switch Brand</h3>
+                </div>
+                <div style="padding: 16px;">
+                    <div class="tenant-option" onclick="switchTenant('netflix')" style="padding: 16px; margin-bottom: 12px; background: var(--bg-card); border-radius: var(--radius); cursor: pointer; border: 2px solid transparent; transition: all 0.2s ease;">
+                        <div style="display: flex; align-items: center; gap: 16px;">
+                            <div class="netflix-n-icon" style="width: 48px; height: 48px; font-size: 28px;">N</div>
+                            <div style="flex: 1;">
+                                <div style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">Netflix</div>
+                                <div style="font-size: 12px; color: var(--text-muted);">Streaming Entertainment · Global</div>
+                                <div style="margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap;">
+                                    <span class="chip success" style="font-size: 11px;">67% Positive</span>
+                                    <span class="chip warning" style="font-size: 11px;">5 Active Incidents</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tenant-option" onclick="switchTenant('techcorp')" style="padding: 16px; background: var(--bg-card); border-radius: var(--radius); cursor: pointer; border: 2px solid transparent; transition: all 0.2s ease;">
+                        <div style="display: flex; align-items: center; gap: 16px;">
+                            <div class="techcorp-icon" style="width: 48px; height: 48px; font-size: 28px;">T</div>
+                            <div style="flex: 1;">
+                                <div style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">TechCorp</div>
+                                <div style="font-size: 12px; color: var(--text-muted);">Cloud Services & AI · Enterprise</div>
+                                <div style="margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap;">
+                                    <span class="chip danger" style="font-size: 11px;">34% Negative Crisis</span>
+                                    <span class="chip danger" style="font-size: 11px;">8 Critical Incidents</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Content Container -->
             <div class="content-container">
                 <!-- SCREEN 1: OVERVIEW (Original Dashboard) -->
                 <section id="overview-screen" class="screen active">
                     <div class="section-header">
                         <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
-                            <h2 class="section-title" data-i18n="overview-title" style="margin:0;">Brand Overview – Netflix</h2>
+                            <h2 class="section-title" id="overview-title" data-i18n="overview-title" style="margin:0;">Brand Overview – Netflix</h2>
                             <span class="live-indicator">
                                 <span class="live-dot"></span>
                                 <span style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1px;">LIVE</span>
@@ -1604,39 +1691,39 @@
                         <div class="kpi-card" style="position:relative;overflow:hidden;">
                             <div class="streaming-bar"></div>
                             <div class="activity-pulse"></div>
-                            <div class="kpi-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--success);">
+                            <div class="kpi-icon" id="sentiment-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--success);">
                                 <i class="fas fa-smile"></i>
                             </div>
                             <div class="kpi-label" data-i18n="kpi-sentiment">General Sentiment</div>
-                            <div class="kpi-value" id="live-sentiment">72<span style="font-size: 20px; color: var(--text-secondary);">/100</span></div>
-                            <span class="chip success"><i class="fas fa-check-circle"></i> <span data-i18n="mostly-positive">Mostly Positive</span></span>
+                            <div class="kpi-value" id="live-sentiment">67<span style="font-size: 20px; color: var(--text-secondary);">/100</span></div>
+                            <span class="chip success" id="sentiment-chip"><i class="fas fa-check-circle"></i> <span data-i18n="mostly-positive">Mostly Positive</span></span>
                         </div>
 
                         <div class="kpi-card" style="position:relative;overflow:hidden;">
                             <div class="streaming-bar" style="animation-delay: 0.5s;"></div>
                             <div class="activity-pulse" style="animation-delay: 0.3s;"></div>
-                            <div class="kpi-icon" style="background: rgba(6, 182, 212, 0.1); color: var(--accent-cyan);">
+                            <div class="kpi-icon" id="volume-icon" style="background: rgba(6, 182, 212, 0.1); color: var(--accent-cyan);">
                                 <i class="fas fa-comments"></i>
                             </div>
                             <div class="kpi-label" data-i18n="kpi-volume">Conversation Volume (24h)</div>
-                            <div class="kpi-value" id="live-volume">18.4K</div>
-                            <span class="trend up"><i class="fas fa-arrow-up"></i> <span id="live-volume-trend">+12.3%</span></span>
+                            <div class="kpi-value" id="live-volume">2.4M</div>
+                            <span class="trend" id="volume-trend"><i class="fas fa-arrow-up"></i> <span id="live-volume-trend">+12.3%</span></span>
                         </div>
 
                         <div class="kpi-card" style="position:relative;overflow:hidden;">
                             <div class="streaming-bar" style="animation-delay: 1s;"></div>
-                            <div class="kpi-icon" style="background: rgba(245, 158, 11, 0.1); color: var(--warning);">
-                                <i class="fas fa-exclamation-circle"></i>
+                            <div class="kpi-icon" id="risk-icon" style="background: rgba(245, 158, 11, 0.1); color: var(--warning);">
+                                <i class="fas fa-exclamation-triangle"></i>
                             </div>
                             <div class="kpi-label" data-i18n="kpi-risk">Risk Level</div>
-                            <div class="kpi-value" style="font-size: 28px; color: var(--warning);">Moderate</div>
-                            <span class="chip warning"><i class="fas fa-eye"></i> <span data-i18n="vigilance-required">Vigilance Required</span></span>
+                            <div class="kpi-value" id="risk-value" style="font-size: 28px; color: var(--warning);">Moderate</div>
+                            <span class="chip warning" id="risk-chip"><i class="fas fa-eye"></i> <span data-i18n="vigilance-required">Vigilance Required</span></span>
                         </div>
 
                         <div class="kpi-card" style="position:relative;overflow:hidden;">
                             <div class="streaming-bar" style="animation-delay: 1.5s;"></div>
-                            <div class="activity-pulse" style="background:var(--danger);animation-delay: 0.7s;"></div>
-                            <div class="kpi-icon" style="background: rgba(239, 68, 68, 0.1); color: var(--danger);">
+                            <div class="activity-pulse" id="incidents-pulse" style="background:var(--danger);animation-delay: 0.7s;"></div>
+                            <div class="kpi-icon" id="incidents-icon" style="background: rgba(239, 68, 68, 0.1); color: var(--danger);">
                                 <i class="fas fa-fire"></i>
                             </div>
                             <div class="kpi-label" data-i18n="kpi-incidents">Active Incidents</div>
@@ -1748,7 +1835,7 @@
                 <section id="influencers-screen" class="screen">
                     <div class="section-header">
                         <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
-                            <h2 class="section-title" data-i18n="influencers-title" style="margin:0;">Influencers & Audience – Netflix</h2>
+                            <h2 class="section-title" id="influencers-title" data-i18n="influencers-title" style="margin:0;">Influencers & Audience – Netflix</h2>
                             <span class="live-indicator">
                                 <span class="live-dot"></span>
                                 <span style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1px;">LIVE</span>
@@ -2107,6 +2194,71 @@
         let currentLanguage = 'en';
         let currentPage = 'overview';
         let selectedIncidentId = null;
+        let currentTenant = 'netflix'; // Track current tenant
+
+        // ========================================
+        // TENANT CONFIGURATIONS
+        // ========================================
+        const tenants = {
+            netflix: {
+                id: 'netflix',
+                name: 'Netflix',
+                subtitle: 'Streaming Entertainment · Global',
+                industry: 'Streaming Entertainment',
+                iconBg: '#E50914',
+                iconLetter: 'N',
+                iconClass: 'netflix-n-icon',
+                sentiment: 67,
+                sentimentLabel: { en: 'Mostly Positive', fr: 'Plutôt Positif' },
+                sentimentIcon: 'fa-smile',
+                sentimentColor: 'var(--success)',
+                sentimentBg: 'rgba(16, 185, 129, 0.1)',
+                sentimentChipClass: 'success',
+                volume: '2.4M',
+                volumeTrend: '+12.3%',
+                volumeTrendUp: true,
+                volumeIcon: 'fa-comments',
+                riskLevel: { en: 'Vigilance Required', fr: 'Vigilance Requise' },
+                riskValue: 'Moderate',
+                riskColor: 'var(--warning)',
+                riskBg: 'rgba(245, 158, 11, 0.1)',
+                riskIcon: 'fa-exclamation-triangle',
+                riskChipClass: 'warning',
+                activeIncidents: 5,
+                incidentsDetail: '3 high priority, 2 monitoring',
+                incidentsIcon: 'fa-fire',
+                incidentsColor: 'var(--danger)'
+            },
+            techcorp: {
+                id: 'techcorp',
+                name: 'TechCorp',
+                subtitle: 'Cloud Services & AI · Enterprise',
+                industry: 'Technology',
+                iconBg: '#0066CC',
+                iconLetter: 'T',
+                iconClass: 'techcorp-icon',
+                sentiment: 34,
+                sentimentLabel: { en: 'Negative Crisis', fr: 'Crise Négative' },
+                sentimentIcon: 'fa-frown',
+                sentimentColor: 'var(--danger)',
+                sentimentBg: 'rgba(239, 68, 68, 0.1)',
+                sentimentChipClass: 'danger',
+                volume: '4.8M',
+                volumeTrend: '+284%',
+                volumeTrendUp: true,
+                volumeIcon: 'fa-volume-up',
+                riskLevel: { en: 'Critical Alert', fr: 'Alerte Critique' },
+                riskValue: 'Critical',
+                riskColor: 'var(--danger)',
+                riskBg: 'rgba(239, 68, 68, 0.1)',
+                riskIcon: 'fa-skull-crossbones',
+                riskChipClass: 'danger',
+                activeIncidents: 8,
+                incidentsDetail: '8 critical incidents, all urgent',
+                incidentsIcon: 'fa-radiation',
+                incidentsColor: 'var(--danger)'
+            }
+        };
 
         // ========================================
         // TRANSLATIONS
@@ -2355,53 +2507,133 @@
             }
         ];
 
-        const incidents = [
-            {
-                id: 1,
-                title: 'Password sharing crackdown backlash',
-                severity: 'high',
-                status: 'Mitigation in progress',
-                channels: ['Twitter', 'Reddit', 'TikTok'],
-                firstSeen: 'Today, 09:17',
-                description: 'Widespread negative sentiment on social media regarding new password sharing restrictions in Canada and US markets.'
-            },
-            {
-                id: 2,
-                title: 'Cancellation wave after price increase',
-                severity: 'high',
-                status: 'Investigating',
-                channels: ['Twitter', 'Facebook', 'Reddit'],
-                firstSeen: 'Today, 11:42',
-                description: '#CancelNetflix trending after announcement of subscription price increases across multiple tiers.'
-            },
-            {
-                id: 3,
-                title: 'Content removal controversy - "Friends"',
-                severity: 'medium',
-                status: 'Detected',
-                channels: ['Twitter', 'Instagram'],
-                firstSeen: 'Today, 14:20',
-                description: 'Users expressing frustration over popular show being removed from the platform, comparing negatively to competitors.'
-            },
-            {
-                id: 4,
-                title: 'Account security breach rumors',
-                severity: 'medium',
-                status: 'Mitigation in progress',
-                channels: ['Twitter', 'Reddit'],
-                firstSeen: 'Yesterday, 18:05',
-                description: 'Unverified claims of account hacks circulating on social media, causing user concern about data security.'
-            },
-            {
-                id: 5,
-                title: 'Documentary accuracy questioned',
-                severity: 'low',
-                status: 'Resolved',
-                channels: ['Twitter', 'News Media'],
-                firstSeen: '2 days ago',
-                description: 'Fact-checkers disputed claims made in recent documentary release; Netflix issued clarification statement.'
-            }
-        ];
+        // Tenant-specific incidents data
+        const tenantIncidents = {
+            netflix: [
+                {
+                    id: 1,
+                    title: 'Password sharing crackdown backlash',
+                    severity: 'high',
+                    status: 'Mitigation in progress',
+                    channels: ['Twitter', 'Reddit', 'TikTok'],
+                    firstSeen: 'Today, 09:17',
+                    description: 'Widespread negative sentiment on social media regarding new password sharing restrictions in Canada and US markets.'
+                },
+                {
+                    id: 2,
+                    title: 'Cancellation wave after price increase',
+                    severity: 'high',
+                    status: 'Investigating',
+                    channels: ['Twitter', 'Facebook', 'Reddit'],
+                    firstSeen: 'Today, 11:42',
+                    description: '#CancelNetflix trending after announcement of subscription price increases across multiple tiers.'
+                },
+                {
+                    id: 3,
+                    title: 'Content removal controversy - "Friends"',
+                    severity: 'medium',
+                    status: 'Detected',
+                    channels: ['Twitter', 'Instagram'],
+                    firstSeen: 'Today, 14:20',
+                    description: 'Users expressing frustration over popular show being removed from the platform, comparing negatively to competitors.'
+                },
+                {
+                    id: 4,
+                    title: 'Account security breach rumors',
+                    severity: 'medium',
+                    status: 'Mitigation in progress',
+                    channels: ['Twitter', 'Reddit'],
+                    firstSeen: 'Yesterday, 18:05',
+                    description: 'Unverified claims of account hacks circulating on social media, causing user concern about data security.'
+                },
+                {
+                    id: 5,
+                    title: 'Documentary accuracy questioned',
+                    severity: 'low',
+                    status: 'Resolved',
+                    channels: ['Twitter', 'News Media'],
+                    firstSeen: '2 days ago',
+                    description: 'Fact-checkers disputed claims made in recent documentary release; Netflix issued clarification statement.'
+                }
+            ],
+            techcorp: [
+                {
+                    id: 1,
+                    title: 'Massive data breach - 15M user records exposed',
+                    severity: 'high',
+                    status: 'Crisis Mode',
+                    channels: ['Twitter', 'Reddit', 'News Media', 'LinkedIn'],
+                    firstSeen: 'Today, 06:45',
+                    description: 'Critical security incident: internal database compromised, exposing customer emails, passwords, and payment information. Trending #1 globally.'
+                },
+                {
+                    id: 2,
+                    title: 'AI training data privacy violations',
+                    severity: 'high',
+                    status: 'Legal Investigation',
+                    channels: ['Twitter', 'Reddit', 'Hacker News'],
+                    firstSeen: 'Today, 10:12',
+                    description: 'Whistleblower claims company used customer data without consent to train AI models. Class-action lawsuit filed in 3 states.'
+                },
+                {
+                    id: 3,
+                    title: 'CEO insider trading allegations',
+                    severity: 'high',
+                    status: 'Investigating',
+                    channels: ['Twitter', 'News Media', 'Financial Press'],
+                    firstSeen: 'Yesterday, 15:30',
+                    description: 'CEO sold $50M in stock two days before data breach announcement. SEC investigation rumored, stock down 28%.'
+                },
+                {
+                    id: 4,
+                    title: 'Service outage affecting 8M businesses',
+                    severity: 'high',
+                    status: 'Ongoing',
+                    channels: ['Twitter', 'Reddit', 'LinkedIn'],
+                    firstSeen: 'Today, 08:00',
+                    description: 'Cloud platform down for 6+ hours causing massive business disruption. Customers threatening to switch to competitors.'
+                },
+                {
+                    id: 5,
+                    title: 'Employee protest over unethical AI contracts',
+                    severity: 'medium',
+                    status: 'Escalating',
+                    channels: ['Twitter', 'LinkedIn', 'News Media'],
+                    firstSeen: 'Yesterday, 12:00',
+                    description: '500+ employees walked out protesting contracts with surveillance companies. Viral video of protest has 12M views.'
+                },
+                {
+                    id: 6,
+                    title: 'False advertising - AI capabilities overstated',
+                    severity: 'medium',
+                    status: 'Detected',
+                    channels: ['Twitter', 'Reddit', 'Tech Blogs'],
+                    firstSeen: 'Yesterday, 09:15',
+                    description: 'Customers report AI product significantly underperforms advertised capabilities. FTC complaint filed by consumer group.'
+                },
+                {
+                    id: 7,
+                    title: 'Toxic workplace culture exposé published',
+                    severity: 'medium',
+                    status: 'Mitigation in progress',
+                    channels: ['Twitter', 'LinkedIn', 'News Media'],
+                    firstSeen: '2 days ago',
+                    description: 'Major publication releases investigation revealing pattern of discrimination and harassment. 50+ former employees on record.'
+                },
+                {
+                    id: 8,
+                    title: 'Environmental greenwashing accusations',
+                    severity: 'low',
+                    status: 'Detected',
+                    channels: ['Twitter', 'Reddit'],
+                    firstSeen: '3 days ago',
+                    description: 'Environmental groups claim "carbon neutral" claims are misleading. Data center emissions significantly higher than reported.'
+                }
+            ]
+        };
+
+        // Default to current tenant's incidents
+        let incidents = tenantIncidents[currentTenant];
 
         const influencers = [
             {
@@ -2595,55 +2827,345 @@
         }
 
         // ========================================
+        // TENANT SWITCHING
+        // ========================================
+        function toggleTenantSwitcher() {
+            const switcher = document.getElementById('tenant-switcher');
+            const notificationPanel = document.getElementById('notification-panel');
+
+            // Close notification panel if open
+            if (notificationPanel.classList.contains('active')) {
+                notificationPanel.classList.remove('active');
+            }
+
+            // Toggle switcher
+            if (switcher.style.display === 'none' || !switcher.style.display) {
+                switcher.style.display = 'flex';
+            } else {
+                switcher.style.display = 'none';
+            }
+        }
+
+        function switchTenant(tenantId) {
+            if (tenantId === currentTenant) {
+                toggleTenantSwitcher();
+                return;
+            }
+
+            currentTenant = tenantId;
+            const tenant = tenants[tenantId];
+
+            // Update brand info in header
+            document.getElementById('brand-name').textContent = tenant.name;
+            document.getElementById('brand-subtitle').textContent = tenant.subtitle;
+
+            const brandIcon = document.getElementById('brand-icon');
+            brandIcon.textContent = tenant.iconLetter;
+            brandIcon.className = tenant.iconClass;
+            brandIcon.style.background = tenant.iconBg;
+            brandIcon.style.boxShadow = `0 0 20px ${tenant.iconBg}66`;
+
+            // Update incidents
+            incidents = tenantIncidents[tenantId];
+
+            // Close switcher
+            toggleTenantSwitcher();
+
+            // Re-render incidents (works regardless of current page)
+            renderIncidents();
+
+            // Clear incident detail if one is selected
+            const incidentDetail = document.getElementById('incident-detail');
+            if (incidentDetail) {
+                incidentDetail.style.display = 'none';
+                incidentDetail.innerHTML = '';
+            }
+
+            // Update page titles
+            const overviewTitle = document.getElementById('overview-title');
+            if (overviewTitle) {
+                overviewTitle.textContent = `Brand Overview – ${tenant.name}`;
+            }
+
+            const influencersTitle = document.getElementById('influencers-title');
+            if (influencersTitle) {
+                influencersTitle.textContent = `Influencers & Audience – ${tenant.name}`;
+            }
+
+            // Update KPIs (if on overview page)
+            updateTenantKPIs();
+
+            // Update charts if they exist (only if charts are already initialized)
+            if (window.chartsRendered && sentimentChart) {
+                updateTenantCharts();
+            }
+
+            // Show notification
+            showTenantSwitchNotification(tenant.name);
+        }
+
+        function updateTenantKPIs() {
+            const tenant = tenants[currentTenant];
+
+            // Update sentiment
+            const sentimentValue = document.getElementById('live-sentiment');
+            if (sentimentValue) {
+                const currentVal = parseInt(sentimentValue.textContent);
+                sentimentValue.innerHTML = `${tenant.sentiment}<span style="font-size: 20px; color: var(--text-secondary);">/100</span>`;
+            }
+
+            // Update sentiment icon
+            const sentimentIcon = document.getElementById('sentiment-icon');
+            if (sentimentIcon) {
+                sentimentIcon.style.background = tenant.sentimentBg;
+                sentimentIcon.style.color = tenant.sentimentColor;
+                sentimentIcon.querySelector('i').className = `fas ${tenant.sentimentIcon}`;
+            }
+
+            // Update sentiment chip
+            const sentimentChip = document.getElementById('sentiment-chip');
+            if (sentimentChip) {
+                sentimentChip.className = `chip ${tenant.sentimentChipClass}`;
+                const label = sentimentChip.querySelector('[data-i18n="mostly-positive"]');
+                if (label) {
+                    label.textContent = tenant.sentimentLabel[currentLanguage];
+                }
+            }
+
+            // Update volume
+            const volumeValue = document.getElementById('live-volume');
+            if (volumeValue) {
+                volumeValue.textContent = tenant.volume;
+            }
+
+            // Update volume icon
+            const volumeIcon = document.getElementById('volume-icon');
+            if (volumeIcon) {
+                volumeIcon.querySelector('i').className = `fas ${tenant.volumeIcon}`;
+            }
+
+            // Update volume trend
+            const volumeTrend = document.getElementById('volume-trend');
+            const volumeTrendText = document.getElementById('live-volume-trend');
+            if (volumeTrend && volumeTrendText) {
+                volumeTrend.className = tenant.volumeTrendUp ? 'trend up' : 'trend down';
+                volumeTrendText.textContent = tenant.volumeTrend;
+                const trendIcon = volumeTrend.querySelector('i');
+                if (trendIcon) {
+                    trendIcon.className = tenant.volumeTrendUp ? 'fas fa-arrow-up' : 'fas fa-arrow-down';
+                }
+            }
+
+            // Update risk level value
+            const riskValueEl = document.getElementById('risk-value');
+            if (riskValueEl) {
+                riskValueEl.textContent = tenant.riskValue;
+                riskValueEl.style.color = tenant.riskColor;
+            }
+
+            // Update risk icon
+            const riskIcon = document.getElementById('risk-icon');
+            if (riskIcon) {
+                riskIcon.style.background = tenant.riskBg;
+                riskIcon.style.color = tenant.riskColor;
+                riskIcon.querySelector('i').className = `fas ${tenant.riskIcon}`;
+            }
+
+            // Update risk chip
+            const riskChip = document.getElementById('risk-chip');
+            if (riskChip) {
+                riskChip.className = `chip ${tenant.riskChipClass}`;
+                const label = riskChip.querySelector('[data-i18n="vigilance-required"]');
+                if (label) {
+                    label.textContent = tenant.riskLevel[currentLanguage];
+                }
+            }
+
+            // Update active incidents
+            const incidentsValue = document.getElementById('live-incidents');
+            if (incidentsValue) {
+                incidentsValue.textContent = tenant.activeIncidents;
+            }
+
+            // Update incidents detail
+            const incidentsDetail = document.getElementById('live-incidents-detail');
+            if (incidentsDetail) {
+                incidentsDetail.textContent = tenant.incidentsDetail;
+            }
+
+            // Update incidents icon
+            const incidentsIcon = document.getElementById('incidents-icon');
+            if (incidentsIcon) {
+                incidentsIcon.querySelector('i').className = `fas ${tenant.incidentsIcon}`;
+                incidentsIcon.style.color = tenant.incidentsColor;
+            }
+
+            // Update incidents pulse
+            const incidentsPulse = document.getElementById('incidents-pulse');
+            if (incidentsPulse) {
+                incidentsPulse.style.background = tenant.incidentsColor;
+            }
+        }
+
+        function updateTenantCharts() {
+            // Destroy and recreate charts with new tenant data
+            if (sentimentChart) {
+                sentimentChart.destroy();
+                initSentimentChart();
+            }
+            if (channelChart) {
+                channelChart.destroy();
+                initChannelChart();
+            }
+            if (threatChart) {
+                threatChart.destroy();
+                initThreatChart();
+            }
+        }
+
+        function animateValue(element, start, end, duration) {
+            const range = end - start;
+            const increment = range / (duration / 16);
+            let current = start;
+
+            const timer = setInterval(() => {
+                current += increment;
+                if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+                    element.textContent = end;
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current);
+                }
+            }, 16);
+        }
+
+        function showTenantSwitchNotification(tenantName) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 90px;
+                right: 32px;
+                background: var(--bg-card);
+                border: 1px solid var(--primary-color);
+                border-radius: var(--radius);
+                padding: 16px 24px;
+                z-index: 10000;
+                box-shadow: var(--shadow-xl);
+                animation: slideDown 0.3s ease;
+            `;
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <i class="fas fa-check-circle" style="color: var(--success); font-size: 20px;"></i>
+                    <div>
+                        <div style="font-weight: 600; margin-bottom: 4px;">Switched to ${tenantName}</div>
+                        <div style="font-size: 12px; color: var(--text-muted);">Dashboard updated with ${tenantName} data</div>
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateY(-20px)';
+                notification.style.transition = 'all 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Close tenant switcher when clicking outside
+        document.addEventListener('click', function(event) {
+            const switcher = document.getElementById('tenant-switcher');
+            const brandInfo = document.getElementById('brand-info');
+
+            if (switcher && brandInfo &&
+                !switcher.contains(event.target) &&
+                !brandInfo.contains(event.target) &&
+                switcher.style.display === 'flex') {
+                switcher.style.display = 'none';
+            }
+        });
+
+        // ========================================
         // OVERVIEW CHARTS
         // ========================================
         let sentimentChart, channelChart, threatChart, simulationChart;
 
-        function renderOverviewCharts() {
-            if (window.chartsRendered) return;
-            window.chartsRendered = true;
-
-            Chart.defaults.color = '#94a3b8';
-            Chart.defaults.borderColor = 'rgba(148, 163, 184, 0.1)';
-            Chart.defaults.font.family = 'Inter';
-
-            // Sentiment Over Time
-            const sentimentCtx = document.getElementById('sentiment-chart');
-            if (sentimentCtx) {
-                sentimentChart = new Chart(sentimentCtx, {
-                    type: 'line',
-                    data: {
-                        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                        datasets: [
-                            {
-                                label: 'Positive',
-                                data: [65, 68, 70, 72, 71, 74, 73],
-                                borderColor: '#10b981',
-                                backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                                borderWidth: 3,
-                                fill: true,
-                                tension: 0.4
-                            },
-                            {
-                                label: 'Neutral',
-                                data: [25, 23, 22, 20, 21, 19, 20],
-                                borderColor: '#6b7280',
-                                backgroundColor: 'rgba(107, 114, 128, 0.1)',
-                                borderWidth: 3,
-                                fill: true,
-                                tension: 0.4
-                            },
-                            {
-                                label: 'Negative',
-                                data: [10, 9, 8, 8, 8, 7, 7],
-                                borderColor: '#ef4444',
-                                backgroundColor: 'rgba(239, 68, 68, 0.1)',
-                                borderWidth: 3,
-                                fill: true,
-                                tension: 0.4
-                            }
-                        ]
+        function getChartDataForTenant() {
+            if (currentTenant === 'techcorp') {
+                return {
+                    sentiment: {
+                        positive: [32, 28, 25, 22, 20, 18, 16],
+                        neutral: [25, 27, 28, 30, 28, 27, 26],
+                        negative: [43, 45, 47, 48, 52, 55, 58]
                     },
+                    channels: {
+                        labels: ['X', 'Reddit', 'News Media', 'LinkedIn', 'Hacker News'],
+                        data: [42, 28, 18, 8, 4]
+                    },
+                    threats: {
+                        labels: ['Data Breach', 'Legal', 'Outages', 'Reputation', 'Employee'],
+                        data: [35, 25, 20, 12, 8]
+                    }
+                };
+            } else {
+                return {
+                    sentiment: {
+                        positive: [65, 68, 70, 72, 71, 74, 73],
+                        neutral: [25, 23, 22, 20, 21, 19, 20],
+                        negative: [10, 9, 8, 8, 8, 7, 7]
+                    },
+                    channels: {
+                        labels: ['X', 'Instagram', 'TikTok', 'News', 'Reviews'],
+                        data: [35, 25, 20, 12, 8]
+                    },
+                    threats: {
+                        labels: ['Price/Policy', 'Content', 'Competition', 'Tech Issues', 'Other'],
+                        data: [35, 30, 15, 12, 8]
+                    }
+                };
+            }
+        }
+
+        function initSentimentChart() {
+            const sentimentCtx = document.getElementById('sentiment-chart');
+            if (!sentimentCtx) return;
+
+            const data = getChartDataForTenant();
+            sentimentChart = new Chart(sentimentCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [
+                        {
+                            label: 'Positive',
+                            data: data.sentiment.positive,
+                            borderColor: '#10b981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Neutral',
+                            data: data.sentiment.neutral,
+                            borderColor: '#6b7280',
+                            backgroundColor: 'rgba(107, 114, 128, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Negative',
+                            data: data.sentiment.negative,
+                            borderColor: '#ef4444',
+                            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4
+                        }
+                    ]
+                },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
@@ -2663,52 +3185,68 @@
                         }
                     }
                 });
-            }
+        }
 
-            // Channel Breakdown
+        function initChannelChart() {
             const channelCtx = document.getElementById('channel-chart');
-            if (channelCtx) {
-                channelChart = new Chart(channelCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['X', 'Instagram', 'TikTok', 'News', 'Reviews'],
-                        datasets: [{
-                            label: 'Share',
-                            data: [35, 25, 20, 12, 8],
-                            backgroundColor: ['rgba(59, 130, 246, 0.8)', 'rgba(139, 92, 246, 0.8)', 'rgba(6, 182, 212, 0.8)', 'rgba(245, 158, 11, 0.8)', 'rgba(16, 185, 129, 0.8)'],
-                            borderRadius: 8
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: { legend: { display: false } },
-                        scales: {
-                            y: { beginAtZero: true, max: 40, ticks: { callback: value => value + '%' } }
-                        }
-                    }
-                });
-            }
+            if (!channelCtx) return;
 
-            // Threat Distribution
-            const threatCtx = document.getElementById('threat-chart');
-            if (threatCtx) {
-                threatChart = new Chart(threatCtx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Deepfakes', 'Review Storms', 'Hashtag Campaigns', 'Scams', 'Misinformation'],
-                        datasets: [{
-                            data: [20, 35, 25, 10, 10],
-                            backgroundColor: ['rgba(239, 68, 68, 0.8)', 'rgba(245, 158, 11, 0.8)', 'rgba(139, 92, 246, 0.8)', 'rgba(236, 72, 153, 0.8)', 'rgba(6, 182, 212, 0.8)']
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: { legend: { position: 'right' } }
+            const chartData = getChartDataForTenant();
+            channelChart = new Chart(channelCtx, {
+                type: 'bar',
+                data: {
+                    labels: chartData.channels.labels,
+                    datasets: [{
+                        label: 'Share',
+                        data: chartData.channels.data,
+                        backgroundColor: ['rgba(59, 130, 246, 0.8)', 'rgba(139, 92, 246, 0.8)', 'rgba(6, 182, 212, 0.8)', 'rgba(245, 158, 11, 0.8)', 'rgba(16, 185, 129, 0.8)'],
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, max: 50, ticks: { callback: value => value + '%' } }
                     }
-                });
-            }
+                }
+            });
+        }
+
+        function initThreatChart() {
+            const threatCtx = document.getElementById('threat-chart');
+            if (!threatCtx) return;
+
+            const chartData = getChartDataForTenant();
+            threatChart = new Chart(threatCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: chartData.threats.labels,
+                    datasets: [{
+                        data: chartData.threats.data,
+                        backgroundColor: ['rgba(239, 68, 68, 0.8)', 'rgba(245, 158, 11, 0.8)', 'rgba(139, 92, 246, 0.8)', 'rgba(236, 72, 153, 0.8)', 'rgba(6, 182, 212, 0.8)']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'right' } }
+                }
+            });
+        }
+
+        function renderOverviewCharts() {
+            if (window.chartsRendered) return;
+            window.chartsRendered = true;
+
+            Chart.defaults.color = '#94a3b8';
+            Chart.defaults.borderColor = 'rgba(148, 163, 184, 0.1)';
+            Chart.defaults.font.family = 'Inter';
+
+            initSentimentChart();
+            initChannelChart();
+            initThreatChart();
 
             // Map
             renderMap();
@@ -2768,10 +3306,9 @@
         // INCIDENTS
         // ========================================
         function renderIncidents() {
-            if (window.incidentsRendered) return;
-            window.incidentsRendered = true;
-
             const tbody = document.getElementById('incidents-table-body');
+            if (!tbody) return;
+
             tbody.innerHTML = incidents.map(inc => {
                 const severityClass = inc.severity === 'high' ? 'danger' : inc.severity === 'medium' ? 'warning' : 'success';
                 return `
@@ -2910,7 +3447,15 @@
                         color: '#10b981',
                         recommended: true,
                         effectiveness: 'High Impact · 72h recovery',
-                        description: 'Launch a comprehensive campaign acknowledging customer concerns while explaining the reasoning. Focus on value proposition and new features.',
+                        description: `<strong>What this is:</strong> A comprehensive communication strategy that prioritizes emotional connection and understanding before defending the policy change. This approach acknowledges customer pain points while reframing the narrative around value and fairness.
+                        <br><br><strong>Why it works:</strong> Research shows that 73% of customers are more receptive to policy changes when they feel heard first. By leading with empathy rather than justification, you reduce defensive reactions and create space for rational discourse.
+                        <br><br><strong>How to execute:</strong>
+                        <ul style="margin-top:8px;padding-left:20px;">
+                        <li><strong>Immediate Response (0-4h):</strong> CEO or senior leader records authentic video message. Key elements: acknowledge frustration ("I've read your messages"), explain 'why now' (content costs increased 40%), emphasize mission (sustainable platform for next decade). Tone: humble, not defensive.</li>
+                        <li><strong>Educational Content (4-12h):</strong> Publish detailed blog post with data visualization showing how password sharing economics work. Include comparison: "If 100M households share with 30M others, that's 30% less revenue for content you love." Make it relatable, not preachy.</li>
+                        <li><strong>Value Reinforcement (12-48h):</strong> Launch multi-channel campaign showcasing exclusive features, upcoming releases, and quality investments. Use customer testimonials: "I was angry at first, but then I realized how much I actually use Netflix..."</li>
+                        <li><strong>Transition Support (48-72h):</strong> Offer 30-day grace period for existing sharing arrangements. Provide easy tools to convert shared users to sub-accounts at discounted rate. Make transition feel generous, not forced.</li>
+                        </ul>`,
                         steps: [
                             'CEO video addressing concerns within 4 hours',
                             'Publish blog post explaining policy rationale',
@@ -3022,7 +3567,17 @@
                         color: '#8b5cf6',
                         recommended: false,
                         effectiveness: 'Medium Impact · 48h recovery',
-                        description: 'Turn the situation into an educational moment about security best practices.',
+                        description: `<strong>What this is:</strong> Transform a crisis into an opportunity to educate users about cybersecurity while positioning your brand as a trusted security partner. This strategy turns defensive posture into proactive value-add.
+                        <br><br><strong>Why it works:</strong> Educational campaigns achieve 2.4x higher engagement than defensive PR because they provide actionable value. Users appreciate brands that help them protect themselves rather than just defending company reputation.
+                        <br><br><strong>How to execute:</strong>
+                        <ul style="margin-top:8px;padding-left:20px;">
+                        <li><strong>Campaign Launch (0-6h):</strong> Create dedicated "Security Hub" landing page. Design it as educational resource, not corporate response. Include interactive password strength checker, 2FA setup wizard, and "Is your account secure?" quiz.</li>
+                        <li><strong>Video Series (6-24h):</strong> Produce 5 short videos (60-90 seconds each) covering: recognizing phishing, creating strong passwords, 2FA basics, secure device practices, and what to do if compromised. Partner with cybersecurity influencer for credibility. Publish one every 4 hours.</li>
+                        <li><strong>Personalized Outreach (12-36h):</strong> Send customized emails based on account security status. Example: "Your account has 2FA ✓ but uses a common password ✗". Include one-click security upgrade button. Make it helpful, not scary.</li>
+                        <li><strong>Expert Credibility (24-48h):</strong> Host live webinar with recognized cybersecurity expert (not your internal team). Title: "Taking Control of Your Digital Security." Make it about user empowerment, mention your platform only in context. Record and distribute widely.</li>
+                        <li><strong>Long-term Value (48h+):</strong> Launch quarterly "Security Awareness Week" program. Offer free account monitoring service. Create downloadable "Family Digital Security Guide". Build lasting trust through ongoing commitment.</li>
+                        </ul>
+                        <br><strong>Pro tip:</strong> Partner with schools and libraries to offer free digital security workshops. The community goodwill creates positive counter-narrative that overshadows the original security concerns.`,
                         steps: [
                             'Launch security awareness campaign',
                             'Create security tips video series',
@@ -3065,6 +3620,249 @@
                     }
                 ]
             };
+
+            // TechCorp incident strategies
+            const techcorpStrategies = {
+                1: [ // Massive data breach
+                    {
+                        name: 'Crisis Transparency & Victim Support Protocol',
+                        icon: 'fas fa-shield-alt',
+                        color: '#ef4444',
+                        recommended: true,
+                        effectiveness: 'Critical · Immediate Action Required',
+                        description: `<strong>What this is:</strong> A comprehensive crisis management approach that prioritizes affected users above corporate reputation. This protocol combines radical transparency, proactive victim support, and accountability demonstration to rebuild trust after a catastrophic security failure.
+                        <br><br><strong>Why it works:</strong> Post-breach studies show that companies providing immediate, comprehensive support experience 68% faster trust recovery than those who minimize or delay. Victims become advocates when they feel truly protected.
+                        <br><br><strong>How to execute:</strong>
+                        <ul style="margin-top:8px;padding-left:20px;">
+                        <li><strong>Immediate Acknowledgment (0-2h):</strong> CEO issues personal video statement acknowledging breach severity. Script: "This is unacceptable. I take full responsibility. Here's what we know, what we're doing, and how we're helping you." NO corporate speak, NO minimizing. Raw honesty builds credibility.</li>
+                        <li><strong>Victim Protection (2-4h):</strong> Launch dedicated breach response center (1-800 hotline, live chat, dedicated email). Offer FREE: 3 years identity theft protection, credit monitoring, legal support, and $1M identity theft insurance. Don't wait for lawsuits - lead with generosity.</li>
+                        <li><strong>Forensic Transparency (4-12h):</strong> Publish detailed technical breakdown of attack vector, systems compromised, and data exposed. Hire independent security firm for audit. Commit to publishing full forensic report within 30 days. Transparency disarms conspiracy theories.</li>
+                        <li><strong>Account Remediation (12-24h):</strong> Force password reset for ALL users (not just affected). Implement mandatory 2FA. Send personalized notification to each affected user detailing exactly what of THEIR data was exposed. No generic emails - personalized impact assessment.</li>
+                        <li><strong>Systemic Overhaul (24-72h):</strong> Announce: (1) New CISO hire from top-tier security company, (2) $50M security infrastructure investment, (3) Bug bounty program with industry-leading payouts, (4) Quarterly third-party security audits with public results. Make it impossible to doubt commitment.</li>
+                        <li><strong>Long-term Accountability (ongoing):</strong> Create public "Security Dashboard" showing real-time security metrics, resolved vulnerabilities, and compliance status. Monthly "Security Transparency Report." Make security posture visible and measurable.</li>
+                        </ul>
+                        <br><strong>Critical dos:</strong> Over-communicate, over-support, over-deliver. Underpromise on timelines, overdeliver on solutions.
+                        <br><strong>Critical don'ts:</strong> Never say "small number of users," never blame users, never downplay significance.`,
+                        steps: [
+                            'CEO video: full accountability within 2 hours',
+                            'Launch victim support program with free identity protection',
+                            'Publish technical details of breach',
+                            'Force password reset + mandatory 2FA for all users',
+                            'Announce $50M security overhaul and new CISO',
+                            'Create public security transparency dashboard'
+                        ],
+                        projectionData: [92, 88, 82, 74, 66, 58, 52, 46, 42, 38, 35, 32]
+                    },
+                    {
+                        name: 'Regulatory Preemption & Compliance Showcase',
+                        icon: 'fas fa-gavel',
+                        color: '#8b5cf6',
+                        recommended: false,
+                        effectiveness: 'Medium Impact · Legal Focus',
+                        description: `<strong>What this is:</strong> Proactively engage with regulators and demonstrate compliance leadership to shape the regulatory response. Convert crisis into catalyst for industry-wide security standards improvement.
+                        <br><br><strong>Why it works:</strong> Regulators prefer cooperative targets over defensive ones. Companies that self-report and propose solutions receive 45% lighter penalties on average. Industry leadership repositions you from problem to solution.
+                        <br><br><strong>How to execute:</strong>
+                        <ul style="margin-top:8px;padding-left:20px;">
+                        <li><strong>Regulatory Engagement (0-6h):</strong> General Counsel directly contacts FTC, state AGs, and relevant data protection authorities BEFORE they contact you. Provide full briefing packet. Offer to cooperate fully. This builds goodwill and shows you're not hiding.</li>
+                        <li><strong>Compliance Demonstration (6-24h):</strong> Publish detailed compliance report showing adherence to SOC 2, ISO 27001, GDPR, CCPA requirements. Highlight where you exceeded minimums. Acknowledge where breach revealed gaps. Honesty + competence = credibility.</li>
+                        <li><strong>Industry Leadership (24-48h):</strong> Propose formation of "Cloud Security Coalition" with industry peers. Offer to share breach learnings (without competitive secrets) to improve industry-wide defenses. Position as: "We failed, but let's make sure this doesn't happen to others."</li>
+                        <li><strong>Standards Development (48-96h):</strong> Work with NIST or equivalent to develop enhanced security standards. Volunteer as pilot program for stricter requirements. Public commitment: "We'll meet the highest standard, even if it's not required."</li>
+                        </ul>`,
+                        steps: [
+                            'Proactively brief regulators before they investigate',
+                            'Publish comprehensive compliance documentation',
+                            'Propose industry-wide security coalition',
+                            'Volunteer for pilot program of stricter standards'
+                        ],
+                        projectionData: [92, 90, 86, 82, 78, 74, 70, 66, 62, 58, 54, 50]
+                    }
+                ],
+                2: [ // AI training data privacy violations
+                    {
+                        name: 'Ethical AI Overhaul & User Data Sovereignty',
+                        icon: 'fas fa-brain',
+                        color: '#10b981',
+                        recommended: true,
+                        effectiveness: 'High Impact · 96h recovery',
+                        description: `<strong>What this is:</strong> Transform from defensive position to ethical AI leadership by implementing industry-leading data consent and control mechanisms. This strategy turns a violation into an opportunity to set new standards for ethical AI development.
+                        <br><br><strong>Why it works:</strong> AI ethics scandals create trust vacuums. The first company to implement truly user-centric AI data governance captures the ethical high ground and 3x competitive advantage in customer trust scores.
+                        <br><br><strong>How to execute:</strong>
+                        <ul style="margin-top:8px;padding-left:20px;">
+                        <li><strong>Immediate Halt & Audit (0-12h):</strong> Publicly announce immediate suspension of ALL AI training using customer data. Hire external AI ethics firm (e.g., AI Now Institute) to conduct full audit. This sacrifice of short-term capability shows long-term commitment.</li>
+                        <li><strong>Create Counter-Narrative (12-24h):</strong> Position as "AI built WITH users, not ON users." Announce new "Data Sovereignty Program" where users have granular control: opt-in (not opt-out), data usage transparency dashboard, ability to see exactly how your data trained models, one-click data deletion with confirmation it's removed from training sets.</li>
+                        <li><strong>Compensate Affected Users (24-48h):</strong> Identify users whose data was misused. Offer: (1) Sincere apology + explanation, (2) 12 months free premium service, (3) $500 account credit, (4) Option to participate in new ethics advisory board. Make restitution meaningful.</li>
+                        <li><strong>Launch Education Campaign (48-96h):</strong> Create "AI Literacy Hub" explaining: how AI training works, why data matters, what consent means, how to protect yourself. Position your company as educator, not just vendor. Partner with EFF or similar organization for credibility.</li>
+                        <li><strong>Ethical AI Certification (ongoing):</strong> Work with academic institutions to create first-ever "Certified Ethical AI" standard. Volunteer as first company to undergo certification. Publish methodology for others. Lead the change you want to see.</li>
+                        </ul>
+                        <br><strong>Key message:</strong> "We broke your trust. We're not just fixing it - we're redefining what ethical AI means in our industry."`,
+                        steps: [
+                            'Suspend all AI training on customer data immediately',
+                            'Launch user Data Sovereignty dashboard with granular controls',
+                            'Compensate affected users with service credits + participation opportunity',
+                            'Create AI Literacy education program',
+                            'Pursue industry-first Ethical AI certification'
+                        ],
+                        projectionData: [86, 82, 76, 68, 60, 52, 44, 38, 34, 31, 29, 28]
+                    }
+                ],
+                3: [ // CEO insider trading allegations
+                    {
+                        name: 'Independent Investigation + Leadership Accountability',
+                        icon: 'fas fa-balance-scale',
+                        color: '#10b981',
+                        recommended: true,
+                        effectiveness: 'High Impact · 72h critical window',
+                        description: `<strong>What this is:</strong> Immediately establish independent investigation while demonstrating leadership accountability. This strategy separates the company from individual misconduct and shows commitment to ethical governance.
+                        <br><br><strong>Why it works:</strong> Insider trading allegations destroy investor confidence. Companies that act decisively and transparently see 52% faster stock recovery than those who defend executives.
+                        <br><br><strong>How to execute:</strong>
+                        <ul style="margin-top:8px;padding-left:20px;">
+                        <li><strong>Immediate Action (0-4h):</strong> Board of Directors issues statement: "We take these allegations with utmost seriousness. We have initiated an independent investigation led by [prestigious law firm]. CEO has voluntarily agreed to [temporary leave/stock trading freeze]." Show you're not protecting anyone.</li>
+                        <li><strong>Investigation Transparency (4-24h):</strong> Announce special committee of independent board members to oversee investigation. Commit to sharing findings publicly within 30 days. Set up dedicated investor hotline for concerns.</li>
+                        <li><strong>Governance Reforms (24-48h):</strong> Announce immediate policy changes: executive trading blackout windows expanded, real-time public disclosure of all C-suite trades, third-party compliance monitoring. Make changes BEFORE investigation concludes to show proactive commitment.</li>
+                        <li><strong>Investor Communication (48-72h):</strong> CEO (or COO if CEO on leave) hosts investor call. Focus on: business fundamentals remain strong, pipeline intact, governance improvements. Separate person from performance.</li>
+                        </ul>`,
+                        steps: [
+                            'Board announces independent investigation within 4 hours',
+                            'CEO agrees to temporary restrictions',
+                            'Special committee formed with independent directors',
+                            'Announce enhanced governance policies immediately',
+                            'Host investor call focusing on business fundamentals'
+                        ],
+                        projectionData: [88, 84, 78, 70, 62, 54, 48, 42, 38, 36, 34, 32]
+                    }
+                ],
+                4: [ // Service outage affecting 8M businesses
+                    {
+                        name: 'Customer-First Recovery + Compensation Protocol',
+                        icon: 'fas fa-life-ring',
+                        color: '#ef4444',
+                        recommended: true,
+                        effectiveness: 'Critical · Immediate Action',
+                        description: `<strong>What this is:</strong> Prioritize customer impact mitigation over reputation management. Generous compensation combined with technical transparency turns angry customers into advocates.
+                        <br><br><strong>Why it works:</strong> B2B customers care about: (1) getting back online, (2) preventing recurrence, (3) fair compensation. Companies that lead with generous compensation see 73% customer retention vs 31% for minimal compensation.
+                        <br><br><strong>How to execute:</strong>
+                        <ul style="margin-top:8px;padding-left:20px;">
+                        <li><strong>Crisis Mode (0-2h):</strong> Establish war room with hourly public updates. Create status page showing: affected regions, estimated recovery time, workarounds available. Transparency builds patience.</li>
+                        <li><strong>Immediate Compensation (2-6h):</strong> Announce automatic compensation BEFORE customers ask: 30 days service credit for all affected customers + SLA credit multipliers. Make it automatic, not requiring claim submission. Generosity prevents churn.</li>
+                        <li><strong>Technical Transparency (6-24h):</strong> Once resolved, publish detailed post-mortem: root cause, why failovers didn't work, specific fixes implemented. Engineers write it, not PR team. Technical customers respect honesty.</li>
+                        <li><strong>Prevention Investment (24-48h):</strong> Announce $100M infrastructure investment, third-party resilience audit, new SLA guarantees with teeth (automatic refunds if breached). Make prevention credible with dollars.</li>
+                        </ul>`,
+                        steps: [
+                            'Launch public status page with hourly updates',
+                            'Announce automatic 30-day credit + SLA multipliers',
+                            'Publish technical post-mortem within 24 hours',
+                            'Commit $100M to infrastructure resilience',
+                            'Establish enhanced SLA guarantees'
+                        ],
+                        projectionData: [94, 90, 84, 76, 66, 56, 48, 42, 38, 34, 32, 30]
+                    }
+                ],
+                5: [ // Employee protest over unethical AI contracts
+                    {
+                        name: 'Stakeholder Dialogue + Ethics Policy Revision',
+                        icon: 'fas fa-hands-helping',
+                        color: '#8b5cf6',
+                        recommended: true,
+                        effectiveness: 'Medium Impact · 96h window',
+                        description: `<strong>What this is:</strong> Engage employees as stakeholders in ethical decision-making. Create formal ethics review process that gives employees voice without undermining business decisions.
+                        <br><br><strong>Why it works:</strong> Employee activism is driven by feeling powerless. Companies that create formal ethics processes see 89% reduction in public protests because employees have internal channel for concerns.
+                        <br><br><strong>How to execute:</strong>
+                        <ul style="margin-top:8px;padding-left:20px;">
+                        <li><strong>Acknowledge Concerns (0-12h):</strong> CEO sends company-wide message: "I've heard your concerns. We share your commitment to ethical technology. Let's have a real conversation." Invite protest leaders to private meeting within 48 hours. Public validation reduces temperature.</li>
+                        <li><strong>Establish Ethics Board (12-48h):</strong> Create "Technology Ethics Review Board" with 50% employee representation (elected by staff, not appointed by management). Give board binding authority to red-flag contracts for ethical review. Real power, not theater.</li>
+                        <li><strong>Contract Transparency (48-72h):</strong> Commit to publishing ethical review summaries for all major contracts. Explain: use case, safeguards, why we believe it's ethical. Let employees and public scrutinize. Transparency forces better decisions.</li>
+                        <li><strong>Create Counter-Narrative (72-96h):</strong> Launch "Ethical AI Leadership Initiative" - partner with universities on AI ethics research, publish annual ethics report, create $10M fund for AI safety research. Transform from problem to solution.</li>
+                        </ul>`,
+                        steps: [
+                            'CEO acknowledges concerns and invites dialogue',
+                            'Create employee-led Ethics Review Board with real power',
+                            'Commit to publishing contract ethics reviews',
+                            'Launch Ethical AI Leadership Initiative with $10M commitment'
+                        ],
+                        projectionData: [82, 78, 72, 66, 60, 54, 48, 44, 40, 38, 36, 34]
+                    }
+                ],
+                6: [ // False advertising - AI capabilities overstated
+                    {
+                        name: 'Honest Recalibration + Customer Choice',
+                        icon: 'fas fa-adjust',
+                        color: '#10b981',
+                        recommended: true,
+                        effectiveness: 'High Impact · 48h recovery',
+                        description: `<strong>What this is:</strong> Admit overpromising, recalibrate messaging, and give customers choice to continue or get refunds. Radical honesty combined with customer empowerment rebuilds trust faster than defending exaggerated claims.
+                        <br><br><strong>Why it works:</strong> Customers know when they're being gaslit. Companies that admit mistakes and empower customer choice see 4x higher satisfaction than those who defend indefensible claims.
+                        <br><br><strong>How to execute:</strong>
+                        <ul style="margin-top:8px;padding-left:20px;">
+                        <li><strong>Honest Admission (0-6h):</strong> CEO blog post: "We overpromised. Our marketing got ahead of our capabilities. Here's what our AI actually does vs. what we claimed." Side-by-side comparison table. No spin, just truth. Honesty is disarming.</li>
+                        <li><strong>Customer Choice (6-12h):</strong> Email every customer with three options: (1) Full refund, no questions asked, (2) Continue with revised expectations at 30% discount, (3) Early access to improved version when ready. Let them choose. Choice = control = satisfaction.</li>
+                        <li><strong>Product Roadmap (12-24h):</strong> Publish transparent roadmap showing: current capabilities, planned improvements, realistic timelines. Use actual technical metrics, not marketing fluff. Engineers write it, not marketers.</li>
+                        <li><strong>Marketing Overhaul (24-48h):</strong> Announce new "Truth in AI Marketing" policy: all claims must be validated by engineering team, third-party benchmarks published, limitations clearly stated. Turn mistake into competitive advantage through honesty.</li>
+                        </ul>`,
+                        steps: [
+                            'Publish honest comparison of claims vs. actual capabilities',
+                            'Offer all customers choice: refund, discount, or early access',
+                            'Release technical roadmap with realistic timelines',
+                            'Implement "Truth in AI Marketing" validation policy'
+                        ],
+                        projectionData: [78, 72, 64, 56, 48, 42, 38, 34, 32, 30, 29, 28]
+                    }
+                ],
+                7: [ // Toxic workplace culture exposé
+                    {
+                        name: 'Cultural Transformation + Accountability Action Plan',
+                        icon: 'fas fa-heart-broken',
+                        color: '#ef4444',
+                        recommended: true,
+                        effectiveness: 'Medium Impact · Long-term effort',
+                        description: `<strong>What this is:</strong> Acknowledge cultural failures, take immediate accountability actions, and commit to measurable transformation. This isn't PR - it's actual organizational change with public accountability.
+                        <br><br><strong>Why it works:</strong> Culture exposés are credible because they have 50+ voices. Denial looks absurd. Companies that acknowledge and act see 68% reputation recovery vs. 12% for those who defend.
+                        <br><br><strong>How to execute:</strong>
+                        <ul style="margin-top:8px;padding-left:20px;">
+                        <li><strong>Immediate Accountability (0-24h):</strong> If allegations involve specific leaders, place them on administrative leave pending investigation. Bring in external HR firm to conduct independent investigation. Former employees included. No whitewashing.</li>
+                        <li><strong>Public Acknowledgment (24-48h):</strong> CEO public statement: "These stories are heartbreaking and unacceptable. We failed people who trusted us. I'm personally accountable. Here's how we're changing." Empathy + ownership, no defensiveness.</li>
+                        <li><strong>Transformation Roadmap (48-96h):</strong> Announce measurable changes: (1) Independent DEI officer reporting to board, (2) Anonymous reporting system run by third party, (3) Manager training mandatory, (4) Promotion criteria include culture scores, (5) Quarterly public diversity/inclusion metrics. Specific + measurable = credible.</li>
+                        <li><strong>Victim Support (ongoing):</strong> Establish fund to support therapy for current and former employees affected by discrimination/harassment. Proactive outreach to those who left under difficult circumstances. Make amends where possible.</li>
+                        </ul>`,
+                        steps: [
+                            'Place accused leaders on leave, launch independent investigation',
+                            'CEO issues empathetic public acknowledgment',
+                            'Announce measurable transformation roadmap with public metrics',
+                            'Establish support fund for affected employees'
+                        ],
+                        projectionData: [84, 82, 78, 74, 68, 62, 56, 50, 46, 42, 40, 38]
+                    }
+                ],
+                8: [ // Environmental greenwashing accusations
+                    {
+                        name: 'Transparency Audit + Science-Based Commitments',
+                        icon: 'fas fa-leaf',
+                        color: '#10b981',
+                        recommended: true,
+                        effectiveness: 'Medium Impact · 72h response',
+                        description: `<strong>What this is:</strong> Replace marketing claims with third-party verified data. Commit to science-based targets with independent monitoring. Turn greenwashing accusation into sustainability leadership.
+                        <br><br><strong>Why it works:</strong> Greenwashing accusations stick because most "carbon neutral" claims use questionable offsets. Companies that switch to science-based, verified commitments regain credibility in 3-6 months.
+                        <br><br><strong>How to execute:</strong>
+                        <ul style="margin-top:8px;padding-left:20px;">
+                        <li><strong>Withdraw Questionable Claims (0-12h):</strong> Immediately remove "carbon neutral" language from website and materials. Statement: "We're reviewing our environmental claims to ensure accuracy. We're committed to transparency over marketing." Stop digging.</li>
+                        <li><strong>Third-Party Audit (12-48h):</strong> Engage credible firm (e.g., CDP, Science Based Targets initiative) to conduct full carbon audit. Commit to publishing full results within 60 days, including Scope 1, 2, and 3 emissions. No cherry-picking.</li>
+                        <li><strong>Science-Based Targets (48-72h):</strong> Announce commitment to Science Based Targets initiative (SBTi) - this requires 1.5°C alignment and independent validation. Real targets, not marketing targets. Include data center energy, supply chain, employee travel - everything.</li>
+                        <li><strong>Public Dashboard (ongoing):</strong> Launch real-time sustainability dashboard showing: actual energy consumption, renewable percentage, emissions by source, offset quality ratings. Update monthly. Make it impossible to greenwash when data is public.</li>
+                        </ul>`,
+                        steps: [
+                            'Remove all "carbon neutral" claims immediately',
+                            'Engage third-party for full carbon audit',
+                            'Commit to Science Based Targets initiative (SBTi)',
+                            'Launch public sustainability dashboard with real-time data'
+                        ],
+                        projectionData: [72, 68, 64, 58, 52, 46, 42, 38, 36, 34, 32, 31]
+                    }
+                ]
+            };
+
+            // Return appropriate strategies based on current tenant
+            if (currentTenant === 'techcorp') {
+                return techcorpStrategies[incidentId] || [];
+            }
 
             return strategiesMap[incidentId] || [];
         }
