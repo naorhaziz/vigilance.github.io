@@ -1,0 +1,3731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vigilance AI – Brand Console</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Leaflet CSS for Maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- AOS (Animate On Scroll) -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <style>
+        /* ========================================
+           CSS VARIABLES & RESET - DARK THEME
+        ======================================== */
+        :root {
+            --primary-color: #3b82f6;
+            --primary-dark: #2563eb;
+            --primary-light: #60a5fa;
+            --primary-glow: rgba(59, 130, 246, 0.3);
+
+            --accent-cyan: #06b6d4;
+            --accent-purple: #8b5cf6;
+            --accent-pink: #ec4899;
+
+            --success: #10b981;
+            --success-glow: rgba(16, 185, 129, 0.3);
+            --warning: #f59e0b;
+            --warning-glow: rgba(245, 158, 11, 0.3);
+            --danger: #ef4444;
+            --danger-glow: rgba(239, 68, 68, 0.3);
+
+            --bg-primary: #0a0e27;
+            --bg-secondary: #111827;
+            --bg-tertiary: #1e293b;
+            --bg-card: rgba(30, 41, 59, 0.8);
+            --bg-card-hover: rgba(51, 65, 85, 0.9);
+
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+
+            --border-color: rgba(148, 163, 184, 0.1);
+            --border-glow: rgba(59, 130, 246, 0.2);
+
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
+            --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.6);
+            --shadow-glow: 0 0 20px var(--primary-glow);
+
+            --radius: 12px;
+            --radius-lg: 16px;
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --spacing-2xl: 48px;
+
+            --sidebar-width: 260px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f1419 100%);
+            background-attachment: fixed;
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated background particles */
+        .background-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background: var(--primary-color);
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: float 20s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-100px) translateX(50px); }
+            50% { transform: translateY(-50px) translateX(-50px); }
+            75% { transform: translateY(-150px) translateX(100px); }
+        }
+
+        /* ========================================
+           LAYOUT - SIDEBAR + MAIN
+        ======================================== */
+        .app-layout {
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ========================================
+           SIDEBAR
+        ======================================== */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            padding: var(--spacing-xl) 0;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 0 var(--spacing-lg);
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        /* Vigilance Logo Container */
+        .vigilance-logo-container {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 0;
+            margin-bottom: var(--spacing-md);
+            cursor: pointer;
+        }
+
+        .vigilance-shield {
+            position: relative;
+            width: 52px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(6, 182, 212, 0.2));
+            border-radius: 12px;
+            border: 2px solid rgba(59, 130, 246, 0.4);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3), inset 0 0 20px rgba(59, 130, 246, 0.1);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .vigilance-shield::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: shieldGlow 3s infinite;
+        }
+
+        @keyframes shieldGlow {
+            0%, 100% {
+                transform: rotate(0deg);
+                opacity: 0.5;
+            }
+            50% {
+                transform: rotate(180deg);
+                opacity: 1;
+            }
+        }
+
+        .vigilance-shield i {
+            font-size: 28px;
+            color: var(--primary-light);
+            filter: drop-shadow(0 0 15px var(--primary-glow));
+            z-index: 2;
+            position: relative;
+        }
+
+        .shield-shine {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shine 4s infinite;
+            z-index: 3;
+        }
+
+        @keyframes shine {
+            0% {
+                left: -100%;
+            }
+            50%, 100% {
+                left: 200%;
+            }
+        }
+
+        .vigilance-shield:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.5), inset 0 0 30px rgba(59, 130, 246, 0.2);
+            border-color: rgba(59, 130, 246, 0.6);
+        }
+
+        .vigilance-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .vigilance-brand {
+            font-size: 20px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, var(--primary-light), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            text-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
+        }
+
+        .vigilance-ai {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-muted);
+            letter-spacing: 3px;
+            line-height: 1;
+        }
+
+        .sidebar-section-title {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            padding: 0 var(--spacing-lg);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .sidebar-nav {
+            flex: 1;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md) var(--spacing-lg);
+            margin: 0 var(--spacing-sm);
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--radius);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .nav-item i {
+            width: 20px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .nav-item:hover {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--primary-light);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(6, 182, 212, 0.1));
+            color: var(--primary-color);
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 24px;
+            background: var(--primary-color);
+            border-radius: 0 3px 3px 0;
+        }
+
+        .sidebar-footer {
+            padding: var(--spacing-lg);
+            border-top: 1px solid var(--border-color);
+            margin-top: var(--spacing-lg);
+        }
+
+        .sidebar-footer-text {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        /* Mobile hamburger */
+        .mobile-menu-toggle {
+            display: none;
+            position: fixed;
+            top: var(--spacing-md);
+            left: var(--spacing-md);
+            z-index: 101;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: var(--spacing-sm) var(--spacing-md);
+            color: var(--text-primary);
+            cursor: pointer;
+            backdrop-filter: blur(20px);
+        }
+
+        /* ========================================
+           MAIN CONTENT AREA
+        ======================================== */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* ========================================
+           TOP BAR
+        ======================================== */
+        .top-bar {
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            padding: var(--spacing-md) var(--spacing-xl);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .top-bar-left h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .top-bar-right {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-lg);
+        }
+
+        .language-toggle {
+            display: flex;
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 20px;
+            padding: 4px;
+            border: 1px solid var(--border-color);
+        }
+
+        .language-toggle button {
+            padding: 6px 16px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .language-toggle button.active {
+            background: var(--primary-color);
+            color: white;
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        .notification-bell {
+            position: relative;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-size: 20px;
+            transition: color 0.2s ease;
+        }
+
+        .notification-bell:hover {
+            color: var(--primary-color);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: var(--danger);
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 10px;
+            min-width: 18px;
+            text-align: center;
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 10px var(--danger-glow);
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.9;
+            }
+        }
+
+        .brand-info {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding-left: var(--spacing-lg);
+            border-left: 1px solid var(--border-color);
+        }
+
+        .brand-avatar {
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .netflix-n-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            background: #E50914;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 24px;
+            color: white;
+            font-family: 'Netflix Sans', 'Helvetica Neue', Arial, sans-serif;
+            letter-spacing: -1px;
+            box-shadow: 0 0 20px rgba(229, 9, 20, 0.4);
+        }
+
+        .brand-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .brand-subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* ========================================
+           NOTIFICATION PANEL
+        ======================================== */
+        .notification-panel {
+            position: fixed;
+            top: 70px;
+            right: var(--spacing-xl);
+            width: 420px;
+            max-height: 600px;
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            animation: slideDown 0.3s ease;
+        }
+
+        .notification-panel.active {
+            display: flex;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .notification-header {
+            padding: var(--spacing-lg);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .notification-header h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .notification-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--spacing-sm);
+        }
+
+        .notification-item {
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-sm);
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: var(--radius);
+            border-left: 3px solid transparent;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .notification-item:hover {
+            background: var(--bg-card-hover);
+            transform: translateX(4px);
+        }
+
+        .notification-item.high {
+            border-left-color: var(--danger);
+        }
+
+        .notification-item.medium {
+            border-left-color: var(--warning);
+        }
+
+        .notification-item.low {
+            border-left-color: var(--success);
+        }
+
+        .notification-content {
+            font-size: 14px;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .notification-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .notification-action {
+            color: var(--primary-color);
+            font-weight: 600;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .notification-action:hover {
+            color: var(--primary-light);
+        }
+
+        /* ========================================
+           CONTENT CONTAINER
+        ======================================== */
+        .content-container {
+            flex: 1;
+            padding: var(--spacing-2xl) var(--spacing-xl);
+            max-width: 1600px;
+            width: 100%;
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+            animation: fadeInUp 0.4s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ========================================
+           SHARED COMPONENTS (from original)
+        ======================================== */
+        .section-header {
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-sm);
+            letter-spacing: -0.5px;
+        }
+
+        .section-subtitle {
+            font-size: 16px;
+            color: var(--text-secondary);
+        }
+
+        /* KPI Cards */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .kpi-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl), var(--shadow-glow);
+            border-color: var(--border-glow);
+        }
+
+        .kpi-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .kpi-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .kpi-value {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-sm);
+            line-height: 1;
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            border: 1px solid;
+        }
+
+        .chip.success {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .chip.warning {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+            border-color: rgba(245, 158, 11, 0.3);
+        }
+
+        .chip.danger {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .chip.info {
+            background: rgba(6, 182, 212, 0.15);
+            color: var(--accent-cyan);
+            border-color: rgba(6, 182, 212, 0.3);
+        }
+
+        .trend {
+            font-size: 13px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .trend.up {
+            color: var(--success);
+        }
+
+        .trend.down {
+            color: var(--danger);
+        }
+
+        /* Charts */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .chart-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .chart-card:hover {
+            border-color: var(--border-glow);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .chart-card.col-12 { grid-column: span 12; }
+        .chart-card.col-6 { grid-column: span 6; }
+        .chart-card.col-4 { grid-column: span 4; }
+
+        .chart-header {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .chart-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .chart-title i {
+            color: var(--primary-color);
+        }
+
+        .chart-subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .chart-canvas-wrapper {
+            position: relative;
+            height: 280px;
+        }
+
+        .chart-canvas-wrapper.large {
+            height: 350px;
+        }
+
+        /* Map */
+        .map-container {
+            height: 450px;
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        #geo-map {
+            height: 100%;
+            width: 100%;
+        }
+
+        .leaflet-popup-content-wrapper {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+        }
+
+        .leaflet-popup-tip {
+            background: var(--bg-tertiary);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-cyan));
+            color: white;
+            box-shadow: 0 4px 15px var(--primary-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--primary-glow);
+        }
+
+        .btn-secondary {
+            background: rgba(30, 41, 59, 0.8);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-glow);
+        }
+
+        /* Tables */
+        .data-table {
+            width: 100%;
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .data-table thead {
+            background: rgba(30, 41, 59, 0.5);
+        }
+
+        .data-table th {
+            padding: var(--spacing-md) var(--spacing-lg);
+            text-align: left;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .data-table td {
+            padding: var(--spacing-md) var(--spacing-lg);
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .data-table tbody tr {
+            transition: background 0.2s ease;
+        }
+
+        .data-table tbody tr:hover {
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            border: 1px solid var(--border-color);
+            margin-bottom: var(--spacing-lg);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        .card-header {
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        /* Form elements */
+        .form-group {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: var(--spacing-md);
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            color: var(--text-primary);
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px var(--primary-glow);
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(100, 116, 139, 0.3);
+            transition: 0.3s;
+            border-radius: 24px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: var(--primary-color);
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(24px);
+        }
+
+        /* Radio buttons */
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            padding: var(--spacing-md);
+            background: rgba(30, 41, 59, 0.3);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .radio-option:hover {
+            border-color: var(--primary-color);
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .radio-option input[type="radio"] {
+            margin-right: var(--spacing-md);
+            width: 18px;
+            height: 18px;
+        }
+
+        .radio-option.selected {
+            border-color: var(--primary-color);
+            background: rgba(59, 130, 246, 0.15);
+        }
+
+        /* Report cards */
+        .report-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            border: 1px solid var(--border-color);
+            margin-bottom: var(--spacing-lg);
+            transition: all 0.3s ease;
+        }
+
+        .report-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--border-glow);
+        }
+
+        .report-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .report-card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .report-card-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .report-card-description {
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-lg);
+            line-height: 1.6;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-2xl);
+            max-width: 700px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-xl);
+            animation: modalSlide 0.3s ease;
+        }
+
+        @keyframes modalSlide {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-xl);
+            padding-bottom: var(--spacing-lg);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .modal-close:hover {
+            color: var(--text-primary);
+        }
+
+        /* Loading */
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(59, 130, 246, 0.5);
+        }
+
+        /* ========================================
+           RESPONSIVE
+        ======================================== */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.mobile-open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .brand-details {
+                display: none;
+            }
+
+            .chart-card.col-6 {
+                grid-column: span 12;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-bar {
+                padding: var(--spacing-md);
+            }
+
+            .top-bar-left h1 {
+                font-size: 18px;
+            }
+
+            .content-container {
+                padding: var(--spacing-lg) var(--spacing-md);
+            }
+
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .notification-panel {
+                right: var(--spacing-md);
+                left: var(--spacing-md);
+                width: auto;
+            }
+        }
+
+        /* Additional utility classes */
+        .mb-lg { margin-bottom: var(--spacing-lg); }
+        .mt-lg { margin-top: var(--spacing-lg); }
+        .text-center { text-align: center; }
+
+        /* Strategy cards enhancements */
+        .strategy-card {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .strategy-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-cyan));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .strategy-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+            border-color: rgba(59, 130, 246, 0.4);
+        }
+
+        .strategy-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Loading spinner animation */
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .fa-spinner {
+            animation: spin 1s linear infinite;
+        }
+
+        /* Enhanced table rows */
+        .data-table tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        .data-table tbody tr:hover {
+            background: rgba(59, 130, 246, 0.08);
+            transform: translateX(4px);
+        }
+
+        /* Improved chip styles */
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .chip:hover {
+            transform: scale(1.05);
+        }
+
+        /* Report cards enhancement */
+        .report-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .report-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+            border-color: rgba(59, 130, 246, 0.5);
+        }
+
+        /* Enhanced button disabled state */
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Notification panel enhancement */
+        .notification-panel {
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+        }
+
+        /* KPI value glow effect */
+        .kpi-value {
+            text-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Clickable cards */
+        .clickable-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .clickable-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.5);
+            border-color: rgba(59, 130, 246, 0.6);
+        }
+
+        /* Live indicator */
+        .live-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(239, 68, 68, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            animation: liveGlow 2s infinite;
+        }
+
+        @keyframes liveGlow {
+            0%, 100% {
+                box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(239, 68, 68, 0.6);
+            }
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--danger);
+            border-radius: 50%;
+            animation: livePulse 1.5s infinite;
+        }
+
+        @keyframes livePulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.3);
+                opacity: 0.7;
+            }
+        }
+
+        .last-update {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        .last-update span {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        /* Counter animation */
+        @keyframes numberChange {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+                color: var(--primary-light);
+            }
+        }
+
+        .number-updating {
+            animation: numberChange 0.5s ease;
+        }
+
+        /* Activity pulse on cards */
+        .activity-pulse {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 10px;
+            height: 10px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: activityPulse 2s infinite;
+        }
+
+        @keyframes activityPulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+            }
+        }
+
+        /* Streaming indicator */
+        .streaming-bar {
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+            animation: streaming 2s linear infinite;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            opacity: 0.5;
+        }
+
+        @keyframes streaming {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Particles -->
+    <div class="background-particles">
+        <div class="particle" style="width: 100px; height: 100px; top: 10%; left: 10%; animation-delay: 0s;"></div>
+        <div class="particle" style="width: 60px; height: 60px; top: 60%; left: 80%; animation-delay: 2s;"></div>
+        <div class="particle" style="width: 80px; height: 80px; top: 80%; left: 20%; animation-delay: 4s;"></div>
+        <div class="particle" style="width: 40px; height: 40px; top: 30%; right: 15%; animation-delay: 6s;"></div>
+    </div>
+
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" onclick="toggleMobileSidebar()">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Main App Layout -->
+    <div class="app-layout">
+        <!-- ========================================
+             SIDEBAR
+        ======================================== -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="vigilance-logo-container" onclick="navigateTo('overview')">
+                    <div class="vigilance-shield">
+                        <i class="fas fa-shield-alt"></i>
+                        <div class="shield-shine"></div>
+                    </div>
+                    <div class="vigilance-text">
+                        <div class="vigilance-brand">VIGILANCE</div>
+                        <div class="vigilance-ai">AI</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-section-title" data-i18n="brand-console">Brand Console</div>
+
+            <nav class="sidebar-nav">
+                <a class="nav-item active" data-page="overview" onclick="navigateTo('overview')">
+                    <i class="fas fa-chart-line"></i>
+                    <span data-i18n="nav-overview">Overview</span>
+                </a>
+                <a class="nav-item" data-page="incidents" onclick="navigateTo('incidents')">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span data-i18n="nav-incidents">Incidents</span>
+                </a>
+                <a class="nav-item" data-page="influencers" onclick="navigateTo('influencers')">
+                    <i class="fas fa-users"></i>
+                    <span data-i18n="nav-influencers">Influencers</span>
+                </a>
+                <a class="nav-item" data-page="reports" onclick="navigateTo('reports')">
+                    <i class="fas fa-file-alt"></i>
+                    <span data-i18n="nav-reports">Reports</span>
+                </a>
+                <a class="nav-item" data-page="settings" onclick="navigateTo('settings')">
+                    <i class="fas fa-cog"></i>
+                    <span data-i18n="nav-settings">Settings</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="sidebar-footer-text">© 2025 Vigilance AI</div>
+            </div>
+        </aside>
+
+        <!-- ========================================
+             MAIN CONTENT
+        ======================================== -->
+        <div class="main-content">
+            <!-- Top Bar -->
+            <header class="top-bar">
+                <div class="top-bar-left">
+                    <h1 id="page-title" data-i18n="page-title-overview">Overview</h1>
+                </div>
+                <div class="top-bar-right">
+                    <!-- Language Toggle -->
+                    <div class="language-toggle">
+                        <button class="active" data-lang="en" onclick="setLanguage('en')">🇺🇸 EN</button>
+                        <button data-lang="fr" onclick="setLanguage('fr')">🇫🇷 FR</button>
+                    </div>
+
+                    <!-- Notification Bell -->
+                    <div class="notification-bell" onclick="toggleNotifications()">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge" id="notification-badge">5</span>
+                    </div>
+
+                    <!-- Brand Info -->
+                    <div class="brand-info">
+                        <div class="brand-avatar">
+                            <div class="netflix-n-icon">N</div>
+                        </div>
+                        <div class="brand-details">
+                            <div class="brand-name">Netflix</div>
+                            <div class="brand-subtitle">Streaming Entertainment · Global</div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Notification Panel -->
+            <div class="notification-panel" id="notification-panel">
+                <div class="notification-header">
+                    <h3 data-i18n="notifications-title">Notifications</h3>
+                </div>
+                <div class="notification-list" id="notification-list">
+                    <!-- Notifications will be rendered here -->
+                </div>
+            </div>
+
+            <!-- Content Container -->
+            <div class="content-container">
+                <!-- SCREEN 1: OVERVIEW (Original Dashboard) -->
+                <section id="overview-screen" class="screen active">
+                    <div class="section-header">
+                        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+                            <h2 class="section-title" data-i18n="overview-title" style="margin:0;">Brand Overview – Netflix</h2>
+                            <span class="live-indicator">
+                                <span class="live-dot"></span>
+                                <span style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1px;">LIVE</span>
+                            </span>
+                        </div>
+                        <p class="section-subtitle" data-i18n="overview-subtitle">Real-time risk and sentiment across channels</p>
+                        <div class="last-update" id="last-update">Last updated: <span id="live-timestamp">Just now</span></div>
+                    </div>
+
+                    <!-- KPI Cards -->
+                    <div class="kpi-grid">
+                        <div class="kpi-card" style="position:relative;overflow:hidden;">
+                            <div class="streaming-bar"></div>
+                            <div class="activity-pulse"></div>
+                            <div class="kpi-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--success);">
+                                <i class="fas fa-smile"></i>
+                            </div>
+                            <div class="kpi-label" data-i18n="kpi-sentiment">General Sentiment</div>
+                            <div class="kpi-value" id="live-sentiment">72<span style="font-size: 20px; color: var(--text-secondary);">/100</span></div>
+                            <span class="chip success"><i class="fas fa-check-circle"></i> <span data-i18n="mostly-positive">Mostly Positive</span></span>
+                        </div>
+
+                        <div class="kpi-card" style="position:relative;overflow:hidden;">
+                            <div class="streaming-bar" style="animation-delay: 0.5s;"></div>
+                            <div class="activity-pulse" style="animation-delay: 0.3s;"></div>
+                            <div class="kpi-icon" style="background: rgba(6, 182, 212, 0.1); color: var(--accent-cyan);">
+                                <i class="fas fa-comments"></i>
+                            </div>
+                            <div class="kpi-label" data-i18n="kpi-volume">Conversation Volume (24h)</div>
+                            <div class="kpi-value" id="live-volume">18.4K</div>
+                            <span class="trend up"><i class="fas fa-arrow-up"></i> <span id="live-volume-trend">+12.3%</span></span>
+                        </div>
+
+                        <div class="kpi-card" style="position:relative;overflow:hidden;">
+                            <div class="streaming-bar" style="animation-delay: 1s;"></div>
+                            <div class="kpi-icon" style="background: rgba(245, 158, 11, 0.1); color: var(--warning);">
+                                <i class="fas fa-exclamation-circle"></i>
+                            </div>
+                            <div class="kpi-label" data-i18n="kpi-risk">Risk Level</div>
+                            <div class="kpi-value" style="font-size: 28px; color: var(--warning);">Moderate</div>
+                            <span class="chip warning"><i class="fas fa-eye"></i> <span data-i18n="vigilance-required">Vigilance Required</span></span>
+                        </div>
+
+                        <div class="kpi-card" style="position:relative;overflow:hidden;">
+                            <div class="streaming-bar" style="animation-delay: 1.5s;"></div>
+                            <div class="activity-pulse" style="background:var(--danger);animation-delay: 0.7s;"></div>
+                            <div class="kpi-icon" style="background: rgba(239, 68, 68, 0.1); color: var(--danger);">
+                                <i class="fas fa-fire"></i>
+                            </div>
+                            <div class="kpi-label" data-i18n="kpi-incidents">Active Incidents</div>
+                            <div class="kpi-value" id="live-incidents">5</div>
+                            <span style="font-size: 12px; color: var(--text-secondary);" id="live-incidents-detail">3 high priority, 2 monitoring</span>
+                        </div>
+                    </div>
+
+                    <!-- Charts -->
+                    <div class="charts-grid">
+                        <div class="chart-card col-12">
+                            <div class="chart-header">
+                                <div class="chart-title">
+                                    <i class="fas fa-chart-area"></i>
+                                    <span data-i18n="chart-sentiment-time">Sentiment Over Time</span>
+                                </div>
+                                <div class="chart-subtitle" data-i18n="chart-sentiment-subtitle">Last 7 days – Multi-channel sentiment analysis</div>
+                            </div>
+                            <div class="chart-canvas-wrapper large">
+                                <canvas id="sentiment-chart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="chart-card col-6">
+                            <div class="chart-header">
+                                <div class="chart-title">
+                                    <i class="fas fa-chart-bar"></i>
+                                    <span data-i18n="chart-channels">Channel Breakdown</span>
+                                </div>
+                                <div class="chart-subtitle" data-i18n="chart-channels-subtitle">Share of conversation by platform</div>
+                            </div>
+                            <div class="chart-canvas-wrapper">
+                                <canvas id="channel-chart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="chart-card col-6">
+                            <div class="chart-header">
+                                <div class="chart-title">
+                                    <i class="fas fa-chart-pie"></i>
+                                    <span data-i18n="chart-threats">Threat Distribution</span>
+                                </div>
+                                <div class="chart-subtitle" data-i18n="chart-threats-subtitle">Incident types breakdown</div>
+                            </div>
+                            <div class="chart-canvas-wrapper">
+                                <canvas id="threat-chart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="chart-card col-12">
+                            <div class="chart-header">
+                                <div class="chart-title">
+                                    <i class="fas fa-globe"></i>
+                                    <span data-i18n="chart-geo">Geographic Sentiment Distribution</span>
+                                </div>
+                                <div class="chart-subtitle" data-i18n="chart-geo-subtitle">Interactive map – Click markers for details</div>
+                            </div>
+                            <div class="map-container">
+                                <div id="geo-map"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SCREEN 2: INCIDENTS (Original) -->
+                <section id="incidents-screen" class="screen">
+                    <div class="section-header">
+                        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+                            <h2 class="section-title" data-i18n="incidents-title" style="margin:0;">Incidents & Response Center</h2>
+                            <span class="live-indicator">
+                                <span class="live-dot"></span>
+                                <span style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1px;">LIVE</span>
+                            </span>
+                        </div>
+                        <p class="section-subtitle" data-i18n="incidents-subtitle">From deepfakes to review storms – all in one control room</p>
+                        <div class="last-update">Activity feed: <span id="incidents-activity-count" style="color:var(--success);font-weight:700;">248 events</span> in last hour</div>
+                    </div>
+
+                    <div class="card">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th data-i18n="table-incident">Incident</th>
+                                    <th data-i18n="table-severity">Severity</th>
+                                    <th data-i18n="table-status">Status</th>
+                                    <th data-i18n="table-channels">Channels</th>
+                                    <th data-i18n="table-time">First Seen</th>
+                                </tr>
+                            </thead>
+                            <tbody id="incidents-table-body">
+                                <!-- Will be populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="incident-detail" class="card" style="display: none;">
+                        <div class="card-header">
+                            <h3 class="card-title" id="incident-detail-title"></h3>
+                        </div>
+                        <div id="incident-detail-content"></div>
+                        <button class="btn btn-primary" onclick="handleRunResponse(this)">
+                            <i class="fas fa-magic"></i>
+                            <span data-i18n="btn-run-response">Run Suggested Response</span>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- SCREEN 3: INFLUENCERS -->
+                <section id="influencers-screen" class="screen">
+                    <div class="section-header">
+                        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+                            <h2 class="section-title" data-i18n="influencers-title" style="margin:0;">Influencers & Audience – Netflix</h2>
+                            <span class="live-indicator">
+                                <span class="live-dot"></span>
+                                <span style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1px;">LIVE</span>
+                            </span>
+                        </div>
+                        <p class="section-subtitle" data-i18n="influencers-subtitle">Who is driving the conversation</p>
+                        <div class="last-update">Tracking: <span style="color:var(--primary-color);font-weight:700;">6 key influencers</span> · <span id="live-mentions" style="color:var(--success);font-weight:700;">8,432 mentions</span> today</div>
+                    </div>
+
+                    <!-- Influencer KPIs -->
+                    <div class="kpi-grid">
+                        <div class="kpi-card">
+                            <div class="kpi-icon" style="background: rgba(139, 92, 246, 0.1); color: var(--accent-purple);">
+                                <i class="fas fa-user-friends"></i>
+                            </div>
+                            <div class="kpi-label" data-i18n="inf-reach">Top Influencer Reach</div>
+                            <div class="kpi-value" style="font-size: 32px;">2.3M</div>
+                            <span style="font-size: 12px; color: var(--text-secondary);">@EcoJustice_fr</span>
+                        </div>
+
+                        <div class="kpi-card">
+                            <div class="kpi-icon" style="background: rgba(239, 68, 68, 0.1); color: var(--danger);">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="kpi-label" data-i18n="inf-bots">Suspicious Network Share</div>
+                            <div class="kpi-value" style="font-size: 32px;">28%</div>
+                            <span class="chip danger">Likely bots</span>
+                        </div>
+
+                        <div class="kpi-card">
+                            <div class="kpi-icon" style="background: rgba(6, 182, 212, 0.1); color: var(--accent-cyan);">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="kpi-label" data-i18n="inf-geo">Key Geo</div>
+                            <div class="kpi-value" style="font-size: 24px;">Île-de-France</div>
+                            <span style="font-size: 12px; color: var(--text-secondary);">Lyon, Marseille</span>
+                        </div>
+
+                        <div class="kpi-card">
+                            <div class="kpi-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--success);">
+                                <i class="fas fa-language"></i>
+                            </div>
+                            <div class="kpi-label" data-i18n="inf-languages">Languages</div>
+                            <div class="kpi-value" style="font-size: 24px;">FR 82%</div>
+                            <span style="font-size: 12px; color: var(--text-secondary);">EN 14%, Other 4%</span>
+                        </div>
+                    </div>
+
+                    <!-- Top Influencers -->
+                    <div class="card mb-lg">
+                        <div class="card-header">
+                            <h3 class="card-title" data-i18n="inf-top-title">Top Influencers</h3>
+                        </div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th data-i18n="inf-handle">Handle</th>
+                                    <th data-i18n="inf-followers">Followers</th>
+                                    <th data-i18n="inf-stance">Stance</th>
+                                    <th data-i18n="inf-impact">Impact Score</th>
+                                </tr>
+                            </thead>
+                            <tbody id="influencers-table">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Communities -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title" data-i18n="inf-communities">Audience Communities & Clusters</h3>
+                        </div>
+                        <div class="kpi-grid">
+                            <div class="kpi-card clickable-card" onclick="viewCommunityDetail('reddit')">
+                                <div class="kpi-icon" style="background: rgba(239, 68, 68, 0.1); color: var(--danger);">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="kpi-label">r/Netflix Subreddit</div>
+                                <div class="kpi-value" style="font-size: 24px;">8.4M</div>
+                                <span class="chip danger">72% Critical on Pricing</span>
+                            </div>
+
+                            <div class="kpi-card clickable-card" onclick="viewCommunityDetail('kdrama')">
+                                <div class="kpi-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--success);">
+                                    <i class="fas fa-heart"></i>
+                                </div>
+                                <div class="kpi-label">K-Drama Fans</div>
+                                <div class="kpi-value" style="font-size: 24px;">12.3M</div>
+                                <span class="chip success">Highly Supportive</span>
+                            </div>
+
+                            <div class="kpi-card clickable-card" onclick="viewCommunityDetail('truecrime')">
+                                <div class="kpi-icon" style="background: rgba(139, 92, 246, 0.1); color: var(--accent-purple);">
+                                    <i class="fas fa-mask"></i>
+                                </div>
+                                <div class="kpi-label">True Crime Community</div>
+                                <div class="kpi-value" style="font-size: 24px;">6.8M</div>
+                                <span class="chip success">Engaged & Positive</span>
+                            </div>
+
+                            <div class="kpi-card clickable-card" onclick="viewCommunityDetail('anime')">
+                                <div class="kpi-icon" style="background: rgba(6, 182, 212, 0.1); color: var(--accent-cyan);">
+                                    <i class="fas fa-dragon"></i>
+                                </div>
+                                <div class="kpi-label">Anime Watchers</div>
+                                <div class="kpi-value" style="font-size: 24px;">9.2M</div>
+                                <span class="chip info">Content-Focused</span>
+                            </div>
+
+                            <div class="kpi-card clickable-card" onclick="viewCommunityDetail('family')">
+                                <div class="kpi-icon" style="background: rgba(245, 158, 11, 0.1); color: var(--warning);">
+                                    <i class="fas fa-child"></i>
+                                </div>
+                                <div class="kpi-label">Family Subscribers</div>
+                                <div class="kpi-value" style="font-size: 24px;">18.5M</div>
+                                <span class="chip warning">Concerned About Pricing</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SCREEN 4: REPORTS -->
+                <section id="reports-screen" class="screen">
+                    <div class="section-header">
+                        <h2 class="section-title" data-i18n="reports-title">Reports & Exports</h2>
+                        <p class="section-subtitle" data-i18n="reports-subtitle">Pre-generated insights and analytics</p>
+                    </div>
+
+                    <div class="report-card">
+                        <div class="report-card-header">
+                            <div>
+                                <div class="report-card-title" data-i18n="report-weekly">Weekly Brand Health – France</div>
+                                <div class="report-card-meta">Dec 28, 2024 - Jan 4, 2025</div>
+                            </div>
+                            <span class="chip success">Ready</span>
+                        </div>
+                        <p class="report-card-description" data-i18n="report-weekly-desc">
+                            Comprehensive analysis of sentiment, volume, and risk trends across all monitored channels.
+                        </p>
+                        <button class="btn btn-secondary" onclick="handleViewReport(this, 'weekly')">
+                            <i class="fas fa-eye"></i>
+                            <span data-i18n="btn-view-summary">View Summary</span>
+                        </button>
+                    </div>
+
+                    <div class="report-card">
+                        <div class="report-card-header">
+                            <div>
+                                <div class="report-card-title" data-i18n="report-postmortem">Incident Post-Mortem – Deepfake CEO Video</div>
+                                <div class="report-card-meta">Jan 3, 2025</div>
+                            </div>
+                            <span class="chip warning">Draft</span>
+                        </div>
+                        <p class="report-card-description" data-i18n="report-postmortem-desc">
+                            Detailed timeline, response analysis, and lessons learned from the deepfake incident on TikTok.
+                        </p>
+                        <button class="btn btn-secondary" onclick="handleViewReport(this, 'postmortem')">
+                            <i class="fas fa-eye"></i>
+                            <span data-i18n="btn-view-summary">View Summary</span>
+                        </button>
+                    </div>
+
+                    <div class="report-card">
+                        <div class="report-card-header">
+                            <div>
+                                <div class="report-card-title" data-i18n="report-influencer">Influencer Risk Report – Q4 2024</div>
+                                <div class="report-card-meta">Q4 2024</div>
+                            </div>
+                            <span class="chip info">Archived</span>
+                        </div>
+                        <p class="report-card-description" data-i18n="report-influencer-desc">
+                            Analysis of key influencers, their sentiment towards Netflix, and potential partnership risks.
+                        </p>
+                        <button class="btn btn-secondary" onclick="handleViewReport(this, 'influencer')">
+                            <i class="fas fa-eye"></i>
+                            <span data-i18n="btn-view-summary">View Summary</span>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- SCREEN 5: SETTINGS -->
+                <section id="settings-screen" class="screen">
+                    <div class="section-header">
+                        <h2 class="section-title" data-i18n="settings-title">Settings</h2>
+                        <p class="section-subtitle" data-i18n="settings-subtitle">Configure your monitoring preferences</p>
+                    </div>
+
+                    <!-- Brand Profile -->
+                    <div class="card mb-lg">
+                        <div class="card-header">
+                            <h3 class="card-title" data-i18n="settings-profile">Brand Profile</h3>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" data-i18n="settings-brand-name">Brand Name</label>
+                            <input type="text" class="form-input" value="Netflix" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" data-i18n="settings-industry">Industry</label>
+                            <input type="text" class="form-input" value="Streaming Entertainment" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" data-i18n="settings-headquarters">Headquarters</label>
+                            <input type="text" class="form-input" value="Los Gatos, California" disabled>
+                        </div>
+                    </div>
+
+                    <!-- Alert Preferences -->
+                    <div class="card mb-lg">
+                        <div class="card-header">
+                            <h3 class="card-title" data-i18n="settings-alerts">Alert & Notification Preferences</h3>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" data-i18n="settings-notify-severity">Notify me about:</label>
+                            <div style="display: flex; flex-direction: column; gap: var(--spacing-md);">
+                                <label style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <span data-i18n="settings-high-severity">High severity incidents</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <span data-i18n="settings-medium-severity">Medium severity incidents</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <span data-i18n="settings-low-severity">Low severity incidents</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" data-i18n="settings-min-volume">Minimum volume to trigger alert</label>
+                            <select class="form-select">
+                                <option>100 mentions</option>
+                                <option selected>500 mentions</option>
+                                <option>1,000 mentions</option>
+                                <option>5,000 mentions</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Language & Region -->
+                    <div class="card mb-lg">
+                        <div class="card-header">
+                            <h3 class="card-title" data-i18n="settings-lang-region">Language & Region</h3>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" data-i18n="settings-language">Preferred Language</label>
+                            <select class="form-select" id="settings-language-select" onchange="setLanguage(this.value)">
+                                <option value="en" selected>English</option>
+                                <option value="fr">Français</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" data-i18n="settings-timezone">Time Zone</label>
+                            <select class="form-select">
+                                <option selected>Europe/Paris (GMT+1)</option>
+                                <option>Europe/London (GMT+0)</option>
+                                <option>America/New_York (GMT-5)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" data-i18n="settings-country">Country</label>
+                            <input type="text" class="form-input" value="France" disabled>
+                        </div>
+                    </div>
+
+                    <!-- Integrations -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title" data-i18n="settings-integrations">Integrations</h3>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: var(--spacing-lg);">
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--spacing-md); background: rgba(30, 41, 59, 0.3); border-radius: var(--radius);">
+                                <div style="display: flex; align-items: center; gap: var(--spacing-md);">
+                                    <i class="fab fa-slack" style="font-size: 24px; color: #4A154B;"></i>
+                                    <div>
+                                        <div style="font-weight: 600;">Slack</div>
+                                        <div style="font-size: 12px; color: var(--text-muted);">Receive alerts in Slack</div>
+                                    </div>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--spacing-md); background: rgba(30, 41, 59, 0.3); border-radius: var(--radius);">
+                                <div style="display: flex; align-items: center; gap: var(--spacing-md);">
+                                    <i class="fab fa-microsoft" style="font-size: 24px; color: #5558AF;"></i>
+                                    <div>
+                                        <div style="font-weight: 600;">Microsoft Teams</div>
+                                        <div style="font-size: 12px; color: var(--text-muted);">Receive alerts in Teams</div>
+                                    </div>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--spacing-md); background: rgba(30, 41, 59, 0.3); border-radius: var(--radius);">
+                                <div style="display: flex; align-items: center; gap: var(--spacing-md);">
+                                    <i class="fas fa-envelope" style="font-size: 24px; color: var(--primary-color);"></i>
+                                    <div>
+                                        <div style="font-weight: 600;" data-i18n="settings-email">Email Alerts</div>
+                                        <div style="font-size: 12px; color: var(--text-muted);" data-i18n="settings-email-desc">Receive email notifications</div>
+                                    </div>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Report View -->
+    <div class="modal-overlay" id="modal-overlay" onclick="closeModal()">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modal-title">Report Summary</h2>
+                <button class="modal-close" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="modal-content">
+                <!-- Content populated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========================================
+        // INITIALIZE AOS
+        // ========================================
+        AOS.init({
+            duration: 600,
+            once: true,
+            offset: 50
+        });
+
+        // ========================================
+        // GLOBAL STATE
+        // ========================================
+        let currentLanguage = 'en';
+        let currentPage = 'overview';
+        let selectedIncidentId = null;
+
+        // ========================================
+        // TRANSLATIONS
+        // ========================================
+        const translations = {
+            en: {
+                'brand-console': 'Brand Console',
+                'nav-overview': 'Overview',
+                'nav-incidents': 'Incidents',
+                'nav-influencers': 'Influencers',
+                'nav-simulator': 'Simulator',
+                'nav-reports': 'Reports',
+                'nav-settings': 'Settings',
+                'page-title-overview': 'Overview',
+                'page-title-incidents': 'Incidents',
+                'page-title-influencers': 'Influencers',
+                'page-title-simulator': 'Simulator',
+                'page-title-reports': 'Reports',
+                'page-title-settings': 'Settings',
+                'notifications-title': 'Notifications',
+                'overview-title': 'Brand Overview – Netflix',
+                'overview-subtitle': 'Real-time risk and sentiment across channels',
+                'kpi-sentiment': 'General Sentiment',
+                'kpi-volume': 'Conversation Volume (24h)',
+                'kpi-risk': 'Risk Level',
+                'kpi-incidents': 'Active Incidents',
+                'mostly-positive': 'Mostly Positive',
+                'vigilance-required': 'Vigilance Required',
+                'chart-sentiment-time': 'Sentiment Over Time',
+                'chart-sentiment-subtitle': 'Last 7 days – Multi-channel sentiment analysis',
+                'chart-channels': 'Channel Breakdown',
+                'chart-channels-subtitle': 'Share of conversation by platform',
+                'chart-threats': 'Threat Distribution',
+                'chart-threats-subtitle': 'Incident types breakdown',
+                'chart-geo': 'Geographic Sentiment Distribution',
+                'chart-geo-subtitle': 'Interactive map – Click markers for details',
+                'incidents-title': 'Incidents & Response Center',
+                'incidents-subtitle': 'From deepfakes to review storms – all in one control room',
+                'table-incident': 'Incident',
+                'table-severity': 'Severity',
+                'table-status': 'Status',
+                'table-channels': 'Channels',
+                'table-time': 'First Seen',
+                'btn-run-response': 'Run Suggested Response',
+                'influencers-title': 'Influencers & Audience – Netflix',
+                'influencers-subtitle': 'Who is driving the conversation',
+                'inf-reach': 'Top Influencer Reach',
+                'inf-bots': 'Suspicious Network Share',
+                'inf-geo': 'Key Geo',
+                'inf-languages': 'Languages',
+                'inf-top-title': 'Top Influencers',
+                'inf-handle': 'Handle',
+                'inf-followers': 'Followers',
+                'inf-stance': 'Stance',
+                'inf-impact': 'Impact Score',
+                'inf-communities': 'Audience Communities & Clusters',
+                'sim-title': 'Response Impact Simulator',
+                'sim-subtitle': 'Predict the impact of different response strategies',
+                'sim-select-scenario': 'Select Scenario',
+                'sim-select-strategy': 'Select Response Strategy',
+                'strat-monitor': 'Monitor only',
+                'strat-monitor-desc': 'Passive observation, no public response',
+                'strat-community': 'Community manager response',
+                'strat-community-desc': 'Engage directly with concerned users',
+                'strat-statement': 'Official brand statement',
+                'strat-statement-desc': 'Public statement across all channels',
+                'strat-ceo': 'CEO video apology + FAQ page',
+                'strat-ceo-desc': 'Maximum visibility response',
+                'btn-run-sim': 'Run Simulation',
+                'sim-results': 'Projected Impact (Next 72h)',
+                'sim-summary': 'Summary',
+                'reports-title': 'Reports & Exports',
+                'reports-subtitle': 'Pre-generated insights and analytics',
+                'report-weekly': 'Weekly Brand Health – France',
+                'report-weekly-desc': 'Comprehensive analysis of sentiment, volume, and risk trends across all monitored channels.',
+                'report-postmortem': 'Incident Post-Mortem – Deepfake CEO Video',
+                'report-postmortem-desc': 'Detailed timeline, response analysis, and lessons learned from the deepfake incident on TikTok.',
+                'report-influencer': 'Influencer Risk Report – Q4 2024',
+                'report-influencer-desc': 'Analysis of key influencers, their sentiment towards Netflix, and potential partnership risks.',
+                'btn-view-summary': 'View Summary',
+                'settings-title': 'Settings',
+                'settings-subtitle': 'Configure your monitoring preferences',
+                'settings-profile': 'Brand Profile',
+                'settings-brand-name': 'Brand Name',
+                'settings-industry': 'Industry',
+                'settings-headquarters': 'Headquarters',
+                'settings-alerts': 'Alert & Notification Preferences',
+                'settings-notify-severity': 'Notify me about:',
+                'settings-high-severity': 'High severity incidents',
+                'settings-medium-severity': 'Medium severity incidents',
+                'settings-low-severity': 'Low severity incidents',
+                'settings-min-volume': 'Minimum volume to trigger alert',
+                'settings-lang-region': 'Language & Region',
+                'settings-language': 'Preferred Language',
+                'settings-timezone': 'Time Zone',
+                'settings-country': 'Country',
+                'settings-integrations': 'Integrations',
+                'settings-email': 'Email Alerts',
+                'settings-email-desc': 'Receive email notifications'
+            },
+            fr: {
+                'brand-console': 'Console Marque',
+                'nav-overview': 'Vue d\'ensemble',
+                'nav-incidents': 'Incidents',
+                'nav-influencers': 'Influenceurs',
+                'nav-simulator': 'Simulateur',
+                'nav-reports': 'Rapports',
+                'nav-settings': 'Paramètres',
+                'page-title-overview': 'Vue d\'ensemble',
+                'page-title-incidents': 'Incidents',
+                'page-title-influencers': 'Influenceurs',
+                'page-title-simulator': 'Simulateur',
+                'page-title-reports': 'Rapports',
+                'page-title-settings': 'Paramètres',
+                'notifications-title': 'Notifications',
+                'overview-title': 'Aperçu de la Marque – Netflix',
+                'overview-subtitle': 'Risque et sentiment en temps réel sur tous les canaux',
+                'kpi-sentiment': 'Sentiment Général',
+                'kpi-volume': 'Volume de Conversation (24h)',
+                'kpi-risk': 'Niveau de Risque',
+                'kpi-incidents': 'Incidents Actifs',
+                'mostly-positive': 'Plutôt Positif',
+                'vigilance-required': 'Vigilance Requise',
+                'chart-sentiment-time': 'Sentiment au Fil du Temps',
+                'chart-sentiment-subtitle': '7 derniers jours – Analyse multi-canal',
+                'chart-channels': 'Répartition par Canal',
+                'chart-channels-subtitle': 'Part de conversation par plateforme',
+                'chart-threats': 'Distribution des Menaces',
+                'chart-threats-subtitle': 'Types d\'incidents',
+                'chart-geo': 'Distribution Géographique du Sentiment',
+                'chart-geo-subtitle': 'Carte interactive – Cliquez sur les marqueurs',
+                'incidents-title': 'Centre de Gestion des Incidents',
+                'incidents-subtitle': 'Des deepfakes aux tempêtes d\'avis – tout en un seul endroit',
+                'table-incident': 'Incident',
+                'table-severity': 'Gravité',
+                'table-status': 'Statut',
+                'table-channels': 'Canaux',
+                'table-time': 'Détecté',
+                'btn-run-response': 'Lancer la Réponse Suggérée',
+                'influencers-title': 'Influenceurs & Audience – Netflix',
+                'influencers-subtitle': 'Qui mène la conversation',
+                'inf-reach': 'Portée du Top Influenceur',
+                'inf-bots': 'Part de Réseau Suspect',
+                'inf-geo': 'Géographie Clé',
+                'inf-languages': 'Langues',
+                'inf-top-title': 'Top Influenceurs',
+                'inf-handle': 'Pseudo',
+                'inf-followers': 'Abonnés',
+                'inf-stance': 'Position',
+                'inf-impact': 'Score d\'Impact',
+                'inf-communities': 'Communautés d\'Audience & Groupes',
+                'sim-title': 'Simulateur d\'Impact de Réponse',
+                'sim-subtitle': 'Prédisez l\'impact de différentes stratégies de réponse',
+                'sim-select-scenario': 'Sélectionner un Scénario',
+                'sim-select-strategy': 'Sélectionner une Stratégie de Réponse',
+                'strat-monitor': 'Surveillance uniquement',
+                'strat-monitor-desc': 'Observation passive, pas de réponse publique',
+                'strat-community': 'Réponse du community manager',
+                'strat-community-desc': 'Engager directement avec les utilisateurs concernés',
+                'strat-statement': 'Communiqué officiel de la marque',
+                'strat-statement-desc': 'Déclaration publique sur tous les canaux',
+                'strat-ceo': 'Vidéo d\'excuses du PDG + page FAQ',
+                'strat-ceo-desc': 'Réponse à visibilité maximale',
+                'btn-run-sim': 'Lancer la Simulation',
+                'sim-results': 'Impact Projeté (72h)',
+                'sim-summary': 'Résumé',
+                'reports-title': 'Rapports & Exports',
+                'reports-subtitle': 'Analyses et insights prégénérés',
+                'report-weekly': 'Santé Hebdomadaire de la Marque – France',
+                'report-weekly-desc': 'Analyse complète du sentiment, volume et tendances de risque sur tous les canaux surveillés.',
+                'report-postmortem': 'Post-Mortem d\'Incident – Vidéo Deepfake du PDG',
+                'report-postmortem-desc': 'Chronologie détaillée, analyse de réponse et leçons tirées de l\'incident deepfake sur TikTok.',
+                'report-influencer': 'Rapport de Risque Influenceurs – Q4 2024',
+                'report-influencer-desc': 'Analyse des influenceurs clés, leur sentiment envers Netflix et risques potentiels de partenariat.',
+                'btn-view-summary': 'Voir le Résumé',
+                'settings-title': 'Paramètres',
+                'settings-subtitle': 'Configurez vos préférences de surveillance',
+                'settings-profile': 'Profil de la Marque',
+                'settings-brand-name': 'Nom de la Marque',
+                'settings-industry': 'Industrie',
+                'settings-headquarters': 'Siège Social',
+                'settings-alerts': 'Préférences d\'Alertes et Notifications',
+                'settings-notify-severity': 'Me notifier pour:',
+                'settings-high-severity': 'Incidents de gravité élevée',
+                'settings-medium-severity': 'Incidents de gravité moyenne',
+                'settings-low-severity': 'Incidents de gravité faible',
+                'settings-min-volume': 'Volume minimum pour déclencher une alerte',
+                'settings-lang-region': 'Langue & Région',
+                'settings-language': 'Langue Préférée',
+                'settings-timezone': 'Fuseau Horaire',
+                'settings-country': 'Pays',
+                'settings-integrations': 'Intégrations',
+                'settings-email': 'Alertes Email',
+                'settings-email-desc': 'Recevoir des notifications par email'
+            }
+        };
+
+        // ========================================
+        // MOCK DATA
+        // ========================================
+        const notifications = [
+            {
+                id: 1,
+                icon: '🔴',
+                content: 'Password sharing crackdown causing major backlash on Twitter & Reddit',
+                severity: 'high',
+                time: '8 minutes ago',
+                timeLabel: { en: '8 minutes ago', fr: 'Il y a 8 minutes' },
+                incidentId: 1
+            },
+            {
+                id: 2,
+                icon: '🔴',
+                content: '#CancelNetflix trending globally after price increase announcement',
+                severity: 'high',
+                time: '45 minutes ago',
+                timeLabel: { en: '45 minutes ago', fr: 'Il y a 45 minutes' },
+                incidentId: 2
+            },
+            {
+                id: 3,
+                icon: '🟠',
+                content: 'Content removal controversy - "Friends" generating negative sentiment',
+                severity: 'medium',
+                time: '2 hours ago',
+                timeLabel: { en: '2 hours ago', fr: 'Il y a 2 heures' },
+                incidentId: 3
+            },
+            {
+                id: 4,
+                icon: '🟠',
+                content: 'Account security breach rumors spreading on social media',
+                severity: 'medium',
+                time: '4 hours ago',
+                timeLabel: { en: '4 hours ago', fr: 'Il y a 4 heures' },
+                incidentId: 4
+            },
+            {
+                id: 5,
+                icon: '🟢',
+                content: 'Documentary accuracy issue resolved with clarification statement',
+                severity: 'low',
+                time: '1 day ago',
+                timeLabel: { en: '1 day ago', fr: 'Il y a 1 jour' },
+                incidentId: 5
+            }
+        ];
+
+        const incidents = [
+            {
+                id: 1,
+                title: 'Password sharing crackdown backlash',
+                severity: 'high',
+                status: 'Mitigation in progress',
+                channels: ['Twitter', 'Reddit', 'TikTok'],
+                firstSeen: 'Today, 09:17',
+                description: 'Widespread negative sentiment on social media regarding new password sharing restrictions in Canada and US markets.'
+            },
+            {
+                id: 2,
+                title: 'Cancellation wave after price increase',
+                severity: 'high',
+                status: 'Investigating',
+                channels: ['Twitter', 'Facebook', 'Reddit'],
+                firstSeen: 'Today, 11:42',
+                description: '#CancelNetflix trending after announcement of subscription price increases across multiple tiers.'
+            },
+            {
+                id: 3,
+                title: 'Content removal controversy - "Friends"',
+                severity: 'medium',
+                status: 'Detected',
+                channels: ['Twitter', 'Instagram'],
+                firstSeen: 'Today, 14:20',
+                description: 'Users expressing frustration over popular show being removed from the platform, comparing negatively to competitors.'
+            },
+            {
+                id: 4,
+                title: 'Account security breach rumors',
+                severity: 'medium',
+                status: 'Mitigation in progress',
+                channels: ['Twitter', 'Reddit'],
+                firstSeen: 'Yesterday, 18:05',
+                description: 'Unverified claims of account hacks circulating on social media, causing user concern about data security.'
+            },
+            {
+                id: 5,
+                title: 'Documentary accuracy questioned',
+                severity: 'low',
+                status: 'Resolved',
+                channels: ['Twitter', 'News Media'],
+                firstSeen: '2 days ago',
+                description: 'Fact-checkers disputed claims made in recent documentary release; Netflix issued clarification statement.'
+            }
+        ];
+
+        const influencers = [
+            {
+                id: 1,
+                handle: '@TechCritic',
+                followers: '2.3M',
+                stance: 'Critical',
+                impact: 94,
+                stanceClass: 'danger',
+                name: 'Marcus Chen',
+                platform: 'Twitter/X',
+                recentPosts: 4892,
+                engagement: '8.4%',
+                topics: ['Streaming Wars', 'Tech Industry', 'Consumer Rights'],
+                bio: 'Technology journalist covering streaming platforms and digital media. Critical analyst of subscription models and pricing strategies.'
+            },
+            {
+                id: 2,
+                handle: '@StreamingGuru',
+                followers: '1.8M',
+                stance: 'Neutral',
+                impact: 87,
+                stanceClass: 'warning',
+                name: 'Sarah Williams',
+                platform: 'YouTube',
+                recentPosts: 3241,
+                engagement: '6.2%',
+                topics: ['Streaming Reviews', 'Content Analysis', 'Industry Trends'],
+                bio: 'Content creator focusing on streaming platform comparisons and recommendations. Balanced perspective on industry changes.'
+            },
+            {
+                id: 3,
+                handle: '@NetflixFanClub',
+                followers: '890K',
+                stance: 'Supportive',
+                impact: 91,
+                stanceClass: 'success',
+                name: 'Netflix Fans United',
+                platform: 'Instagram',
+                recentPosts: 8742,
+                engagement: '12.1%',
+                topics: ['Netflix Original', 'New Releases', 'Fan Community'],
+                bio: 'Official Netflix fan community account. Daily updates on new content, behind-the-scenes, and exclusive announcements.'
+            },
+            {
+                id: 4,
+                handle: '@MediaWatchdog',
+                followers: '1.5M',
+                stance: 'Critical',
+                impact: 85,
+                stanceClass: 'danger',
+                name: 'Media Accountability Network',
+                platform: 'Twitter/X',
+                recentPosts: 5621,
+                engagement: '5.8%',
+                topics: ['Media Ethics', 'Corporate Accountability', 'Consumer Protection'],
+                bio: 'Independent watchdog monitoring media companies and streaming services. Advocating for consumer rights and transparency.'
+            },
+            {
+                id: 5,
+                handle: '@BingeWatcher',
+                followers: '650K',
+                stance: 'Supportive',
+                impact: 73,
+                stanceClass: 'success',
+                name: 'Emma Rodriguez',
+                platform: 'TikTok',
+                recentPosts: 2847,
+                engagement: '15.3%',
+                topics: ['Binge Reviews', 'Hidden Gems', 'Watch Lists'],
+                bio: 'Professional binge-watcher and content reviewer. Passionate about discovering and sharing the best Netflix shows.'
+            },
+            {
+                id: 6,
+                handle: '@StreamingDeals',
+                followers: '1.2M',
+                stance: 'Neutral',
+                impact: 79,
+                stanceClass: 'warning',
+                name: 'Streaming Deals Hub',
+                platform: 'Twitter/X',
+                recentPosts: 6284,
+                engagement: '4.2%',
+                topics: ['Price Tracking', 'Subscription Deals', 'Platform Comparisons'],
+                bio: 'Tracking and comparing streaming subscription prices across all platforms. Helping consumers find the best value.'
+            }
+        ];
+
+        // ========================================
+        // LANGUAGE SWITCHING
+        // ========================================
+        function setLanguage(lang) {
+            currentLanguage = lang;
+
+            // Update language toggle buttons
+            document.querySelectorAll('.language-toggle button').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+            });
+
+            // Update settings dropdown
+            const settingsSelect = document.getElementById('settings-language-select');
+            if (settingsSelect) {
+                settingsSelect.value = lang;
+            }
+
+            // Update all i18n elements
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    el.textContent = translations[lang][key];
+                }
+            });
+
+            // Update notification times
+            renderNotifications();
+        }
+
+        // ========================================
+        // NAVIGATION
+        // ========================================
+        function navigateTo(page) {
+            currentPage = page;
+
+            // Update sidebar active state
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.toggle('active', item.getAttribute('data-page') === page);
+            });
+
+            // Update screens
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(page + '-screen').classList.add('active');
+
+            // Update page title
+            const pageTitleKey = 'page-title-' + page;
+            document.getElementById('page-title').textContent = translations[currentLanguage][pageTitleKey];
+
+            // Close mobile sidebar if open
+            document.getElementById('sidebar').classList.remove('mobile-open');
+
+            // Render page-specific content
+            if (page === 'overview' && !window.chartsRendered) {
+                setTimeout(() => {
+                    renderOverviewCharts();
+                }, 100);
+            } else if (page === 'incidents' && !window.incidentsRendered) {
+                renderIncidents();
+            } else if (page === 'influencers' && !window.influencersRendered) {
+                renderInfluencers();
+            }
+        }
+
+        function toggleMobileSidebar() {
+            document.getElementById('sidebar').classList.toggle('mobile-open');
+        }
+
+        // ========================================
+        // NOTIFICATIONS
+        // ========================================
+        function toggleNotifications() {
+            document.getElementById('notification-panel').classList.toggle('active');
+        }
+
+        function renderNotifications() {
+            const list = document.getElementById('notification-list');
+            list.innerHTML = notifications.map(notif => `
+                <div class="notification-item ${notif.severity}" onclick="viewNotificationIncident(${notif.incidentId})">
+                    <div class="notification-content">
+                        ${notif.icon} ${notif.content}
+                    </div>
+                    <div class="notification-meta">
+                        <span>${notif.timeLabel[currentLanguage]}</span>
+                        ${notif.incidentId ? '<span class="notification-action">' + (currentLanguage === 'en' ? 'View incident →' : 'Voir l\'incident →') + '</span>' : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function viewNotificationIncident(incidentId) {
+            if (incidentId) {
+                toggleNotifications();
+                navigateTo('incidents');
+                setTimeout(() => {
+                    handleIncidentClick(incidentId);
+                }, 300);
+            }
+        }
+
+        // ========================================
+        // OVERVIEW CHARTS
+        // ========================================
+        let sentimentChart, channelChart, threatChart, simulationChart;
+
+        function renderOverviewCharts() {
+            if (window.chartsRendered) return;
+            window.chartsRendered = true;
+
+            Chart.defaults.color = '#94a3b8';
+            Chart.defaults.borderColor = 'rgba(148, 163, 184, 0.1)';
+            Chart.defaults.font.family = 'Inter';
+
+            // Sentiment Over Time
+            const sentimentCtx = document.getElementById('sentiment-chart');
+            if (sentimentCtx) {
+                sentimentChart = new Chart(sentimentCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                        datasets: [
+                            {
+                                label: 'Positive',
+                                data: [65, 68, 70, 72, 71, 74, 73],
+                                borderColor: '#10b981',
+                                backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                                borderWidth: 3,
+                                fill: true,
+                                tension: 0.4
+                            },
+                            {
+                                label: 'Neutral',
+                                data: [25, 23, 22, 20, 21, 19, 20],
+                                borderColor: '#6b7280',
+                                backgroundColor: 'rgba(107, 114, 128, 0.1)',
+                                borderWidth: 3,
+                                fill: true,
+                                tension: 0.4
+                            },
+                            {
+                                label: 'Negative',
+                                data: [10, 9, 8, 8, 8, 7, 7],
+                                borderColor: '#ef4444',
+                                backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                                borderWidth: 3,
+                                fill: true,
+                                tension: 0.4
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'top' },
+                            tooltip: {
+                                backgroundColor: 'rgba(30, 41, 59, 0.95)',
+                                padding: 12
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: { callback: value => value + '%' }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Channel Breakdown
+            const channelCtx = document.getElementById('channel-chart');
+            if (channelCtx) {
+                channelChart = new Chart(channelCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['X', 'Instagram', 'TikTok', 'News', 'Reviews'],
+                        datasets: [{
+                            label: 'Share',
+                            data: [35, 25, 20, 12, 8],
+                            backgroundColor: ['rgba(59, 130, 246, 0.8)', 'rgba(139, 92, 246, 0.8)', 'rgba(6, 182, 212, 0.8)', 'rgba(245, 158, 11, 0.8)', 'rgba(16, 185, 129, 0.8)'],
+                            borderRadius: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { beginAtZero: true, max: 40, ticks: { callback: value => value + '%' } }
+                        }
+                    }
+                });
+            }
+
+            // Threat Distribution
+            const threatCtx = document.getElementById('threat-chart');
+            if (threatCtx) {
+                threatChart = new Chart(threatCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Deepfakes', 'Review Storms', 'Hashtag Campaigns', 'Scams', 'Misinformation'],
+                        datasets: [{
+                            data: [20, 35, 25, 10, 10],
+                            backgroundColor: ['rgba(239, 68, 68, 0.8)', 'rgba(245, 158, 11, 0.8)', 'rgba(139, 92, 246, 0.8)', 'rgba(236, 72, 153, 0.8)', 'rgba(6, 182, 212, 0.8)']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { position: 'right' } }
+                    }
+                });
+            }
+
+            // Map
+            renderMap();
+        }
+
+        function renderMap() {
+            const mapEl = document.getElementById('geo-map');
+            if (!mapEl || window.mapRendered) return;
+            window.mapRendered = true;
+
+            const map = L.map('geo-map', { center: [20, 10], zoom: 2 });
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                attribution: '© OpenStreetMap'
+            }).addTo(map);
+
+            // Netflix major markets with realistic population-based volumes
+            const geoData = [
+                { country: 'United States', sentiment: 62, volume: '58.4K', lat: 37.0, lng: -95.7, radius: 22 },
+                { country: 'Brazil', sentiment: 78, volume: '24.1K', lat: -14.2, lng: -51.9, radius: 18 },
+                { country: 'United Kingdom', sentiment: 65, volume: '12.8K', lat: 55.4, lng: -3.4, radius: 15 },
+                { country: 'Mexico', sentiment: 74, volume: '18.5K', lat: 23.6, lng: -102.5, radius: 16 },
+                { country: 'France', sentiment: 69, volume: '11.2K', lat: 46.2, lng: 2.2, radius: 14 },
+                { country: 'Germany', sentiment: 71, volume: '9.8K', lat: 51.2, lng: 10.5, radius: 14 },
+                { country: 'India', sentiment: 82, volume: '42.7K', lat: 20.6, lng: 78.9, radius: 20 },
+                { country: 'Japan', sentiment: 77, volume: '15.3K', lat: 36.2, lng: 138.3, radius: 15 },
+                { country: 'South Korea', sentiment: 85, volume: '19.8K', lat: 35.9, lng: 127.8, radius: 16 },
+                { country: 'Canada', sentiment: 58, volume: '8.4K', lat: 56.1, lng: -106.3, radius: 13 },
+                { country: 'Australia', sentiment: 67, volume: '6.9K', lat: -25.3, lng: 133.8, radius: 13 },
+                { country: 'Spain', sentiment: 73, volume: '8.1K', lat: 40.5, lng: -3.7, radius: 13 },
+                { country: 'Italy', sentiment: 70, volume: '7.3K', lat: 41.9, lng: 12.6, radius: 12 },
+                { country: 'Turkey', sentiment: 68, volume: '11.5K', lat: 38.9, lng: 35.2, radius: 14 },
+                { country: 'Argentina', sentiment: 76, volume: '6.2K', lat: -38.4, lng: -63.6, radius: 12 }
+            ];
+
+            geoData.forEach(loc => {
+                const color = loc.sentiment >= 75 ? '#10b981' : loc.sentiment >= 65 ? '#f59e0b' : '#ef4444';
+                L.circleMarker([loc.lat, loc.lng], {
+                    radius: loc.radius,
+                    fillColor: color,
+                    color: '#fff',
+                    weight: 2,
+                    fillOpacity: 0.7
+                }).addTo(map).bindPopup(`
+                    <div style="padding:10px;min-width:150px;">
+                        <strong style="font-size:14px;">${loc.country}</strong><br>
+                        <div style="margin-top:8px;">
+                            <span style="color:${color};font-size:32px;font-weight:bold;">${loc.sentiment}</span>
+                            <span style="color:#94a3b8;font-size:12px;">/100</span>
+                        </div>
+                        <div style="color:#94a3b8;font-size:12px;margin-top:4px;">${loc.volume} mentions (24h)</div>
+                    </div>
+                `);
+            });
+        }
+
+        // ========================================
+        // INCIDENTS
+        // ========================================
+        function renderIncidents() {
+            if (window.incidentsRendered) return;
+            window.incidentsRendered = true;
+
+            const tbody = document.getElementById('incidents-table-body');
+            tbody.innerHTML = incidents.map(inc => {
+                const severityClass = inc.severity === 'high' ? 'danger' : inc.severity === 'medium' ? 'warning' : 'success';
+                return `
+                    <tr onclick="handleIncidentClick(${inc.id})" style="cursor:pointer;">
+                        <td><strong>${inc.title}</strong></td>
+                        <td><span class="chip ${severityClass}">${inc.severity}</span></td>
+                        <td>${inc.status}</td>
+                        <td>${inc.channels.join(', ')}</td>
+                        <td>${inc.firstSeen}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function handleIncidentClick(id) {
+            // Add a small loading delay to simulate fetching data
+            const detailEl = document.getElementById('incident-detail');
+            detailEl.style.display = 'block';
+            detailEl.innerHTML = `
+                <div class="card-header">
+                    <h3 class="card-title">Loading...</h3>
+                </div>
+                <div style="text-align:center;padding:60px;">
+                    <i class="fas fa-spinner fa-spin" style="font-size:40px;color:var(--primary-color);"></i>
+                    <p style="color:var(--text-secondary);margin-top:16px;">Analyzing incident...</p>
+                </div>
+            `;
+
+            setTimeout(() => {
+                viewIncidentDetail(id);
+            }, 800);
+        }
+
+        function viewIncidentDetail(id) {
+            selectedIncidentId = id;
+            const incident = incidents.find(i => i.id === id);
+            if (!incident) return;
+
+            const detailEl = document.getElementById('incident-detail');
+            detailEl.innerHTML = `
+                <div class="card-header">
+                    <h3 class="card-title" id="incident-detail-title">${incident.title}</h3>
+                </div>
+                <div id="incident-detail-content">
+                    <p style="margin-bottom:16px;color:var(--text-secondary);line-height:1.7;">${incident.description}</p>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;">
+                        <span class="chip ${incident.severity === 'high' ? 'danger' : incident.severity === 'medium' ? 'warning' : 'success'}">
+                            <i class="fas fa-exclamation-circle"></i> ${incident.severity} severity
+                        </span>
+                        <span class="chip info">
+                            <i class="fas fa-clock"></i> ${incident.status}
+                        </span>
+                        <span class="chip" style="background:rgba(59,130,246,0.1);color:var(--primary-color);">
+                            <i class="fas fa-hashtag"></i> ${incident.channels.join(', ')}
+                        </span>
+                    </div>
+                    <button class="btn btn-primary" onclick="handleViewResponses(this, ${id})" style="width:100%;">
+                        <i class="fas fa-lightbulb"></i>
+                        <span data-i18n="btn-view-responses">View AI-Suggested Response Strategies</span>
+                    </button>
+                    <div id="response-strategies-${id}" style="display:none;margin-top:32px;"></div>
+                </div>
+            `;
+            detailEl.style.display = 'block';
+        }
+
+        function handleViewResponses(button, incidentId) {
+            showButtonLoading(button, () => showResponseStrategies(incidentId), 1200);
+        }
+
+        function showResponseStrategies(incidentId) {
+            const container = document.getElementById(`response-strategies-${incidentId}`);
+            container.style.display = 'block';
+
+            // Get tailored strategies for this specific incident
+            const strategies = getStrategiesForIncident(incidentId);
+
+            container.innerHTML = `
+                <div style="border-top:2px solid var(--border-color);padding-top:32px;">
+                    <h4 style="font-size:18px;font-weight:700;margin-bottom:24px;color:var(--text-primary);">
+                        <i class="fas fa-robot" style="color:var(--primary-color);"></i>
+                        ${currentLanguage === 'en' ? 'Recommended Response Strategies' : 'Stratégies de Réponse Recommandées'}
+                    </h4>
+                    ${strategies.map((strategy, index) => `
+                        <div class="strategy-card" style="background:var(--bg-card);border-radius:var(--radius);padding:24px;margin-bottom:24px;border:1px solid var(--border-color);">
+                            <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+                                <div style="width:40px;height:40px;border-radius:50%;background:${strategy.color}20;display:flex;align-items:center;justify-content:center;">
+                                    <i class="${strategy.icon}" style="color:${strategy.color};font-size:18px;"></i>
+                                </div>
+                                <div style="flex:1;">
+                                    <h5 style="font-size:16px;font-weight:600;color:var(--text-primary);margin-bottom:4px;">${strategy.name}</h5>
+                                    <div style="font-size:12px;color:var(--text-muted);">
+                                        ${strategy.effectiveness}
+                                    </div>
+                                </div>
+                                <span class="chip ${strategy.recommended ? 'success' : 'info'}" style="font-size:11px;">
+                                    ${strategy.recommended ? (currentLanguage === 'en' ? '⭐ RECOMMENDED' : '⭐ RECOMMANDÉ') : (currentLanguage === 'en' ? 'ALTERNATIVE' : 'ALTERNATIF')}
+                                </span>
+                            </div>
+                            <p style="color:var(--text-secondary);line-height:1.7;margin-bottom:16px;font-size:14px;">${strategy.description}</p>
+                            <div style="background:rgba(0,0,0,0.3);border-radius:var(--radius);padding:16px;margin-bottom:16px;">
+                                <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:12px;text-transform:uppercase;letter-spacing:1px;">
+                                    ${currentLanguage === 'en' ? '📋 Action Steps' : '📋 Étapes d\'Action'}
+                                </div>
+                                <ul style="margin:0;padding-left:20px;color:var(--text-secondary);font-size:13px;line-height:1.8;">
+                                    ${strategy.steps.map(step => `<li>${step}</li>`).join('')}
+                                </ul>
+                            </div>
+                            <div style="height:250px;position:relative;">
+                                <canvas id="strategy-chart-${incidentId}-${index}"></canvas>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            // Render charts for each strategy after a brief delay to ensure DOM is ready
+            setTimeout(() => {
+                strategies.forEach((strategy, index) => {
+                    renderStrategyChart(incidentId, index, strategy);
+                });
+            }, 100);
+
+            // Smooth scroll to strategies
+            setTimeout(() => {
+                container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 150);
+        }
+
+        function getStrategiesForIncident(incidentId) {
+            const strategiesMap = {
+                1: [ // Password sharing crackdown backlash
+                    {
+                        name: 'Empathy-First Communication Campaign',
+                        icon: 'fas fa-heart',
+                        color: '#10b981',
+                        recommended: true,
+                        effectiveness: 'High Impact · 72h recovery',
+                        description: 'Launch a comprehensive campaign acknowledging customer concerns while explaining the reasoning. Focus on value proposition and new features.',
+                        steps: [
+                            'CEO video addressing concerns within 4 hours',
+                            'Publish blog post explaining policy rationale',
+                            'Launch social media campaign highlighting subscriber-only features',
+                            'Offer grace period for existing shared accounts'
+                        ],
+                        projectionData: [68, 65, 58, 52, 46, 42, 38, 34, 30, 28, 26, 25]
+                    },
+                    {
+                        name: 'Value Enhancement Strategy',
+                        icon: 'fas fa-gift',
+                        color: '#8b5cf6',
+                        recommended: false,
+                        effectiveness: 'Medium Impact · 96h recovery',
+                        description: 'Counter negative sentiment by announcing new features, content releases, and improved service quality.',
+                        steps: [
+                            'Announce exclusive new content releases',
+                            'Introduce family plan improvements',
+                            'Highlight upcoming major releases',
+                            'Launch limited-time promotional offer'
+                        ],
+                        projectionData: [68, 66, 62, 58, 54, 50, 47, 44, 42, 40, 38, 36]
+                    }
+                ],
+                2: [ // Cancellation wave after price increase
+                    {
+                        name: 'Value Justification + Retention Offer',
+                        icon: 'fas fa-shield-alt',
+                        color: '#10b981',
+                        recommended: true,
+                        effectiveness: 'High Impact · 48h recovery',
+                        description: 'Aggressively communicate value while offering targeted retention incentives for at-risk subscribers.',
+                        steps: [
+                            'Launch "More Value Than Ever" campaign immediately',
+                            'Send personalized retention offers to active cancellers',
+                            'Highlight cost-per-hour compared to competitors',
+                            'Announce major content drops for next quarter'
+                        ],
+                        projectionData: [72, 68, 60, 52, 44, 38, 32, 28, 26, 24, 23, 22]
+                    },
+                    {
+                        name: 'Transparent Communication Strategy',
+                        icon: 'fas fa-comments',
+                        color: '#06b6d4',
+                        recommended: false,
+                        effectiveness: 'Medium Impact · 72h recovery',
+                        description: 'Publicly address pricing concerns with transparency about costs and investments in content.',
+                        steps: [
+                            'Publish detailed explanation of pricing change',
+                            'Host live Q&A with leadership',
+                            'Share content investment statistics',
+                            'Emphasize no ads commitment'
+                        ],
+                        projectionData: [72, 70, 66, 62, 58, 54, 50, 46, 43, 40, 38, 36]
+                    }
+                ],
+                3: [ // Content removal controversy - "Friends"
+                    {
+                        name: 'Content Strategy Transparency',
+                        icon: 'fas fa-film',
+                        color: '#10b981',
+                        recommended: true,
+                        effectiveness: 'High Impact · 36h recovery',
+                        description: 'Proactively communicate content strategy and highlight upcoming replacements and original content.',
+                        steps: [
+                            'Issue statement explaining licensing realities',
+                            'Announce 3-5 exciting content acquisitions',
+                            'Highlight similar content already available',
+                            'Share sneak peek of upcoming originals'
+                        ],
+                        projectionData: [64, 60, 54, 48, 42, 38, 34, 32, 30, 29, 28, 28]
+                    },
+                    {
+                        name: 'Community Engagement Initiative',
+                        icon: 'fas fa-users',
+                        color: '#f59e0b',
+                        recommended: false,
+                        effectiveness: 'Medium Impact · 60h recovery',
+                        description: 'Engage directly with fans through social media and community managers to address concerns.',
+                        steps: [
+                            'Activate community management team',
+                            'Run "What Would You Like To See?" campaign',
+                            'Share behind-the-scenes content decisions',
+                            'Create content recommendation engine highlight'
+                        ],
+                        projectionData: [64, 62, 58, 54, 50, 47, 44, 42, 40, 38, 37, 36]
+                    }
+                ],
+                4: [ // Account security breach rumors
+                    {
+                        name: 'Immediate Security Assurance',
+                        icon: 'fas fa-lock',
+                        color: '#10b981',
+                        recommended: true,
+                        effectiveness: 'Critical · 24h response',
+                        description: 'Rapid response with security audit results and proactive security enhancements announcement.',
+                        steps: [
+                            'Issue security statement within 2 hours',
+                            'Publish independent security audit results',
+                            'Announce 2FA improvements',
+                            'Offer free security check for all users',
+                            'Direct link to password reset tools'
+                        ],
+                        projectionData: [66, 62, 54, 46, 38, 32, 28, 26, 24, 23, 22, 22]
+                    },
+                    {
+                        name: 'Educational Security Campaign',
+                        icon: 'fas fa-graduation-cap',
+                        color: '#8b5cf6',
+                        recommended: false,
+                        effectiveness: 'Medium Impact · 48h recovery',
+                        description: 'Turn the situation into an educational moment about security best practices.',
+                        steps: [
+                            'Launch security awareness campaign',
+                            'Create security tips video series',
+                            'Send personalized security checkup emails',
+                            'Partner with security experts for webinar'
+                        ],
+                        projectionData: [66, 64, 60, 56, 52, 48, 45, 42, 40, 38, 36, 35]
+                    }
+                ],
+                5: [ // Documentary accuracy questioned
+                    {
+                        name: 'Fact-Check & Clarification',
+                        icon: 'fas fa-check-circle',
+                        color: '#10b981',
+                        recommended: true,
+                        effectiveness: 'High Impact · 24h resolution',
+                        description: 'Quickly address inaccuracies with transparent fact-checking and expert consultation.',
+                        steps: [
+                            'Publish detailed fact-check article',
+                            'Add context cards to documentary',
+                            'Engage with fact-checkers publicly',
+                            'Issue updated viewer guidance'
+                        ],
+                        projectionData: [58, 54, 48, 42, 36, 32, 28, 26, 25, 24, 24, 24]
+                    },
+                    {
+                        name: 'Documentary Standards Update',
+                        icon: 'fas fa-certificate',
+                        color: '#06b6d4',
+                        recommended: false,
+                        effectiveness: 'Low Impact · Preventive',
+                        description: 'Use incident to showcase commitment to documentary accuracy standards.',
+                        steps: [
+                            'Announce enhanced fact-checking process',
+                            'Publish documentary guidelines',
+                            'Highlight expert advisory board',
+                            'Create "Netflix Documentary Standards" page'
+                        ],
+                        projectionData: [58, 57, 54, 52, 50, 48, 46, 44, 43, 42, 41, 40]
+                    }
+                ]
+            };
+
+            return strategiesMap[incidentId] || [];
+        }
+
+        function renderStrategyChart(incidentId, strategyIndex, strategy) {
+            const ctx = document.getElementById(`strategy-chart-${incidentId}-${strategyIndex}`);
+            if (!ctx) return;
+
+            // Create realistic curved projection with gradual improvement
+            const hours = ['Now', '6h', '12h', '18h', '24h', '36h', '48h', '60h', '72h', '84h', '96h', '108h'];
+            const data = strategy.projectionData;
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: hours,
+                    datasets: [{
+                        label: currentLanguage === 'en' ? 'Negative Sentiment (%)' : 'Sentiment Négatif (%)',
+                        data: data,
+                        borderColor: strategy.color,
+                        backgroundColor: `${strategy.color}15`,
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4, // Smooth curved lines
+                        pointRadius: 5,
+                        pointHoverRadius: 7,
+                        pointBackgroundColor: strategy.color,
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            padding: 12,
+                            titleFont: { size: 14, weight: 'bold' },
+                            bodyFont: { size: 13 },
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.parsed.y}% negative sentiment`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: {
+                                color: 'rgba(148, 163, 184, 0.05)'
+                            },
+                            ticks: {
+                                callback: value => value + '%',
+                                font: { size: 11 },
+                                color: '#94a3b8'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: { size: 11 },
+                                color: '#94a3b8'
+                            }
+                        }
+                    },
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    }
+                }
+            });
+        }
+
+        // ========================================
+        // INFLUENCERS
+        // ========================================
+        function renderInfluencers() {
+            if (window.influencersRendered) return;
+            window.influencersRendered = true;
+
+            const tbody = document.getElementById('influencers-table');
+            tbody.innerHTML = influencers.map(inf => `
+                <tr onclick="viewInfluencerDetail(${inf.id})" style="cursor:pointer;">
+                    <td><strong>${inf.handle}</strong></td>
+                    <td>${inf.followers}</td>
+                    <td><span class="chip ${inf.stanceClass}">${inf.stance}</span></td>
+                    <td><strong>${inf.impact}</strong>/100</td>
+                </tr>
+            `).join('');
+        }
+
+        function viewInfluencerDetail(influencerId) {
+            const influencer = influencers.find(i => i.id === influencerId);
+            if (!influencer) return;
+
+            const modal = document.getElementById('modal-overlay');
+            const title = document.getElementById('modal-title');
+            const content = document.getElementById('modal-content');
+
+            title.textContent = influencer.handle;
+            content.innerHTML = `
+                <div style="margin-bottom:24px;">
+                    <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;">
+                        <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg, var(--primary-color), var(--accent-cyan));display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:bold;color:white;">
+                            ${influencer.handle.charAt(1).toUpperCase()}
+                        </div>
+                        <div style="flex:1;">
+                            <h3 style="font-size:20px;font-weight:700;margin-bottom:4px;">${influencer.name}</h3>
+                            <p style="color:var(--text-muted);font-size:14px;margin-bottom:8px;">${influencer.handle} • ${influencer.platform}</p>
+                            <span class="chip ${influencer.stanceClass}">${influencer.stance} towards Netflix</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background:rgba(0,0,0,0.3);border-radius:var(--radius);padding:20px;margin-bottom:24px;">
+                    <p style="color:var(--text-secondary);line-height:1.7;font-size:14px;">${influencer.bio}</p>
+                </div>
+
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;margin-bottom:24px;">
+                    <div style="background:var(--bg-card);padding:16px;border-radius:var(--radius);border:1px solid var(--border-color);">
+                        <div style="color:var(--text-muted);font-size:12px;margin-bottom:4px;">Followers</div>
+                        <div style="font-size:24px;font-weight:700;color:var(--primary-color);">${influencer.followers}</div>
+                    </div>
+                    <div style="background:var(--bg-card);padding:16px;border-radius:var(--radius);border:1px solid var(--border-color);">
+                        <div style="color:var(--text-muted);font-size:12px;margin-bottom:4px;">Engagement</div>
+                        <div style="font-size:24px;font-weight:700;color:var(--success);">${influencer.engagement}</div>
+                    </div>
+                    <div style="background:var(--bg-card);padding:16px;border-radius:var(--radius);border:1px solid var(--border-color);">
+                        <div style="color:var(--text-muted);font-size:12px;margin-bottom:4px;">Impact Score</div>
+                        <div style="font-size:24px;font-weight:700;color:var(--warning);">${influencer.impact}/100</div>
+                    </div>
+                    <div style="background:var(--bg-card);padding:16px;border-radius:var(--radius);border:1px solid var(--border-color);">
+                        <div style="color:var(--text-muted);font-size:12px;margin-bottom:4px;">Recent Posts</div>
+                        <div style="font-size:24px;font-weight:700;color:var(--accent-cyan);">${influencer.recentPosts.toLocaleString()}</div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom:24px;">
+                    <h4 style="font-size:14px;font-weight:700;color:var(--text-muted);margin-bottom:12px;text-transform:uppercase;letter-spacing:1px;">Key Topics</h4>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                        ${influencer.topics.map(topic => `<span class="chip info">${topic}</span>`).join('')}
+                    </div>
+                </div>
+
+                <div style="background:rgba(59,130,246,0.1);border-radius:var(--radius);padding:16px;border-left:4px solid var(--primary-color);">
+                    <div style="font-size:13px;color:var(--text-secondary);">
+                        <strong style="color:var(--text-primary);">Recommendation:</strong>
+                        ${influencer.stance === 'Critical'
+                            ? 'Monitor closely. Engage proactively with transparent communication addressing their concerns.'
+                            : influencer.stance === 'Supportive'
+                            ? 'Leverage as brand advocate. Consider partnership opportunities for positive messaging.'
+                            : 'Maintain relationship. Provide exclusive content and insights to build positive sentiment.'}
+                    </div>
+                </div>
+            `;
+
+            modal.classList.add('active');
+        }
+
+        function viewCommunityDetail(communityId) {
+            const communities = {
+                reddit: {
+                    name: 'r/Netflix Subreddit',
+                    icon: 'fas fa-users',
+                    color: '#ef4444',
+                    members: '8.4M',
+                    sentiment: '28% Positive',
+                    activity: 'Very High',
+                    description: 'The largest Netflix community on Reddit. Currently showing high activity around pricing changes and password sharing policies.',
+                    keyTopics: ['Price Increases', 'Password Sharing', 'Content Recommendations', 'Technical Issues'],
+                    sentiment_breakdown: { positive: 28, neutral: 15, negative: 57 },
+                    recent_activity: 'Major spike in negative discussions following recent price increase announcement. Active moderation required.',
+                    recommendation: 'Deploy community manager to address concerns transparently. Consider AMA with product team to rebuild trust.'
+                },
+                kdrama: {
+                    name: 'K-Drama Fans',
+                    icon: 'fas fa-heart',
+                    color: '#10b981',
+                    members: '12.3M',
+                    sentiment: '89% Positive',
+                    activity: 'High',
+                    description: 'Highly engaged community passionate about Korean dramas and Netflix\'s K-content investments.',
+                    keyTopics: ['New K-Drama Releases', 'Korean Content', 'Subtitles Quality', 'Regional Availability'],
+                    sentiment_breakdown: { positive: 89, neutral: 8, negative: 3 },
+                    recent_activity: 'Consistently positive engagement. Strong anticipation for upcoming K-drama releases.',
+                    recommendation: 'Leverage as brand ambassadors. Provide early access to K-content news and exclusive behind-the-scenes content.'
+                },
+                truecrime: {
+                    name: 'True Crime Community',
+                    icon: 'fas fa-mask',
+                    color: '#8b5cf6',
+                    members: '6.8M',
+                    sentiment: '81% Positive',
+                    activity: 'Medium-High',
+                    description: 'Dedicated fans of true crime documentaries and series. Highly engaged with Netflix originals in this genre.',
+                    keyTopics: ['Documentary Quality', 'New Cases', 'Series Renewals', 'Accuracy Concerns'],
+                    sentiment_breakdown: { positive: 81, neutral: 12, negative: 7 },
+                    recent_activity: 'Strong positive buzz around recent documentary releases. Minor concerns about factual accuracy on some series.',
+                    recommendation: 'Maintain high content quality standards. Consider fact-checking partnerships to address accuracy concerns proactively.'
+                },
+                anime: {
+                    name: 'Anime Watchers',
+                    icon: 'fas fa-dragon',
+                    color: '#06b6d4',
+                    members: '9.2M',
+                    sentiment: '72% Positive',
+                    activity: 'High',
+                    description: 'Growing community of anime enthusiasts. Focused on both licensed content and Netflix originals.',
+                    keyTopics: ['Anime Catalog', 'Simulcast Releases', 'Dub Quality', 'Licensing Agreements'],
+                    sentiment_breakdown: { positive: 72, neutral: 18, negative: 10 },
+                    recent_activity: 'Mixed sentiment on catalog depth compared to competitors. Positive reception of Netflix originals.',
+                    recommendation: 'Expand anime catalog and improve release timing. Engage community for content preference feedback.'
+                },
+                family: {
+                    name: 'Family Subscribers',
+                    icon: 'fas fa-child',
+                    color: '#f59e0b',
+                    members: '18.5M',
+                    sentiment: '54% Positive',
+                    activity: 'Medium',
+                    description: 'Parents and families using Netflix for kids and family content. Primary concern is value for money.',
+                    keyTopics: ['Kids Content', 'Parental Controls', 'Family Plans', 'Price Sensitivity'],
+                    sentiment_breakdown: { positive: 54, neutral: 22, negative: 24 },
+                    recent_activity: 'Increased concerns about pricing and password sharing affecting family sharing arrangements.',
+                    recommendation: 'Emphasize kids content value. Consider family-specific retention offers and improved parental control features.'
+                }
+            };
+
+            const community = communities[communityId];
+            if (!community) return;
+
+            const modal = document.getElementById('modal-overlay');
+            const title = document.getElementById('modal-title');
+            const content = document.getElementById('modal-content');
+
+            title.textContent = community.name;
+            content.innerHTML = `
+                <div style="margin-bottom:24px;">
+                    <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;">
+                        <div style="width:80px;height:80px;border-radius:50%;background:${community.color}20;display:flex;align-items:center;justify-content:center;font-size:32px;color:${community.color};">
+                            <i class="${community.icon}"></i>
+                        </div>
+                        <div style="flex:1;">
+                            <h3 style="font-size:20px;font-weight:700;margin-bottom:4px;">${community.name}</h3>
+                            <p style="color:var(--text-muted);font-size:14px;">${community.members} members</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background:rgba(0,0,0,0.3);border-radius:var(--radius);padding:20px;margin-bottom:24px;">
+                    <p style="color:var(--text-secondary);line-height:1.7;font-size:14px;">${community.description}</p>
+                </div>
+
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:24px;">
+                    <div style="background:var(--bg-card);padding:16px;border-radius:var(--radius);border:1px solid var(--border-color);">
+                        <div style="color:var(--text-muted);font-size:12px;margin-bottom:4px;">Community Size</div>
+                        <div style="font-size:24px;font-weight:700;color:var(--primary-color);">${community.members}</div>
+                    </div>
+                    <div style="background:var(--bg-card);padding:16px;border-radius:var(--radius);border:1px solid var(--border-color);">
+                        <div style="color:var(--text-muted);font-size:12px;margin-bottom:4px;">Overall Sentiment</div>
+                        <div style="font-size:20px;font-weight:700;color:${community.color};">${community.sentiment}</div>
+                    </div>
+                    <div style="background:var(--bg-card);padding:16px;border-radius:var(--radius);border:1px solid var(--border-color);">
+                        <div style="color:var(--text-muted);font-size:12px;margin-bottom:4px;">Activity Level</div>
+                        <div style="font-size:20px;font-weight:700;color:var(--warning);">${community.activity}</div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom:24px;">
+                    <h4 style="font-size:14px;font-weight:700;color:var(--text-muted);margin-bottom:12px;text-transform:uppercase;letter-spacing:1px;">Sentiment Breakdown</h4>
+                    <div style="background:var(--bg-card);border-radius:var(--radius);padding:16px;border:1px solid var(--border-color);">
+                        <div style="display:flex;gap:8px;margin-bottom:8px;">
+                            <div style="flex:${community.sentiment_breakdown.positive};background:var(--success);height:8px;border-radius:4px;"></div>
+                            <div style="flex:${community.sentiment_breakdown.neutral};background:var(--warning);height:8px;border-radius:4px;"></div>
+                            <div style="flex:${community.sentiment_breakdown.negative};background:var(--danger);height:8px;border-radius:4px;"></div>
+                        </div>
+                        <div style="display:flex;gap:16px;font-size:12px;color:var(--text-secondary);">
+                            <span><span style="color:var(--success);">●</span> ${community.sentiment_breakdown.positive}% Positive</span>
+                            <span><span style="color:var(--warning);">●</span> ${community.sentiment_breakdown.neutral}% Neutral</span>
+                            <span><span style="color:var(--danger);">●</span> ${community.sentiment_breakdown.negative}% Negative</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom:24px;">
+                    <h4 style="font-size:14px;font-weight:700;color:var(--text-muted);margin-bottom:12px;text-transform:uppercase;letter-spacing:1px;">Key Topics</h4>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                        ${community.keyTopics.map(topic => `<span class="chip info">${topic}</span>`).join('')}
+                    </div>
+                </div>
+
+                <div style="background:rgba(139,92,246,0.1);border-radius:var(--radius);padding:16px;margin-bottom:16px;border-left:4px solid var(--accent-purple);">
+                    <div style="font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">Recent Activity</div>
+                    <div style="font-size:13px;color:var(--text-secondary);">${community.recent_activity}</div>
+                </div>
+
+                <div style="background:rgba(59,130,246,0.1);border-radius:var(--radius);padding:16px;border-left:4px solid var(--primary-color);">
+                    <div style="font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">Recommendation</div>
+                    <div style="font-size:13px;color:var(--text-secondary);">${community.recommendation}</div>
+                </div>
+            `;
+
+            modal.classList.add('active');
+        }
+
+        // ========================================
+        // LOADING STATE HELPER
+        // ========================================
+        function showButtonLoading(button, callback, delay = 1500) {
+            const originalHTML = button.innerHTML;
+            button.disabled = true;
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Loading...</span>';
+
+            setTimeout(() => {
+                button.innerHTML = originalHTML;
+                button.disabled = false;
+                if (callback) callback();
+            }, delay);
+        }
+
+        // ========================================
+        // SIMULATOR
+        // ========================================
+        function handleSimulationRun(button) {
+            showButtonLoading(button, () => runSimulation(), 1200);
+        }
+
+        function runSimulation() {
+            const scenario = document.getElementById('simulator-scenario').value;
+
+            // Generate mock data for all strategies
+            const baseData = [62, 60, 58, 56, 54, 52, 50];
+            const monitorData = [62, 61, 60, 59, 58, 57, 56];
+            const communityData = [62, 58, 54, 50, 46, 43, 40];
+            const statementData = [62, 55, 48, 42, 38, 34, 30];
+            const ceoVideoData = [62, 52, 42, 35, 30, 26, 23];
+
+            const summary = currentLanguage === 'en'
+                ? 'Comparison of all response strategies over 72 hours. CEO Video Response shows the fastest sentiment recovery, dropping negative sentiment to 23%. Official Statement achieves 30%, Community Engagement reaches 40%, while Monitor Only approaches 56%. No Action baseline declines to 50%.'
+                : 'Comparaison de toutes les stratégies de réponse sur 72 heures. La Vidéo du PDG montre la récupération la plus rapide, réduisant le sentiment négatif à 23%. Le Communiqué Officiel atteint 30%, l\'Engagement Communautaire atteint 40%, tandis que la Surveillance Seule approche 56%. La référence Sans Action décline à 50%.';
+
+            // Show results
+            document.getElementById('simulation-results').style.display = 'block';
+            document.getElementById('simulation-summary').textContent = summary;
+
+            // Render chart with all strategies
+            const ctx = document.getElementById('simulation-chart');
+            if (simulationChart) {
+                simulationChart.destroy();
+            }
+
+            simulationChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Now', '12h', '24h', '36h', '48h', '60h', '72h'],
+                    datasets: [
+                        {
+                            label: currentLanguage === 'en' ? 'No Action (Baseline)' : 'Sans Action (Référence)',
+                            data: baseData,
+                            borderColor: '#64748b',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            tension: 0.3,
+                            pointRadius: 4
+                        },
+                        {
+                            label: currentLanguage === 'en' ? 'Monitor Only' : 'Surveillance Seule',
+                            data: monitorData,
+                            borderColor: '#f59e0b',
+                            backgroundColor: 'rgba(245, 158, 11, 0.05)',
+                            borderWidth: 2.5,
+                            tension: 0.3,
+                            pointRadius: 4
+                        },
+                        {
+                            label: currentLanguage === 'en' ? 'Community Engagement' : 'Engagement Communautaire',
+                            data: communityData,
+                            borderColor: '#06b6d4',
+                            backgroundColor: 'rgba(6, 182, 212, 0.05)',
+                            borderWidth: 2.5,
+                            tension: 0.3,
+                            pointRadius: 4
+                        },
+                        {
+                            label: currentLanguage === 'en' ? 'Official Statement' : 'Communiqué Officiel',
+                            data: statementData,
+                            borderColor: '#8b5cf6',
+                            backgroundColor: 'rgba(139, 92, 246, 0.05)',
+                            borderWidth: 2.5,
+                            tension: 0.3,
+                            pointRadius: 4
+                        },
+                        {
+                            label: currentLanguage === 'en' ? 'CEO Video Response' : 'Vidéo du PDG',
+                            data: ceoVideoData,
+                            borderColor: '#10b981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.3,
+                            pointRadius: 5
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 15,
+                                font: { size: 12 }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: { callback: value => value + '%' },
+                            title: { display: true, text: currentLanguage === 'en' ? 'Negative Sentiment (%)' : 'Sentiment Négatif (%)' }
+                        }
+                    }
+                }
+            });
+
+            // Scroll to results
+            setTimeout(() => {
+                document.getElementById('simulation-results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+        }
+
+        // ========================================
+        // REPORTS
+        // ========================================
+        function handleViewReport(button, reportType) {
+            showButtonLoading(button, () => viewReport(reportType), 800);
+        }
+
+        function viewReport(reportType) {
+            const modal = document.getElementById('modal-overlay');
+            const title = document.getElementById('modal-title');
+            const content = document.getElementById('modal-content');
+
+            if (reportType === 'weekly') {
+                title.textContent = currentLanguage === 'en' ? 'Weekly Brand Health – France' : 'Santé Hebdomadaire de la Marque – France';
+                content.innerHTML = `
+                    <div style="margin-bottom:24px;">
+                        <h4 style="margin-bottom:12px;">Key Metrics</h4>
+                        <ul style="list-style:none;padding:0;">
+                            <li style="padding:8px 0;border-bottom:1px solid var(--border-color);">Overall Sentiment: <strong>72/100</strong> <span class="chip success">+3 vs last week</span></li>
+                            <li style="padding:8px 0;border-bottom:1px solid var(--border-color);">Total Volume: <strong>142K mentions</strong> <span class="chip warning">+15%</span></li>
+                            <li style="padding:8px 0;border-bottom:1px solid var(--border-color);">Active Incidents: <strong>5</strong></li>
+                        </ul>
+                    </div>
+                    <div style="margin-bottom:24px;">
+                        <h4 style="margin-bottom:12px;">Key Insights</h4>
+                        <ul style="padding-left:20px;">
+                            <li style="margin-bottom:8px;">Positive momentum in food blogger community (+8 points)</li>
+                            <li style="margin-bottom:8px;">Deepfake incident contained but requires continued monitoring</li>
+                            <li style="margin-bottom:8px;">TikTok showing highest growth in brand mentions (42% increase)</li>
+                        </ul>
+                    </div>
+                `;
+            } else if (reportType === 'postmortem') {
+                title.textContent = currentLanguage === 'en' ? 'Incident Post-Mortem' : 'Post-Mortem d\'Incident';
+                content.innerHTML = `
+                    <div style="margin-bottom:24px;">
+                        <h4 style="margin-bottom:12px;">Timeline</h4>
+                        <ul style="padding-left:20px;">
+                            <li style="margin-bottom:8px;"><strong>09:17</strong> - Deepfake video first detected on TikTok</li>
+                            <li style="margin-bottom:8px;"><strong>09:45</strong> - Alert triggered, response team notified</li>
+                            <li style="margin-bottom:8px;"><strong>11:30</strong> - Platform takedown requests submitted</li>
+                            <li style="margin-bottom:8px;"><strong>14:00</strong> - Official statement released</li>
+                        </ul>
+                    </div>
+                    <div style="margin-bottom:24px;">
+                        <h4 style="margin-bottom:12px;">Lessons Learned</h4>
+                        <ul style="padding-left:20px;">
+                            <li style="margin-bottom:8px;">Early detection critical for minimizing spread</li>
+                            <li style="margin-bottom:8px;">Platform cooperation effective but time-sensitive</li>
+                            <li style="margin-bottom:8px;">Proactive CEO communication reduced negative sentiment by 35%</li>
+                        </ul>
+                    </div>
+                `;
+            } else {
+                title.textContent = currentLanguage === 'en' ? 'Influencer Risk Report' : 'Rapport de Risque Influenceurs';
+                content.innerHTML = `
+                    <div style="margin-bottom:24px;">
+                        <h4 style="margin-bottom:12px;">High-Risk Influencers</h4>
+                        <ul style="padding-left:20px;">
+                            <li style="margin-bottom:8px;"><strong>@EcoJustice_fr</strong> (450K) - Consistently critical, high reach</li>
+                            <li style="margin-bottom:8px;"><strong>@HealthFirst_Paris</strong> (275K) - Focus on sugar content concerns</li>
+                        </ul>
+                    </div>
+                    <div style="margin-bottom:24px;">
+                        <h4 style="margin-bottom:12px;">Partnership Opportunities</h4>
+                        <ul style="padding-left:20px;">
+                            <li style="margin-bottom:8px;"><strong>@NovaFans_FR</strong> (185K) - Strong brand advocate</li>
+                            <li style="margin-bottom:8px;"><strong>@FrenchBlogger_</strong> (95K) - Positive coverage, growing audience</li>
+                        </ul>
+                    </div>
+                `;
+            }
+
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modal-overlay').classList.remove('active');
+        }
+
+        // ========================================
+        // LIVE DATA UPDATES
+        // ========================================
+        let liveDataInterval;
+        let timestampInterval;
+        let secondsElapsed = 0;
+
+        function updateLiveTimestamp() {
+            secondsElapsed++;
+            const timestampEl = document.getElementById('live-timestamp');
+            if (!timestampEl) return;
+
+            if (secondsElapsed < 60) {
+                timestampEl.textContent = secondsElapsed === 0 ? 'Just now' : `${secondsElapsed} seconds ago`;
+            } else if (secondsElapsed < 3600) {
+                const minutes = Math.floor(secondsElapsed / 60);
+                timestampEl.textContent = `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+            } else {
+                const hours = Math.floor(secondsElapsed / 3600);
+                timestampEl.textContent = `${hours} hour${hours > 1 ? 's' : ''} ago`;
+            }
+        }
+
+        function animateNumberChange(element, newValue, suffix = '') {
+            if (!element) return;
+            element.classList.add('number-updating');
+            setTimeout(() => {
+                element.innerHTML = newValue + suffix;
+                element.classList.remove('number-updating');
+            }, 250);
+        }
+
+        function updateLiveData() {
+            // Update sentiment (small fluctuations)
+            const sentimentEl = document.getElementById('live-sentiment');
+            if (sentimentEl) {
+                const currentSentiment = parseInt(sentimentEl.textContent);
+                const change = Math.random() > 0.5 ? 1 : -1;
+                const newSentiment = Math.max(65, Math.min(78, currentSentiment + change));
+                if (newSentiment !== currentSentiment) {
+                    animateNumberChange(sentimentEl, newSentiment, '<span style="font-size: 20px; color: var(--text-secondary);">/100</span>');
+                }
+            }
+
+            // Update volume (gradual increases)
+            const volumeEl = document.getElementById('live-volume');
+            const trendEl = document.getElementById('live-volume-trend');
+            if (volumeEl && Math.random() > 0.7) {
+                const currentVolume = parseFloat(volumeEl.textContent.replace('K', ''));
+                const increase = (Math.random() * 0.3).toFixed(1);
+                const newVolume = (currentVolume + parseFloat(increase)).toFixed(1);
+                animateNumberChange(volumeEl, newVolume + 'K');
+
+                if (trendEl) {
+                    const newTrend = (12.3 + Math.random() * 2).toFixed(1);
+                    trendEl.textContent = `+${newTrend}%`;
+                }
+            }
+
+            // Occasionally update incidents
+            const incidentsEl = document.getElementById('live-incidents');
+            if (incidentsEl && Math.random() > 0.95) {
+                const incidents = parseInt(incidentsEl.textContent);
+                const newIncidents = Math.random() > 0.5 ? incidents + 1 : Math.max(3, incidents - 1);
+                if (newIncidents !== incidents) {
+                    animateNumberChange(incidentsEl, newIncidents);
+                    const detailEl = document.getElementById('live-incidents-detail');
+                    if (detailEl) {
+                        const high = Math.floor(newIncidents * 0.6);
+                        const monitoring = newIncidents - high;
+                        detailEl.textContent = `${high} high priority, ${monitoring} monitoring`;
+                    }
+                }
+            }
+
+            // Update activity count on incidents page
+            const activityCountEl = document.getElementById('incidents-activity-count');
+            if (activityCountEl && Math.random() > 0.8) {
+                const currentCount = parseInt(activityCountEl.textContent.split(' ')[0]);
+                const newCount = currentCount + Math.floor(Math.random() * 5) + 1;
+                animateNumberChange(activityCountEl, newCount + ' events');
+            }
+
+            // Update notification badge occasionally
+            const notifBadge = document.getElementById('notification-badge');
+            if (notifBadge && Math.random() > 0.92) {
+                const currentBadge = parseInt(notifBadge.textContent);
+                const newBadge = Math.min(9, currentBadge + 1);
+                if (newBadge !== currentBadge) {
+                    notifBadge.textContent = newBadge;
+                    notifBadge.classList.add('number-updating');
+                    setTimeout(() => notifBadge.classList.remove('number-updating'), 500);
+                }
+            }
+
+            // Update mentions count on influencers page
+            const mentionsEl = document.getElementById('live-mentions');
+            if (mentionsEl && Math.random() > 0.85) {
+                const currentMentions = parseInt(mentionsEl.textContent.replace(/,/g, ''));
+                const newMentions = currentMentions + Math.floor(Math.random() * 15) + 3;
+                animateNumberChange(mentionsEl, newMentions.toLocaleString() + ' mentions');
+            }
+
+            // Reset timestamp occasionally
+            if (Math.random() > 0.98) {
+                secondsElapsed = 0;
+            }
+        }
+
+        function startLiveUpdates() {
+            // Update timestamp every second
+            timestampInterval = setInterval(updateLiveTimestamp, 1000);
+
+            // Update live data every 3-5 seconds
+            liveDataInterval = setInterval(updateLiveData, 3000 + Math.random() * 2000);
+        }
+
+        function stopLiveUpdates() {
+            if (timestampInterval) clearInterval(timestampInterval);
+            if (liveDataInterval) clearInterval(liveDataInterval);
+        }
+
+        // ========================================
+        // INITIALIZATION
+        // ========================================
+        document.addEventListener('DOMContentLoaded', function() {
+            renderNotifications();
+            renderOverviewCharts();
+            startLiveUpdates();
+        });
+
+        // Close notification panel when clicking outside
+        document.addEventListener('click', function(e) {
+            const panel = document.getElementById('notification-panel');
+            const bell = document.querySelector('.notification-bell');
+            if (panel && bell && !panel.contains(e.target) && !bell.contains(e.target)) {
+                panel.classList.remove('active');
+            }
+        });
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', stopLiveUpdates);
+    </script>
+</body>
+</html>
