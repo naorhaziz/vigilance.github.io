@@ -2525,6 +2525,9 @@
         function navigateTo(page) {
             currentPage = page;
 
+            // Scroll to top of page
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
             // Update sidebar active state
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.classList.toggle('active', item.getAttribute('data-page') === page);
