@@ -1,10 +1,12 @@
 import { Shield, AlertTriangle, Video, FileText, Rocket, BarChart3, Settings, Activity, LayoutDashboard, Users, MessageSquare } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 export default function Sidebar() {
-  const { getCriticalThreats, getThreats, currentPage, setCurrentPage } = useStore();
+  const { getCriticalThreats, getThreats } = useStore();
   const [liveCount, setLiveCount] = useState(0);
+  const location = useLocation();
 
   const criticalCount = getCriticalThreats().length;
   const totalThreats = getThreats().length;
@@ -18,12 +20,12 @@ export default function Sidebar() {
   }, []);
 
   const menuItems = [
-    { id: 'dashboard', icon: LayoutDashboard, label: 'Dashboard', badge: null },
-    { id: 'earlywarning', icon: Activity, label: 'Early Warning', badge: criticalCount, badgeColor: 'bg-red-500' },
-    { id: 'threats', icon: AlertTriangle, label: 'All Threats', badge: totalThreats, badgeColor: 'bg-orange-500' },
-    { id: 'narratives', icon: MessageSquare, label: 'Narratives', badge: null },
-    { id: 'audience', icon: Users, label: 'Audience', badge: null },
-    { id: 'settings', icon: Settings, label: 'Settings', badge: null },
+    { id: 'dashboard', path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard', badge: null },
+    { id: 'earlywarning', path: '/earlywarning', icon: Activity, label: 'Early Warning', badge: criticalCount, badgeColor: 'bg-red-500' },
+    { id: 'narratives', path: '/narratives', icon: MessageSquare, label: 'Narratives', badge: totalThreats, badgeColor: 'bg-purple-500' },
+    { id: 'analytics', path: '/analytics', icon: BarChart3, label: 'Analytics', badge: null },
+    { id: 'audience', path: '/audience', icon: Users, label: 'Audience', badge: null },
+    { id: 'settings', path: '/settings', icon: Settings, label: 'Settings', badge: null },
   ];
 
   return (
@@ -50,12 +52,12 @@ export default function Sidebar() {
       <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
         {menuItems.map(item => {
           const Icon = item.icon;
-          const isActive = currentPage === item.id;
+          const isActive = location.pathname === item.path || location.pathname.startsWith(item.path + '/');
 
           return (
-            <button
+            <Link
               key={item.id}
-              onClick={() => setCurrentPage(item.id)}
+              to={item.path}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${isActive
                 ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/50'
                 : 'text-gray-400 hover:text-white hover:bg-white/5'
@@ -68,7 +70,7 @@ export default function Sidebar() {
                   {item.badge}
                 </span>
               )}
-            </button>
+            </Link>
           );
         })}
       </nav>

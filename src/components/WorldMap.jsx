@@ -247,6 +247,8 @@ export default function WorldMap({ threats = [] }) {
               key={idx}
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
+              onMouseEnter={() => setHoveredThreat(marker)}
+              onMouseLeave={() => setHoveredThreat(null)}
               transition={{
                 duration: 0.5,
                 delay: idx * 0.1,
@@ -259,8 +261,6 @@ export default function WorldMap({ threats = [] }) {
                 top: `${marker.coords.y}%`,
                 transform: 'translate(-50%, -50%)',
               }}
-              onMouseEnter={() => setHoveredThreat(marker)}
-              onMouseLeave={() => setHoveredThreat(null)}
             >
               {/* Pulsing rings */}
               {!marker.isSecondary && (

@@ -3,12 +3,14 @@ import { useStore } from '../../store/useStore';
 import { formatNumber } from '../../lib/utils';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import WorldMap from '../WorldMap';
 
 export default function DashboardPage() {
-  const { getThreats, getCriticalThreats, database, currentTenant } = useStore();
+  const { getThreats, getCriticalThreats, database, currentTenant, setSelectedThreat } = useStore();
   const threats = getThreats();
   const criticalThreats = getCriticalThreats();
+  const navigate = useNavigate();
 
   // Calculate overall sentiment from all threats (0-100 scale)
   const calculateOverallSentiment = () => {
@@ -499,59 +501,28 @@ export default function DashboardPage() {
         </motion.div>
       </div>
 
-      {/* Map and Activity Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-        {/* World Map */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.7 }}
-          className="lg:col-span-2 glass rounded-xl p-6"
-        >
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2">
-              <Globe className="w-5 h-5 text-blue-500" />
-              <h3 className="text-lg font-semibold">Global Threat Map</h3>
-            </div>
-            <div className="flex items-center gap-2 text-xs text-gray-400">
-              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-              Live
-            </div>
+      {/* Map Row - Full Width */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.7 }}
+        className="glass rounded-xl p-6 mb-8"
+      >
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <Globe className="w-5 h-5 text-blue-500" />
+            <h3 className="text-lg font-semibold">Global Threat Map</h3>
           </div>
+          <div className="flex items-center gap-2 text-xs text-gray-400">
+            <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+            Live
+          </div>
+        </div>
 
-          <div className="h-80 bg-slate-900/50 rounded-lg overflow-hidden border border-white/5">
-            <WorldMap threats={threats} />
-          </div>
-        </motion.div>
-
-        {/* Recent Activity */}
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.8 }}
-          className="glass rounded-xl p-6"
-        >
-          <div className="flex items-center gap-2 mb-4">
-            <Clock className="w-5 h-5 text-yellow-500" />
-            <h3 className="text-lg font-semibold">Recent Activity</h3>
-          </div>
-
-          <div className="space-y-2 max-h-80 overflow-y-auto">
-            {recentActivity.map((activity, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: 10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.9 + i * 0.05 }}
-                className="flex items-start gap-2 p-2 glass-hover rounded-lg text-sm"
-              >
-                <div className="text-xs text-gray-500 mt-0.5 flex-shrink-0">{activity.time}</div>
-                <div className="flex-1 text-gray-300">{activity.text}</div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      </div>
+        <div className="h-96 bg-slate-900/50 rounded-lg overflow-hidden border border-white/5">
+          <WorldMap threats={threats} />
+        </div>
+      </motion.div>
 
       {/* Bottom Row: Trending Narratives and System Health */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -574,10 +545,14 @@ export default function DashboardPage() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.0 + i * 0.1 }}
-                className="flex items-start gap-3 p-3 bg-slate-800/30 rounded-lg hover:bg-slate-800/50 transition-all"
+                onClick={() => {
+                  setSelectedThreat(item);
+                  navigate(`/narratives/${item.id}`);
+                }}
+                className="flex items-start gap-3 p-3 bg-slate-800/30 rounded-lg hover:bg-slate-800/50 transition-all cursor-pointer hover:border-purple-500/50 border border-transparent"
               >
                 <div className="flex-1">
-                  <div className="font-semibold text-sm mb-1">{item.title}</div>
+                  <div className="font-semibold text-sm mb-1 hover:text-purple-400 transition-colors">{item.title}</div>
                   <div className="text-xs text-gray-400 italic">"{item.narrative?.slice(0, 80)}..."</div>
                 </div>
                 <div className="text-right flex-shrink-0">

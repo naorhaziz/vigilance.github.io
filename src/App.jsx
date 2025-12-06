@@ -1,28 +1,19 @@
 import { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useStore } from './store/useStore';
 import { Loader2, Shield } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import DashboardPage from './components/pages/DashboardPage';
 import EarlyWarningPage from './components/pages/EarlyWarningPage';
-import AllThreatsPage from './components/pages/AllThreatsPage';
 import AudiencePage from './components/pages/AudiencePage';
 import NarrativesPage from './components/pages/NarrativesPage';
+import AnalyticsPage from './components/pages/AnalyticsPage';
 import SettingsPage from './components/pages/SettingsPage';
 import ThreatModal from './components/ThreatModal';
 
 function App() {
-  const { setDatabase, isLoading, currentPage } = useStore();
-
-  const pages = {
-    dashboard: <DashboardPage />,
-    earlywarning: <EarlyWarningPage />,
-    threats: <AllThreatsPage />,
-    audience: <AudiencePage />,
-    narratives: <NarrativesPage />,
-    settings: <SettingsPage />,
-  };
+  const { setDatabase, isLoading } = useStore();
 
   useEffect(() => {
     fetch('/data/database.json')
@@ -51,26 +42,27 @@ function App() {
   }
 
   return (
-    <div className="flex min-h-screen">
-      <Sidebar />
-      <div className="flex-1 flex flex-col min-h-screen">
-        <Header />
-        <main className="flex-1 overflow-y-auto">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentPage}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-            >
-              {pages[currentPage] || pages.dashboard}
-            </motion.div>
-          </AnimatePresence>
-        </main>
+    <Router>
+      <div className="flex min-h-screen">
+        <Sidebar />
+        <div className="flex-1 flex flex-col min-h-screen">
+          <Header />
+          <main className="flex-1 overflow-y-auto">
+            <Routes>
+              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/earlywarning" element={<EarlyWarningPage />} />
+              <Route path="/audience" element={<AudiencePage />} />
+              <Route path="/narratives" element={<NarrativesPage />} />
+              <Route path="/narratives/:id" element={<NarrativesPage />} />
+              <Route path="/analytics" element={<AnalyticsPage />} />
+              <Route path="/settings" element={<SettingsPage />} />
+            </Routes>
+          </main>
+        </div>
+        <ThreatModal />
       </div>
-      <ThreatModal />
-    </div>
+    </Router>
   );
 }
 

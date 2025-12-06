@@ -5,7 +5,6 @@ export const useStore = create((set, get) => ({
   currentTenant: null,
   selectedThreat: null,
   isLoading: true,
-  currentPage: 'dashboard',
 
   setDatabase: (data) => {
     const firstTenantId = Object.keys(data.tenants)[0];
@@ -18,7 +17,6 @@ export const useStore = create((set, get) => ({
 
   setCurrentTenant: (tenantId) => set({ currentTenant: tenantId }),
   setSelectedThreat: (threat) => set({ selectedThreat: threat }),
-  setCurrentPage: (page) => set({ currentPage: page }),
 
   getTenant: () => {
     const { database, currentTenant } = get();
