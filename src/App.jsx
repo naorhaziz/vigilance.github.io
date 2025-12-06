@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useStore } from './store/useStore';
 import { Loader2, Shield } from 'lucide-react';
 import Sidebar from './components/Sidebar';
@@ -10,6 +10,22 @@ import NarrativesPage from './components/pages/NarrativesPage';
 import AnalyticsPage from './components/pages/AnalyticsPage';
 import SettingsPage from './components/pages/SettingsPage';
 import ThreatModal from './components/ThreatModal';
+
+// Scroll to top on route change
+function ScrollToTop() {
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    // Also scroll main content area if it exists
+    const mainContent = document.querySelector('main');
+    if (mainContent) {
+      mainContent.scrollTop = 0;
+    }
+  }, [location.pathname]);
+
+  return null;
+}
 
 function App() {
   const { setDatabase, isLoading } = useStore();
@@ -42,6 +58,7 @@ function App() {
 
   return (
     <Router>
+      <ScrollToTop />
       <div className="flex min-h-screen">
         <Sidebar />
         <div className="flex-1 flex flex-col min-h-screen">

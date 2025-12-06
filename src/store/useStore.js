@@ -30,7 +30,7 @@ export const useStore = create((set, get) => ({
 
   getCriticalThreats: () => {
     return get().getThreats().filter(t =>
-      t.severity === 'critical' && t.status === 'pre_viral'
+      t.severity === 'critical'
     );
   },
 }));

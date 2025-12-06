@@ -131,7 +131,7 @@ export default function DashboardPage() {
       });
     }
     setSentimentTimeline(data);
-  }, [overallSentiment]);
+  }, [overallSentiment, currentTenant]); // Re-run when tenant changes
 
   // Conversation volume timeline
   const [volumeTimeline, setVolumeTimeline] = useState([]);
@@ -147,11 +147,16 @@ export default function DashboardPage() {
       });
     }
     setVolumeTimeline(data);
-  }, [conversationVolume]);
+  }, [conversationVolume, currentTenant]); // Re-run when tenant changes
+
+  // Reset initialization when tenant changes
+  useEffect(() => {
+    initializedRef.current = false;
+  }, [currentTenant]);
 
   // Live data updates - subtle random changes to make it feel alive
   useEffect(() => {
-    // Only initialize once
+    // Only initialize once per tenant
     if (!initializedRef.current) {
       const baseVolume = threats.reduce((sum, t) => sum + (t.currentReach || 0), 0);
       const baseSentiment = calculateOverallSentiment();
@@ -169,7 +174,7 @@ export default function DashboardPage() {
 
       initializedRef.current = true;
     }
-  }, [threats]);
+  }, [threats, currentTenant]); // Added currentTenant dependency
 
   // Separate effect for live updates
   useEffect(() => {
@@ -254,7 +259,14 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <motion.div
+      key={currentTenant} // Force re-render with animation when tenant changes
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: 20 }}
+      transition={{ duration: 0.3 }}
+      className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"
+    >
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
@@ -824,6 +836,6 @@ export default function DashboardPage() {
           </div>
         </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 }

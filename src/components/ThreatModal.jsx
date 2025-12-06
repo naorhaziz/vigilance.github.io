@@ -1,10 +1,17 @@
 import { X, Video, FileText, Shield, Rocket, Play, Copy, Send, Loader2, Check, Clock, TrendingDown, Users, Target, AlertTriangle, CheckCircle, XCircle } from 'lucide-react';
 import { useStore } from '../store/useStore';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 
 export default function ThreatModal() {
   const { selectedThreat, setSelectedThreat } = useStore();
   const [activeTab, setActiveTab] = useState('overview');
+
+  // Reset to overview tab when modal opens
+  useEffect(() => {
+    if (selectedThreat) {
+      setActiveTab('overview');
+    }
+  }, [selectedThreat?.id]); // Reset when threat changes
 
   // Loading states for different actions
   const [loadingVideo, setLoadingVideo] = useState(null);
@@ -333,55 +340,6 @@ export default function ThreatModal() {
                   </div>
                 </div>
               </div>
-
-              {/* Effectiveness Comparison */}
-              {arsenalMetrics && arsenalMetrics.totalAssets > 0 && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="glass rounded-lg p-4">
-                    <h4 className="font-semibold mb-3 flex items-center gap-2">
-                      <Video className="w-4 h-4 text-purple-400" />
-                      Video Effectiveness
-                    </h4>
-                    <div className="relative h-32 flex items-end justify-center gap-2">
-                      {arsenal.videos?.slice(0, 5).map((video, i) => (
-                        <div key={i} className="flex-1 flex flex-col items-center">
-                          <div
-                            className="w-full bg-gradient-to-t from-purple-600 to-purple-400 rounded-t transition-all hover:opacity-80"
-                            style={{ height: `${video.estimatedEffectiveness}%` }}
-                          />
-                          <div className="text-xs text-gray-400 mt-1">{video.estimatedEffectiveness}%</div>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="text-center mt-3">
-                      <span className="text-2xl font-bold text-purple-400">{arsenalMetrics.avgVideoEffectiveness}%</span>
-                      <span className="text-sm text-gray-400 ml-2">Avg Effectiveness</span>
-                    </div>
-                  </div>
-
-                  <div className="glass rounded-lg p-4">
-                    <h4 className="font-semibold mb-3 flex items-center gap-2">
-                      <FileText className="w-4 h-4 text-green-400" />
-                      Statement Effectiveness
-                    </h4>
-                    <div className="relative h-32 flex items-end justify-center gap-2">
-                      {arsenal.textResponses?.slice(0, 5).map((stmt, i) => (
-                        <div key={i} className="flex-1 flex flex-col items-center">
-                          <div
-                            className="w-full bg-gradient-to-t from-green-600 to-green-400 rounded-t transition-all hover:opacity-80"
-                            style={{ height: `${stmt.estimatedEffectiveness}%` }}
-                          />
-                          <div className="text-xs text-gray-400 mt-1">{stmt.estimatedEffectiveness}%</div>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="text-center mt-3">
-                      <span className="text-2xl font-bold text-green-400">{arsenalMetrics.avgTextEffectiveness}%</span>
-                      <span className="text-sm text-gray-400 ml-2">Avg Effectiveness</span>
-                    </div>
-                  </div>
-                </div>
-              )}
 
               {/* Distribution Network Preview */}
               {distributionPlan.immediate && (

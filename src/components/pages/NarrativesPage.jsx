@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 export default function NarrativesPage() {
-    const { getThreats, selectedThreat, setSelectedThreat } = useStore();
+    const { getThreats, selectedThreat, setSelectedThreat, currentTenant } = useStore();
     const allThreats = getThreats();
     const { id } = useParams();
 
@@ -14,6 +14,14 @@ export default function NarrativesPage() {
     const [selectedStatus, setSelectedStatus] = useState('all');
     const [selectedSeverity, setSelectedSeverity] = useState('all');
     const [sortBy, setSortBy] = useState('virality'); // virality, severity, time
+
+    // Reset filters when tenant changes
+    useEffect(() => {
+        setSearchQuery('');
+        setSelectedStatus('all');
+        setSelectedSeverity('all');
+        setSortBy('virality');
+    }, [currentTenant]);
 
     // Auto-open modal if a threat ID is in the URL
     useEffect(() => {
@@ -67,7 +75,14 @@ export default function NarrativesPage() {
     };
 
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <motion.div
+            key={currentTenant} // Force re-render with animation when tenant changes
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 20 }}
+            transition={{ duration: 0.3 }}
+            className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"
+        >
             {/* Header */}
             <motion.div
                 initial={{ opacity: 0, y: -20 }}
@@ -179,8 +194,8 @@ export default function NarrativesPage() {
                             <button
                                 onClick={() => setSortBy('virality')}
                                 className={`px-3 py-1 rounded-lg text-sm font-medium transition-all ${sortBy === 'virality'
-                                        ? 'bg-blue-500 text-white'
-                                        : 'bg-slate-800 text-gray-400 hover:text-white'
+                                    ? 'bg-blue-500 text-white'
+                                    : 'bg-slate-800 text-gray-400 hover:text-white'
                                     }`}
                             >
                                 Virality
@@ -188,8 +203,8 @@ export default function NarrativesPage() {
                             <button
                                 onClick={() => setSortBy('severity')}
                                 className={`px-3 py-1 rounded-lg text-sm font-medium transition-all ${sortBy === 'severity'
-                                        ? 'bg-blue-500 text-white'
-                                        : 'bg-slate-800 text-gray-400 hover:text-white'
+                                    ? 'bg-blue-500 text-white'
+                                    : 'bg-slate-800 text-gray-400 hover:text-white'
                                     }`}
                             >
                                 Severity
@@ -197,8 +212,8 @@ export default function NarrativesPage() {
                             <button
                                 onClick={() => setSortBy('time')}
                                 className={`px-3 py-1 rounded-lg text-sm font-medium transition-all ${sortBy === 'time'
-                                        ? 'bg-blue-500 text-white'
-                                        : 'bg-slate-800 text-gray-400 hover:text-white'
+                                    ? 'bg-blue-500 text-white'
+                                    : 'bg-slate-800 text-gray-400 hover:text-white'
                                     }`}
                             >
                                 <Clock className="w-3 h-3 inline mr-1" />
@@ -261,6 +276,6 @@ export default function NarrativesPage() {
                     </div>
                 </>
             )}
-        </div>
+        </motion.div>
     );
 }

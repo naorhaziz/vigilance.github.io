@@ -48,11 +48,10 @@ export default function ThreatCard({ threat }) {
     <motion.div
       whileHover={{ scale: 1.01, y: -2 }}
       transition={{ duration: 0.2 }}
-      className={`glass rounded-xl p-6 cursor-pointer border transition-all ${
-        threat.severity === 'critical'
+      className={`glass rounded-xl p-6 cursor-pointer border transition-all ${threat.severity === 'critical'
           ? 'border-red-500/30 hover:border-red-500/50 hover:shadow-2xl hover:shadow-red-500/20'
           : 'border-white/5 hover:border-white/10 hover:shadow-xl hover:shadow-blue-500/10'
-      }`}
+        }`}
       onClick={() => setSelectedThreat(threat)}
     >
       {/* Header */}
@@ -91,7 +90,7 @@ export default function ThreatCard({ threat }) {
             animate={{ scale: 1, color: viralityColor === 'red' ? '#f87171' : viralityColor === 'orange' ? '#fb923c' : '#60a5fa' }}
             className="text-sm font-semibold"
           >
-            {liveVirality.toFixed(1)}% / {threat.viralityThreshold}%
+            {((liveVirality / threat.viralityThreshold) * 100).toFixed(1)}%
           </motion.span>
         </div>
         <div className="h-2 bg-gray-800 rounded-full overflow-hidden relative">

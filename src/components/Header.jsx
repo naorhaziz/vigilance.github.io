@@ -1,18 +1,36 @@
 import { Shield, Bell, User, ChevronDown, X, AlertTriangle, Clock } from 'lucide-react';
 import { useStore } from '../store/useStore';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Header() {
   const { database, currentTenant, setCurrentTenant, getTenant, getCriticalThreats, getThreats } = useStore();
   const [showDropdown, setShowDropdown] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const notificationRef = useRef(null);
 
   const tenant = getTenant();
   const tenants = database?.tenants ? Object.values(database.tenants) : [];
   const criticalThreats = getCriticalThreats();
   const criticalCount = criticalThreats.length;
   const allThreats = getThreats();
+
+  // Close notification dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (notificationRef.current && !notificationRef.current.contains(event.target)) {
+        setShowNotifications(false);
+      }
+    };
+
+    if (showNotifications) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showNotifications]);
 
   // Get recent notifications (critical threats + recent detections)
   const notifications = [
@@ -53,7 +71,7 @@ export default function Header() {
             )}
 
             {/* Notification Bell */}
-            <div className="relative">
+            <div className="relative" ref={notificationRef}>
               <button
                 onClick={() => setShowNotifications(!showNotifications)}
                 className="relative bg-slate-800 hover:bg-slate-700 p-2 rounded-lg transition-all hover:scale-105"
@@ -75,24 +93,24 @@ export default function Header() {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: -10, scale: 0.95 }}
                     transition={{ duration: 0.2 }}
-                    className="absolute right-0 mt-2 w-96 bg-slate-900 rounded-lg shadow-xl overflow-hidden border border-white/10"
+                    className="absolute right-0 mt-2 w-96 bg-slate-900 rounded-lg shadow-xl overflow-hidden border border-slate-700"
                   >
                     {/* Header */}
-                    <div className="flex items-center justify-between p-4 border-b border-white/10">
+                    <div className="flex items-center justify-between p-4 border-b border-slate-800">
                       <div className="flex items-center gap-2">
                         <Bell className="w-4 h-4 text-blue-400" />
                         <h3 className="font-semibold">Notifications</h3>
                       </div>
                       <button
                         onClick={() => setShowNotifications(false)}
-                        className="hover:bg-slate-800 p-1 rounded-lg"
+                        className="hover:bg-slate-800 p-1 rounded-lg transition-colors"
                       >
                         <X className="w-4 h-4" />
                       </button>
                     </div>
 
                     {/* Notifications List */}
-                    <div className="max-h-96 overflow-y-auto">
+                    <div className="max-h-96 overflow-y-auto custom-scrollbar">
                       {notifications.length === 0 ? (
                         <div className="p-8 text-center text-gray-400">
                           <Bell className="w-12 h-12 mx-auto mb-2 opacity-50" />
@@ -104,7 +122,7 @@ export default function Header() {
                             key={notification.id}
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
-                            className={`p-4 border-b border-white/5 hover:bg-white/5 cursor-pointer transition-colors ${notification.type === 'critical' ? 'border-l-4 border-l-red-500' :
+                            className={`p-4 border-b border-slate-800/50 hover:bg-slate-800/50 cursor-pointer transition-colors ${notification.type === 'critical' ? 'border-l-4 border-l-red-500' :
                               notification.type === 'high' ? 'border-l-4 border-l-orange-500' :
                                 'border-l-4 border-l-blue-500'
                               }`}
@@ -141,7 +159,7 @@ export default function Header() {
 
                     {/* Footer */}
                     {notifications.length > 0 && (
-                      <div className="p-3 border-t border-white/10 text-center">
+                      <div className="p-3 border-t border-slate-800 text-center bg-slate-900/50">
                         <button className="text-sm text-blue-400 hover:text-blue-300 transition-colors">
                           View All Notifications
                         </button>
