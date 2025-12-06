@@ -32,8 +32,8 @@ export default function Sidebar() {
   const menuItems = [
     { id: 'dashboard', path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard', badge: null },
     { id: 'narratives', path: '/narratives', icon: MessageSquare, label: 'Narratives', badge: totalThreats, badgeColor: 'bg-purple-500' },
-    { id: 'analytics', path: '/analytics', icon: BarChart3, label: 'Analytics', badge: null },
     { id: 'audience', path: '/audience', icon: Users, label: 'Audience', badge: null },
+    { id: 'analytics', path: '/analytics', icon: BarChart3, label: 'Analytics', badge: null },
     { id: 'settings', path: '/settings', icon: Settings, label: 'Settings', badge: null },
   ];
 

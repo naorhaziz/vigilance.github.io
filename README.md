@@ -127,4 +127,4 @@ Everything in `/public/data/database.json`:
 - Lucide React (icons)
 - Framer Motion ready
 
-Built clean from scratch in `/vigilance-v2` directory.
+Built clean from scratch in `/vigilance` directory.
