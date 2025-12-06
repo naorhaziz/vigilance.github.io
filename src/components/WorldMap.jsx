@@ -234,7 +234,7 @@ export default function WorldMap({ threats = [] }) {
         }}
       >
         <img
-          src="/world-map.svg"
+          src={`${import.meta.env.BASE_URL}world-map.svg`}
           alt="World Map"
           className="w-full h-full object-contain"
           style={{
