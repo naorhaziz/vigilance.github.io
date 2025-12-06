@@ -7,11 +7,18 @@
     box-sizing: border-box;
   }
 
+  html {
+    background: #0a0e27;
+    overscroll-behavior: none;
+  }
+
   body {
     background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f1419 100%);
+    background-attachment: fixed;
     color: #f1f5f9;
     font-family: system-ui, -apple-system, sans-serif;
     min-height: 100vh;
+    overscroll-behavior: none;
   }
 }
 

@@ -1,4 +1,4 @@
-import { Shield, AlertTriangle, Video, FileText, Rocket, BarChart3, Settings, Activity, LayoutDashboard } from 'lucide-react';
+import { Shield, AlertTriangle, Video, FileText, Rocket, BarChart3, Settings, Activity, LayoutDashboard, Users, MessageSquare } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { useState, useEffect } from 'react';
 
@@ -21,6 +21,8 @@ export default function Sidebar() {
     { id: 'dashboard', icon: LayoutDashboard, label: 'Dashboard', badge: null },
     { id: 'earlywarning', icon: Activity, label: 'Early Warning', badge: criticalCount, badgeColor: 'bg-red-500' },
     { id: 'threats', icon: AlertTriangle, label: 'All Threats', badge: totalThreats, badgeColor: 'bg-orange-500' },
+    { id: 'narratives', icon: MessageSquare, label: 'Narratives', badge: null },
+    { id: 'audience', icon: Users, label: 'Audience', badge: null },
     { id: 'settings', icon: Settings, label: 'Settings', badge: null },
   ];
 
@@ -54,11 +56,10 @@ export default function Sidebar() {
             <button
               key={item.id}
               onClick={() => setCurrentPage(item.id)}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
-                isActive
-                  ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/50'
-                  : 'text-gray-400 hover:text-white hover:bg-white/5'
-              }`}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${isActive
+                ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/50'
+                : 'text-gray-400 hover:text-white hover:bg-white/5'
+                }`}
             >
               <Icon className="w-5 h-5" />
               <span className="flex-1 text-left font-medium">{item.label}</span>

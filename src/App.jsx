@@ -7,6 +7,8 @@ import Header from './components/Header';
 import DashboardPage from './components/pages/DashboardPage';
 import EarlyWarningPage from './components/pages/EarlyWarningPage';
 import AllThreatsPage from './components/pages/AllThreatsPage';
+import AudiencePage from './components/pages/AudiencePage';
+import NarrativesPage from './components/pages/NarrativesPage';
 import SettingsPage from './components/pages/SettingsPage';
 import ThreatModal from './components/ThreatModal';
 
@@ -17,6 +19,8 @@ function App() {
     dashboard: <DashboardPage />,
     earlywarning: <EarlyWarningPage />,
     threats: <AllThreatsPage />,
+    audience: <AudiencePage />,
+    narratives: <NarrativesPage />,
     settings: <SettingsPage />,
   };
 

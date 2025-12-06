@@ -1,19 +1,68 @@
-# Vigilance AI - Early Warning System
+# Vigilance - Early Warning Detection System
 
-✅ **Clean, modern React application built from scratch**
+An AI-powered threat monitoring and analytics platform for detecting and responding to disinformation campaigns before they go viral.
+
+✅ **Modern React application - All data JSON-configurable**
 
 Running at: **http://localhost:5173**
 
-## 🎯 What This Is
+---
 
-A brand-new, clean implementation of the Early Warning System with:
-- Modern React with proper component structure
-- Tailwind CSS v4 for styling
-- All data from JSON (no hardcoded values)
-- Smooth, responsive UI
-- Addresses all partner feedback requirements
+## 🚀 Quick Start
 
-## 📁 Structure
+### Installation
+```bash
+npm install
+```
+
+### Development
+```bash
+npm run dev
+```
+
+### Build for Production
+```bash
+npm run build
+```
+
+---
+
+## 📝 **Managing Data - NO CODING REQUIRED!**
+
+### ⭐ Main Configuration File
+```
+/public/data/database.json
+```
+
+**This single JSON file controls EVERYTHING:**
+- ✅ All tenants (organizations/clients)
+- ✅ All threats and incidents  
+- ✅ Map pins and geographic locations
+- ✅ Analytics and KPIs
+- ✅ AI-generated content
+- ✅ Channel statistics
+- ✅ Influencer data
+- ✅ Everything shown on screen!
+
+### How to Add/Edit Data
+
+1. **Open** `/public/data/database.json`
+2. **Edit** the JSON structure (add tenants, threats, etc.)
+3. **Save** the file
+4. **Refresh** browser - changes appear instantly!
+
+### 📖 Complete Guide
+See **[DATA_CONFIGURATION_GUIDE.md](./DATA_CONFIGURATION_GUIDE.md)** for detailed instructions on:
+- Adding new tenants
+- Creating threats/incidents
+- Configuring map locations
+- Setting up analytics
+- Managing AI-generated content
+- Complete field reference
+
+---
+
+## 📁 Project Structure
 
 ```
 src/

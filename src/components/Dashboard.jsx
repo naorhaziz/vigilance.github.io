@@ -3,6 +3,7 @@ import { useStore } from '../store/useStore';
 import { formatTimeRemaining, formatNumber } from '../lib/utils';
 import ThreatCard from './ThreatCard';
 import WorldMap from './WorldMap';
+import { VelocityGraph, SourceDistribution, ResponseTimeline, ChannelComparison, AudienceDemographics } from './LiveGraphs';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
@@ -203,6 +204,40 @@ export default function Dashboard() {
           </div>
         </div>
       </motion.div>
+
+      {/* Live Analytics Section */}
+      {criticalThreats.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="mb-8"
+        >
+          <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
+            <Activity className="w-6 h-6 text-red-500 animate-pulse" />
+            Live Threat Analytics
+            <span className="text-sm font-normal text-gray-400 ml-2">
+              - Critical: {criticalThreats[0]?.title}
+            </span>
+          </h2>
+
+          {/* First Row: Velocity & Response Timeline */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+            <VelocityGraph threat={criticalThreats[0]} />
+            <ResponseTimeline threat={criticalThreats[0]} />
+          </div>
+
+          {/* Second Row: Source, Channels, Demographics */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <SourceDistribution sourceAnalysis={criticalThreats[0].sourceAnalysis} />
+            <ChannelComparison channels={criticalThreats[0].channels} />
+            <AudienceDemographics
+              geography={criticalThreats[0].geography}
+              languages={criticalThreats[0].languages}
+            />
+          </div>
+        </motion.div>
+      )}
 
       {/* Threats List */}
       <div className="mb-4 flex items-center justify-between">
