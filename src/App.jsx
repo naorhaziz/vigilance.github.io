@@ -31,7 +31,7 @@ function App() {
   const { setDatabase, isLoading } = useStore();
 
   useEffect(() => {
-    fetch('/data/database.json')
+    fetch(`${import.meta.env.BASE_URL}data/database.json`)
       .then(res => res.json())
       .then(data => setDatabase(data))
       .catch(err => console.error('Error loading database:', err));
