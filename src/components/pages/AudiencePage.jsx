@@ -38,35 +38,70 @@ export default function AudiencePage() {
     const getAudienceDemographics = () => {
         const geoMap = new Map();
         const langMap = new Map();
+        let totalReach = 0;
 
         threats.forEach(threat => {
-            // Geography
-            [threat.geography?.primary, ...(threat.geography?.secondary || [])].forEach(loc => {
-                if (loc) {
-                    geoMap.set(loc, (geoMap.get(loc) || 0) + 1);
-                }
+            totalReach += threat.currentReach || 0;
+
+            // Geography - track reach per region
+            const regionReach = threat.currentReach || 0;
+            if (threat.geography?.primary) {
+                geoMap.set(threat.geography.primary, (geoMap.get(threat.geography.primary) || 0) + (regionReach * 0.45));
+            }
+            (threat.geography?.secondary || []).forEach((region, idx) => {
+                const percentage = idx === 0 ? 0.25 : 0.15;
+                geoMap.set(region, (geoMap.get(region) || 0) + (regionReach * percentage));
+            });
+            (threat.geography?.tertiary || []).forEach(region => {
+                geoMap.set(region, (geoMap.get(region) || 0) + (regionReach * 0.05));
             });
 
-            // Languages
+            // Languages - weighted average based on reach
+            const threatReach = threat.currentReach || 0;
             [threat.languages?.primary, threat.languages?.secondary, threat.languages?.tertiary]
                 .filter(Boolean)
                 .forEach(lang => {
-                    langMap.set(lang.code, (langMap.get(lang.code) || 0) + lang.percentage);
+                    const currentWeight = langMap.get(lang.code) || { totalReach: 0, weightedPercentage: 0 };
+                    langMap.set(lang.code, {
+                        totalReach: currentWeight.totalReach + threatReach,
+                        weightedPercentage: currentWeight.weightedPercentage + (lang.percentage * threatReach)
+                    });
                 });
         });
 
+        // Calculate final language percentages
+        const totalThreatReach = totalReach || 1;
+        const languageData = Array.from(langMap.entries())
+            .map(([code, data]) => ({
+                code,
+                percentage: (data.weightedPercentage / totalThreatReach)
+            }))
+            .sort((a, b) => b.percentage - a.percentage);
+
+        // Normalize to 100%
+        const totalPercentage = languageData.reduce((sum, lang) => sum + lang.percentage, 0);
+        const normalizedLanguages = languageData.map(lang => ({
+            ...lang,
+            percentage: totalPercentage > 0 ? (lang.percentage / totalPercentage) * 100 : 0
+        }));
+
         return {
             geography: Array.from(geoMap.entries())
-                .map(([name, count]) => ({ name, percentage: (count / threats.length) * 35 }))
-                .sort((a, b) => b.percentage - a.percentage)
+                .map(([name, reach]) => ({ name, reach: Math.floor(reach) }))
+                .sort((a, b) => b.reach - a.reach)
                 .slice(0, 8),
-            languages: Array.from(langMap.entries())
-                .map(([code, total]) => ({ code, percentage: Math.min(100, total / threats.length) }))
-                .sort((a, b) => b.percentage - a.percentage)
+            languages: normalizedLanguages
         };
     };
 
     const demographics = getAudienceDemographics();
+
+    // Format number to K/M notation
+    const formatReach = (num) => {
+        if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
+        if (num >= 1000) return `${(num / 1000).toFixed(0)}K`;
+        return num.toString();
+    };
 
     const getStanceColor = (stance) => {
         switch (stance) {
@@ -151,36 +186,30 @@ export default function AudiencePage() {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5 }}
-                    className="glass rounded-xl p-6"
+                    className="glass rounded-xl p-6 flex flex-col h-[500px]"
                 >
                     <div className="flex items-center gap-2 mb-6">
                         <Target className="w-5 h-5 text-blue-500" />
                         <h3 className="text-xl font-semibold">Geographic Reach</h3>
                     </div>
-                    <div className="space-y-4">
+                    <div className="space-y-3 overflow-y-auto pr-2 custom-scrollbar flex-1">
                         {demographics.geography.map((geo, idx) => (
                             <motion.div
                                 key={geo.name}
                                 initial={{ opacity: 0, x: -20 }}
                                 animate={{ opacity: 1, x: 0 }}
-                                transition={{ duration: 0.4, delay: idx * 0.03 }}
+                                transition={{ duration: 0.4, delay: idx * 0.05 }}
+                                className="flex items-center justify-between p-3 rounded-lg bg-slate-800/30 hover:bg-slate-700/30 transition-all duration-300"
                             >
-                                <div className="flex justify-between text-sm mb-2">
-                                    <span className="text-gray-300">{geo.name}</span>
-                                    <span className="text-blue-400 font-semibold">{geo.percentage.toFixed(0)}%</span>
+                                <div className="flex items-center gap-2">
+                                    <div className={`w-2 h-2 rounded-full ${idx === 0 ? 'bg-blue-500' :
+                                        idx === 1 ? 'bg-cyan-500' :
+                                            idx === 2 ? 'bg-purple-500' :
+                                                'bg-gray-500'
+                                        }`} />
+                                    <span className="text-gray-300 text-sm">{geo.name}</span>
                                 </div>
-                                <div className="h-3 bg-slate-800 rounded-full overflow-hidden">
-                                    <motion.div
-                                        initial={{ width: 0 }}
-                                        animate={{ width: `${geo.percentage}%` }}
-                                        transition={{
-                                            duration: 0.8,
-                                            delay: idx * 0.03,
-                                            ease: "easeOut"
-                                        }}
-                                        className="h-full bg-gradient-to-r from-blue-500 to-cyan-500"
-                                    />
-                                </div>
+                                <span className="text-blue-400 font-bold text-lg">{formatReach(geo.reach)}</span>
                             </motion.div>
                         ))}
                     </div>
@@ -191,29 +220,79 @@ export default function AudiencePage() {
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5 }}
-                    className="glass rounded-xl p-6"
+                    className="glass rounded-xl p-6 h-[500px]"
                 >
                     <div className="flex items-center gap-2 mb-6">
                         <MessageSquare className="w-5 h-5 text-green-500" />
                         <h3 className="text-xl font-semibold">Language Breakdown</h3>
                     </div>
-                    <div className="grid grid-cols-2 gap-4">
-                        {demographics.languages.map((lang, idx) => (
-                            <motion.div
-                                key={lang.code}
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{ duration: 0.3, delay: idx * 0.05 }}
-                                className="p-4 rounded-lg text-center border border-white/10 bg-slate-800/50 hover:bg-slate-700/50 hover:border-green-500/30 transition-all duration-300"
-                            >
-                                <div className="text-3xl font-bold text-green-400 mb-1">
-                                    {lang.percentage.toFixed(0)}%
-                                </div>
-                                <div className="text-xs text-gray-400 uppercase tracking-wider">
-                                    {lang.code}
-                                </div>
-                            </motion.div>
-                        ))}
+                    <div className="flex items-center justify-center gap-8">
+                        {/* Pie Chart */}
+                        <div className="relative w-48 h-48">
+                            <svg viewBox="0 0 100 100" className="transform -rotate-90">
+                                {demographics.languages.reduce((acc, lang, idx) => {
+                                    const percentage = lang.percentage;
+                                    const colors = ['#10b981', '#3b82f6', '#8b5cf6', '#f59e0b', '#ec4899'];
+                                    const color = colors[idx] || '#6b7280';
+
+                                    // Calculate cumulative percentage for offset
+                                    const cumulativePercentage = demographics.languages
+                                        .slice(0, idx)
+                                        .reduce((sum, l) => sum + l.percentage, 0);
+
+                                    const circumference = 2 * Math.PI * 30; // radius = 30
+                                    const offset = circumference - (percentage / 100) * circumference;
+                                    const rotateOffset = (cumulativePercentage / 100) * circumference;
+
+                                    acc.push(
+                                        <circle
+                                            key={idx}
+                                            cx="50"
+                                            cy="50"
+                                            r="30"
+                                            fill="none"
+                                            stroke={color}
+                                            strokeWidth="20"
+                                            strokeDasharray={`${circumference} ${circumference}`}
+                                            strokeDashoffset={offset}
+                                            style={{
+                                                strokeDashoffset: offset,
+                                                transformOrigin: '50% 50%',
+                                                transform: `rotate(${(rotateOffset / circumference) * 360}deg)`
+                                            }}
+                                        />
+                                    );
+                                    return acc;
+                                }, [])}
+                            </svg>
+                        </div>
+
+                        {/* Legend */}
+                        <div className="flex-1 space-y-3">
+                            {demographics.languages.map((lang, idx) => {
+                                const colors = ['bg-green-500', 'bg-blue-500', 'bg-purple-500', 'bg-orange-500', 'bg-pink-500'];
+                                const colorClass = colors[idx] || 'bg-gray-500';
+                                return (
+                                    <motion.div
+                                        key={lang.code}
+                                        initial={{ opacity: 0, x: 20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ duration: 0.3, delay: idx * 0.1 }}
+                                        className="flex items-center justify-between p-3 rounded-lg bg-slate-800/30 hover:bg-slate-700/30 transition-all duration-300"
+                                    >
+                                        <div className="flex items-center gap-3">
+                                            <div className={`w-4 h-4 rounded-full ${colorClass}`} />
+                                            <div className="text-sm text-gray-300 uppercase tracking-wider font-medium">
+                                                {lang.code}
+                                            </div>
+                                        </div>
+                                        <div className="text-lg font-bold text-green-400">
+                                            {lang.percentage.toFixed(0)}%
+                                        </div>
+                                    </motion.div>
+                                );
+                            })}
+                        </div>
                     </div>
                 </motion.div>
             </div>
@@ -426,19 +505,15 @@ export default function AudiencePage() {
                                     </div>
                                 </div>
 
-                                {/* Action Buttons */}
-                                <div className="mt-6 flex gap-3">
-                                    <button className="flex-1 px-4 py-3 bg-blue-500 hover:bg-blue-600 rounded-lg font-semibold transition-colors flex items-center justify-center gap-2">
-                                        <Eye className="w-4 h-4" />
-                                        Monitor Activity
-                                    </button>
+                                {/* Action Button */}
+                                <div className="mt-6">
                                     <button
                                         onClick={() => {
                                             setShowReportModal(true);
                                             setReportSubmitted(false);
                                             setSelectedReason('');
                                         }}
-                                        className="flex-1 px-4 py-3 bg-red-500 hover:bg-red-600 rounded-lg font-semibold transition-all hover:scale-105 flex items-center justify-center gap-2 shadow-lg shadow-red-500/30"
+                                        className="w-full px-4 py-3 bg-red-500 hover:bg-red-600 rounded-lg font-semibold transition-all hover:scale-105 flex items-center justify-center gap-2 shadow-lg shadow-red-500/30"
                                     >
                                         <Flag className="w-4 h-4" />
                                         Report to Platform

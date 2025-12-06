@@ -306,8 +306,8 @@ export function ChannelComparison({ channels }) {
                                         <span>{channel.velocity?.toFixed(1)}/h</span>
                                     </div>
                                     <div className={`px-2 py-0.5 rounded ${channel.sentiment < -70 ? 'bg-red-500/30 text-red-300' :
-                                            channel.sentiment < -40 ? 'bg-orange-500/30 text-orange-300' :
-                                                'bg-yellow-500/30 text-yellow-300'
+                                        channel.sentiment < -40 ? 'bg-orange-500/30 text-orange-300' :
+                                            'bg-yellow-500/30 text-yellow-300'
                                         }`}>
                                         {channel.sentiment}%
                                     </div>
@@ -322,7 +322,7 @@ export function ChannelComparison({ channels }) {
 }
 
 // Audience Demographics (from geography and languages)
-export function AudienceDemographics({ geography, languages }) {
+export function AudienceDemographics({ geography, languages, currentReach }) {
     const allRegions = [
         geography?.primary,
         ...(geography?.secondary || []),
@@ -335,6 +335,37 @@ export function AudienceDemographics({ geography, languages }) {
         languages?.tertiary
     ].filter(Boolean);
 
+    // Calculate geographic reach by numbers
+    const calculateGeographicReach = () => {
+        const totalReach = currentReach || 847000; // fallback
+        const reaches = [];
+
+        if (geography?.primary) {
+            reaches.push({ region: geography.primary, reach: Math.floor(totalReach * 0.45) });
+        }
+
+        (geography?.secondary || []).forEach((region, idx) => {
+            const percentage = idx === 0 ? 0.25 : 0.15;
+            reaches.push({ region, reach: Math.floor(totalReach * percentage) });
+        });
+
+        (geography?.tertiary || []).forEach(region => {
+            const percentage = 0.05;
+            reaches.push({ region, reach: Math.floor(totalReach * percentage) });
+        });
+
+        return reaches.slice(0, 5);
+    };
+
+    const geographicReaches = calculateGeographicReach();
+
+    // Format number to K/M notation
+    const formatReach = (num) => {
+        if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
+        if (num >= 1000) return `${(num / 1000).toFixed(0)}K`;
+        return num.toString();
+    };
+
     return (
         <div className="glass rounded-xl p-6">
             <div className="flex items-center gap-2 mb-4">
@@ -344,41 +375,86 @@ export function AudienceDemographics({ geography, languages }) {
 
             {/* Geographic Distribution */}
             <div className="mb-6">
-                <div className="text-sm text-gray-400 mb-3">Geographic Spread</div>
+                <div className="text-sm text-gray-400 mb-3">Geographic Reach</div>
                 <div className="space-y-2">
-                    {allRegions.slice(0, 5).map((region, idx) => {
-                        const percentage = idx === 0 ? 45 : idx === 1 ? 25 : 30 / (allRegions.length - 2);
+                    {geographicReaches.map((item, idx) => {
                         return (
-                            <div key={region} className="flex items-center gap-3">
-                                <div className="w-24 text-xs text-gray-400">{region}</div>
-                                <div className="flex-1 h-2 bg-slate-800 rounded-full overflow-hidden">
-                                    <motion.div
-                                        initial={{ width: 0 }}
-                                        animate={{ width: `${percentage}%` }}
-                                        transition={{ duration: 1, delay: idx * 0.1 }}
-                                        className={`h-full ${idx === 0 ? 'bg-green-500' :
-                                                idx === 1 ? 'bg-blue-500' :
+                            <div key={item.region} className="flex items-center justify-between gap-3">
+                                <div className="flex items-center gap-2">
+                                    <div className={`w-2 h-2 rounded-full ${idx === 0 ? 'bg-green-500' :
+                                            idx === 1 ? 'bg-blue-500' :
+                                                idx === 2 ? 'bg-purple-500' :
                                                     'bg-gray-500'
-                                            }`}
-                                    />
+                                        }`} />
+                                    <div className="text-xs text-gray-300">{item.region}</div>
                                 </div>
-                                <div className="w-12 text-xs text-gray-400 text-right">{percentage.toFixed(0)}%</div>
+                                <div className="text-sm font-bold text-white">{formatReach(item.reach)}</div>
                             </div>
                         );
                     })}
                 </div>
             </div>
 
-            {/* Language Distribution */}
+            {/* Language Distribution - Pie Chart */}
             <div>
                 <div className="text-sm text-gray-400 mb-3">Language Breakdown</div>
-                <div className="grid grid-cols-3 gap-3">
-                    {allLanguages.map((lang, idx) => (
-                        <div key={idx} className="text-center">
-                            <div className="text-2xl font-bold text-blue-400">{lang.percentage}%</div>
-                            <div className="text-xs text-gray-500 uppercase">{lang.code}</div>
-                        </div>
-                    ))}
+                <div className="flex items-center gap-4">
+                    {/* Pie Chart */}
+                    <div className="relative w-32 h-32">
+                        <svg viewBox="0 0 100 100" className="transform -rotate-90">
+                            {allLanguages.reduce((acc, lang, idx) => {
+                                const percentage = lang.percentage;
+                                const colors = ['#10b981', '#3b82f6', '#8b5cf6'];
+                                const color = colors[idx] || '#6b7280';
+
+                                // Calculate cumulative percentage for offset
+                                const cumulativePercentage = allLanguages
+                                    .slice(0, idx)
+                                    .reduce((sum, l) => sum + l.percentage, 0);
+
+                                const circumference = 2 * Math.PI * 30; // radius = 30
+                                const offset = circumference - (percentage / 100) * circumference;
+                                const rotateOffset = (cumulativePercentage / 100) * circumference;
+
+                                acc.push(
+                                    <circle
+                                        key={idx}
+                                        cx="50"
+                                        cy="50"
+                                        r="30"
+                                        fill="none"
+                                        stroke={color}
+                                        strokeWidth="20"
+                                        strokeDasharray={`${circumference} ${circumference}`}
+                                        strokeDashoffset={offset}
+                                        style={{
+                                            strokeDashoffset: offset,
+                                            transformOrigin: '50% 50%',
+                                            transform: `rotate(${(rotateOffset / circumference) * 360}deg)`
+                                        }}
+                                    />
+                                );
+                                return acc;
+                            }, [])}
+                        </svg>
+                    </div>
+
+                    {/* Legend */}
+                    <div className="flex-1 space-y-2">
+                        {allLanguages.map((lang, idx) => {
+                            const colors = ['bg-green-500', 'bg-blue-500', 'bg-purple-500'];
+                            const colorClass = colors[idx] || 'bg-gray-500';
+                            return (
+                                <div key={idx} className="flex items-center justify-between">
+                                    <div className="flex items-center gap-2">
+                                        <div className={`w-3 h-3 rounded-full ${colorClass}`} />
+                                        <div className="text-xs text-gray-400 uppercase">{lang.code}</div>
+                                    </div>
+                                    <div className="text-sm font-bold text-white">{lang.percentage}%</div>
+                                </div>
+                            );
+                        })}
+                    </div>
                 </div>
             </div>
         </div>

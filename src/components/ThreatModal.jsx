@@ -46,8 +46,9 @@ export default function ThreatModal() {
   if (!selectedThreat) return null;
 
   const threat = selectedThreat;
-  const arsenal = threat.aiArsenal || {};
-  const redTeam = threat.redTeam || {};
+  const arsenal = threat.aiResponses || {};
+  const redTeam = threat.redTeamAnalysis || {};
+  const distributionPlan = threat.distributionPlan || {};
 
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
@@ -73,11 +74,10 @@ export default function ThreatModal() {
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-6 py-3 font-semibold capitalize transition-colors ${
-                activeTab === tab
-                  ? 'bg-blue-600 text-white'
-                  : 'text-gray-400 hover:text-white hover:bg-white/5'
-              }`}
+              className={`px-6 py-3 font-semibold capitalize transition-colors ${activeTab === tab
+                ? 'bg-blue-600 text-white'
+                : 'text-gray-400 hover:text-white hover:bg-white/5'
+                }`}
             >
               {tab === 'videos' && <Video className="w-4 h-4 inline mr-2" />}
               {tab === 'statements' && <FileText className="w-4 h-4 inline mr-2" />}
@@ -85,7 +85,7 @@ export default function ThreatModal() {
               {tab === 'deployment' && <Rocket className="w-4 h-4 inline mr-2" />}
               {tab}
               {tab === 'videos' && ` (${arsenal.videos?.length || 0})`}
-              {tab === 'statements' && ` (${arsenal.statements?.length || 0})`}
+              {tab === 'statements' && ` (${arsenal.textResponses?.length || 0})`}
             </button>
           ))}
         </div>
@@ -103,8 +103,8 @@ export default function ThreatModal() {
                   <h4 className="font-semibold mb-2">{video.title}</h4>
                   <div className="flex gap-2 mb-2">
                     <span className="px-2 py-1 bg-blue-500/20 text-blue-400 rounded text-xs">{video.tone}</span>
-                    <span className="px-2 py-1 bg-purple-500/20 text-purple-400 rounded text-xs">{video.platform}</span>
-                    <span className="px-2 py-1 bg-green-500/20 text-green-400 rounded text-xs">{video.projectedEffectiveness}% effective</span>
+                    <span className="px-2 py-1 bg-purple-500/20 text-purple-400 rounded text-xs">{video.type}</span>
+                    <span className="px-2 py-1 bg-green-500/20 text-green-400 rounded text-xs">{video.estimatedEffectiveness}% effective</span>
                   </div>
                   <div className="text-sm text-gray-400 mb-3">
                     <strong>Key Points:</strong>
@@ -117,11 +117,10 @@ export default function ThreatModal() {
                   <button
                     onClick={() => handleVideoAction(video.id)}
                     disabled={loadingVideo === video.id}
-                    className={`w-full px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
-                      loadingVideo === video.id
-                        ? 'bg-blue-700 cursor-wait'
-                        : 'bg-blue-600 hover:bg-blue-500 hover:shadow-lg hover:shadow-blue-500/50'
-                    }`}
+                    className={`w-full px-4 py-2 rounded-lg text-sm font-semibold transition-all ${loadingVideo === video.id
+                      ? 'bg-blue-700 cursor-wait'
+                      : 'bg-blue-600 hover:bg-blue-500 hover:shadow-lg hover:shadow-blue-500/50'
+                      }`}
                   >
                     {loadingVideo === video.id ? (
                       <>
@@ -143,7 +142,7 @@ export default function ThreatModal() {
           {/* Statements Tab */}
           {activeTab === 'statements' && (
             <div className="space-y-4">
-              {arsenal.statements?.map(stmt => (
+              {arsenal.textResponses?.map(stmt => (
                 <div key={stmt.id} className="glass rounded-lg p-4 border border-white/10">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-3">
@@ -155,7 +154,7 @@ export default function ThreatModal() {
                       </span>
                     </div>
                     <span className="text-green-400 font-semibold text-sm">
-                      {stmt.projectedEffectiveness}% Effectiveness
+                      {stmt.estimatedEffectiveness}% Effectiveness
                     </span>
                   </div>
                   <textarea
@@ -175,11 +174,10 @@ export default function ThreatModal() {
                     <button
                       onClick={() => handleCopy(stmt.id, stmt.content)}
                       disabled={copiedId === stmt.id}
-                      className={`px-4 py-2 rounded-lg text-sm transition-all ${
-                        copiedId === stmt.id
-                          ? 'bg-green-500/20 text-green-400 border border-green-500/50'
-                          : 'glass glass-hover'
-                      }`}
+                      className={`px-4 py-2 rounded-lg text-sm transition-all ${copiedId === stmt.id
+                        ? 'bg-green-500/20 text-green-400 border border-green-500/50'
+                        : 'glass glass-hover'
+                        }`}
                     >
                       {copiedId === stmt.id ? (
                         <>
@@ -196,11 +194,10 @@ export default function ThreatModal() {
                     <button
                       onClick={() => handleQueueStatement(stmt.id)}
                       disabled={loadingStatement === stmt.id}
-                      className={`px-4 py-2 rounded-lg text-sm font-semibold flex-1 transition-all ${
-                        loadingStatement === stmt.id
-                          ? 'bg-blue-700 cursor-wait'
-                          : 'bg-blue-600 hover:bg-blue-500 hover:shadow-lg hover:shadow-blue-500/50'
-                      }`}
+                      className={`px-4 py-2 rounded-lg text-sm font-semibold flex-1 transition-all ${loadingStatement === stmt.id
+                        ? 'bg-blue-700 cursor-wait'
+                        : 'bg-blue-600 hover:bg-blue-500 hover:shadow-lg hover:shadow-blue-500/50'
+                        }`}
                     >
                       {loadingStatement === stmt.id ? (
                         <>
@@ -244,15 +241,15 @@ export default function ThreatModal() {
                   <div className="space-y-2 text-sm">
                     <div>
                       <strong className="text-green-400">Best:</strong>
-                      <p className="text-gray-400">{redTeam.analysis?.ifRespond?.bestCase}</p>
+                      <p className="text-gray-400">{redTeam.ifRespond?.bestCase}</p>
                     </div>
                     <div>
                       <strong className="text-blue-400">Likely:</strong>
-                      <p className="text-gray-400">{redTeam.analysis?.ifRespond?.likelyCase}</p>
+                      <p className="text-gray-400">{redTeam.ifRespond?.likelyCase}</p>
                     </div>
                     <div>
                       <strong className="text-orange-400">Worst:</strong>
-                      <p className="text-gray-400">{redTeam.analysis?.ifRespond?.worstCase}</p>
+                      <p className="text-gray-400">{redTeam.ifRespond?.worstCase}</p>
                     </div>
                   </div>
                 </div>
@@ -262,15 +259,15 @@ export default function ThreatModal() {
                   <div className="space-y-2 text-sm">
                     <div>
                       <strong className="text-green-400">Best:</strong>
-                      <p className="text-gray-400">{redTeam.analysis?.ifSilent?.bestCase}</p>
+                      <p className="text-gray-400">{redTeam.ifSilent?.bestCase}</p>
                     </div>
                     <div>
                       <strong className="text-blue-400">Likely:</strong>
-                      <p className="text-gray-400">{redTeam.analysis?.ifSilent?.likelyCase}</p>
+                      <p className="text-gray-400">{redTeam.ifSilent?.likelyCase}</p>
                     </div>
                     <div>
                       <strong className="text-orange-400">Worst:</strong>
-                      <p className="text-gray-400">{redTeam.analysis?.ifSilent?.worstCase}</p>
+                      <p className="text-gray-400">{redTeam.ifSilent?.worstCase}</p>
                     </div>
                   </div>
                 </div>
@@ -297,16 +294,14 @@ export default function ThreatModal() {
                     { step: 5, title: 'Deploy to Channels', status: 'pending' },
                     { step: 6, title: 'Monitor Impact', status: 'pending' }
                   ].map(item => (
-                    <div key={item.step} className={`flex items-center gap-4 p-3 rounded-lg ${
-                      item.status === 'completed' ? 'glass' :
+                    <div key={item.step} className={`flex items-center gap-4 p-3 rounded-lg ${item.status === 'completed' ? 'glass' :
                       item.status === 'current' ? 'bg-blue-500/20 border border-blue-500/50' :
-                      'bg-gray-800/50'
-                    }`}>
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${
-                        item.status === 'completed' ? 'bg-green-500 text-white' :
-                        item.status === 'current' ? 'bg-blue-500 text-white' :
-                        'bg-gray-700 text-gray-400'
+                        'bg-gray-800/50'
                       }`}>
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${item.status === 'completed' ? 'bg-green-500 text-white' :
+                        item.status === 'current' ? 'bg-blue-500 text-white' :
+                          'bg-gray-700 text-gray-400'
+                        }`}>
                         {item.step}
                       </div>
                       <div className="flex-1">
@@ -320,11 +315,10 @@ export default function ThreatModal() {
                   <button
                     onClick={() => handleDeploymentAction('approve')}
                     disabled={loadingDeployment}
-                    className={`flex-1 px-6 py-3 rounded-lg font-semibold transition-all ${
-                      loadingDeployment && deploymentAction === 'approve'
-                        ? 'bg-green-700 cursor-wait'
-                        : 'bg-green-600 hover:bg-green-500 hover:shadow-lg hover:shadow-green-500/50'
-                    } ${loadingDeployment && deploymentAction !== 'approve' ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    className={`flex-1 px-6 py-3 rounded-lg font-semibold transition-all ${loadingDeployment && deploymentAction === 'approve'
+                      ? 'bg-green-700 cursor-wait'
+                      : 'bg-green-600 hover:bg-green-500 hover:shadow-lg hover:shadow-green-500/50'
+                      } ${loadingDeployment && deploymentAction !== 'approve' ? 'opacity-50 cursor-not-allowed' : ''}`}
                   >
                     {loadingDeployment && deploymentAction === 'approve' ? (
                       <>
@@ -338,11 +332,10 @@ export default function ThreatModal() {
                   <button
                     onClick={() => handleDeploymentAction('modify')}
                     disabled={loadingDeployment}
-                    className={`px-6 py-3 rounded-lg transition-all ${
-                      loadingDeployment && deploymentAction === 'modify'
-                        ? 'bg-white/20 cursor-wait'
-                        : 'glass glass-hover'
-                    } ${loadingDeployment && deploymentAction !== 'modify' ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    className={`px-6 py-3 rounded-lg transition-all ${loadingDeployment && deploymentAction === 'modify'
+                      ? 'bg-white/20 cursor-wait'
+                      : 'glass glass-hover'
+                      } ${loadingDeployment && deploymentAction !== 'modify' ? 'opacity-50 cursor-not-allowed' : ''}`}
                   >
                     {loadingDeployment && deploymentAction === 'modify' ? (
                       <>
@@ -356,11 +349,10 @@ export default function ThreatModal() {
                   <button
                     onClick={() => handleDeploymentAction('reject')}
                     disabled={loadingDeployment}
-                    className={`px-6 py-3 rounded-lg transition-all ${
-                      loadingDeployment && deploymentAction === 'reject'
-                        ? 'bg-red-700/40 cursor-wait'
-                        : 'bg-red-600/20 hover:bg-red-600/30 text-red-400'
-                    } ${loadingDeployment && deploymentAction !== 'reject' ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    className={`px-6 py-3 rounded-lg transition-all ${loadingDeployment && deploymentAction === 'reject'
+                      ? 'bg-red-700/40 cursor-wait'
+                      : 'bg-red-600/20 hover:bg-red-600/30 text-red-400'
+                      } ${loadingDeployment && deploymentAction !== 'reject' ? 'opacity-50 cursor-not-allowed' : ''}`}
                   >
                     {loadingDeployment && deploymentAction === 'reject' ? (
                       <>
@@ -377,10 +369,10 @@ export default function ThreatModal() {
               <div className="glass rounded-lg p-4">
                 <h4 className="font-bold mb-3">Distribution Channels</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {threat.distributionChannels?.official?.map((channel, i) => (
+                  {distributionPlan.immediate?.map((channel, i) => (
                     <div key={i} className="glass rounded-lg p-3">
-                      <div className="font-semibold text-sm">{channel.name}</div>
-                      <div className="text-xs text-gray-400">{channel.reach?.toLocaleString()} reach · {channel.responseTime}</div>
+                      <div className="font-semibold text-sm">{channel.channel}</div>
+                      <div className="text-xs text-gray-400">{channel.totalReach?.toLocaleString()} reach · {channel.deployTime}</div>
                       <div className={`text-xs mt-1 ${channel.readiness === 'ready' ? 'text-green-400' : 'text-orange-400'}`}>
                         {channel.readiness === 'ready' ? '✓ Ready' : channel.readiness}
                       </div>

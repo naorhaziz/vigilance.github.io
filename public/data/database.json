@@ -7,7 +7,8 @@
       "type": "government",
       "logo": "🇮🇱",
       "primaryColor": "#0038b8",
-      "secondaryColor": "#ffffff"
+      "secondaryColor": "#ffffff",
+      "riskLevel": "critical"
     },
     "netflix": {
       "id": "netflix",
@@ -25,55 +26,91 @@
         "id": "threat_gaza_hunger_001",
         "tenantId": "israel",
         "title": "Gaza Hunger Narrative",
-        "description": "Coordinated campaign claiming systematic food blockade in Gaza spreading across social media platforms",
+        "description": "Coordinated campaign claiming systematic food blockade in Gaza spreading rapidly across social media platforms",
         "narrative": "Israel is deliberately starving Gaza population",
-        "counterNarrative": "Israel facilitates daily food aid, Hamas diverts resources",
-        "detectedAt": "2024-01-15T06:22:00Z",
-        "status": "pre_viral",
+        "counterNarrative": "Israel facilitates 500+ daily aid trucks, Hamas diverts 60% of resources for military use",
+        "detectedAt": "2024-12-06T06:22:00Z",
+        "status": "early_warning",
         "severity": "critical",
         "viralityProgress": 34,
         "viralityThreshold": 70,
         "currentReach": 847000,
         "projectedReach": 12400000,
         "velocityPerHour": 8.5,
-        "timeToViralHours": 3.8,
-        "responseWindowHours": 3.8,
+        "timeToViralHours": 4.2,
+        "responseWindowHours": 4.2,
         "effectivenessDecayPerHour": 23,
         "channels": [
           {
             "name": "Twitter/X",
             "reach": 342000,
             "velocity": 12.3,
-            "sentiment": -78
+            "sentiment": -78,
+            "posts24h": 18500,
+            "topHashtags": [
+              "#GazaHunger",
+              "#StopStarvation",
+              "#IsraelCrimes"
+            ]
           },
           {
             "name": "TikTok",
             "reach": 289000,
             "velocity": 15.7,
-            "sentiment": -82
+            "sentiment": -82,
+            "posts24h": 3400,
+            "topHashtags": [
+              "#Gaza",
+              "#FreePalestine",
+              "#Humanitarian"
+            ]
           },
           {
             "name": "Instagram",
             "reach": 156000,
             "velocity": 6.2,
-            "sentiment": -71
+            "sentiment": -71,
+            "posts24h": 8900,
+            "topHashtags": [
+              "#GazaUnderAttack",
+              "#StopTheWar"
+            ]
           },
           {
             "name": "Al Jazeera",
             "reach": 60000,
             "velocity": 4.1,
-            "sentiment": -85
+            "sentiment": -85,
+            "posts24h": 12,
+            "topHashtags": []
           }
         ],
         "geography": {
           "primary": "United States",
-          "secondary": ["UK", "France", "Germany"],
-          "tertiary": ["Canada", "Australia", "Netherlands"]
+          "secondary": [
+            "UK",
+            "France",
+            "Germany"
+          ],
+          "tertiary": [
+            "Canada",
+            "Australia",
+            "Netherlands"
+          ]
         },
         "languages": {
-          "primary": {"code": "en", "percentage": 65},
-          "secondary": {"code": "ar", "percentage": 22},
-          "tertiary": {"code": "fr", "percentage": 13}
+          "primary": {
+            "code": "en",
+            "percentage": 65
+          },
+          "secondary": {
+            "code": "ar",
+            "percentage": 22
+          },
+          "tertiary": {
+            "code": "fr",
+            "percentage": 13
+          }
         },
         "keyInfluencers": [
           {
@@ -82,7 +119,8 @@
             "followers": 3200000,
             "stance": "hostile",
             "impact": 96,
-            "recentPosts": 7
+            "recentPosts": 7,
+            "engagement": 420000
           },
           {
             "handle": "@HumanRightsNow",
@@ -90,305 +128,771 @@
             "followers": 1800000,
             "stance": "critical",
             "impact": 89,
-            "recentPosts": 12
+            "recentPosts": 12,
+            "engagement": 280000
+          },
+          {
+            "handle": "@GazaVoices",
+            "platform": "TikTok",
+            "followers": 2100000,
+            "stance": "hostile",
+            "impact": 94,
+            "recentPosts": 15,
+            "engagement": 890000
           }
         ],
         "sourceAnalysis": {
           "organic": 42,
           "coordinated": 38,
-          "automated": 20
+          "automated": 20,
+          "suspiciousAccounts": 4200,
+          "botLikelihood": "HIGH"
         },
-        "aiArsenal": {
+        "aiResponses": {
           "videos": [
             {
-              "id": "video_001",
-              "type": "factual_explainer",
-              "title": "The Truth About Food Aid in Gaza",
-              "duration": 156,
-              "platform": "multi",
-              "tone": "educational",
-              "speaker": "AI Avatar - Diplomatic",
-              "script": "Every single day, Israel facilitates the entry of hundreds of trucks carrying food, medical supplies, and humanitarian aid into Gaza...",
-              "keyPoints": [
-                "500+ trucks daily carrying food aid",
-                "Hamas diverts 60% of aid for military use",
-                "UN confirms no famine conditions",
-                "Egypt border also controls Gaza access"
+              "id": "vid_gh_001",
+              "title": "The Truth About Food Aid in Gaza - By The Numbers",
+              "type": "factual_data",
+              "duration": 145,
+              "speaker": "AI Avatar - Data Analyst",
+              "platforms": [
+                "YouTube",
+                "Twitter/X",
+                "LinkedIn"
               ],
-              "visualElements": ["Truck footage", "UN data charts", "Satellite imagery"],
-              "projectedEffectiveness": 87,
-              "targetAudience": "General public, fact-seekers"
+              "tone": "analytical",
+              "script": "Every single day, Israel facilitates the entry of 500+ trucks carrying food, medical supplies, and humanitarian aid into Gaza. Here's what the actual data shows...",
+              "keyPoints": [
+                "500+ aid trucks enter Gaza daily (COGAT data)",
+                "2.4 million kg of food delivered per day",
+                "Hamas diverts 60% of aid (UN reports)",
+                "No WHO famine indicators present",
+                "Egypt also controls Gaza border - 0 trucks from their side"
+              ],
+              "visualElements": [
+                "Truck footage",
+                "UN data charts",
+                "Satellite imagery",
+                "Comparison graphs"
+              ],
+              "targetAudience": "Data-driven, analytical viewers",
+              "estimatedReach": 1200000,
+              "estimatedEffectiveness": 91
             },
             {
-              "id": "video_002",
-              "type": "emotional_counter",
-              "title": "Stories from Gaza Aid Workers",
-              "duration": 134,
-              "platform": "TikTok, Instagram",
-              "tone": "empathetic",
+              "id": "vid_gh_002",
+              "title": "Aid Worker in Gaza: What They're Not Showing You",
+              "type": "testimonial",
+              "duration": 120,
               "speaker": "AI Avatar - Humanitarian Worker",
-              "script": "I've been coordinating aid deliveries to Gaza for 15 years. What the media isn't showing you is the daily reality of how aid actually flows...",
+              "platforms": [
+                "TikTok",
+                "Instagram",
+                "Facebook"
+              ],
+              "tone": "empathetic",
+              "script": "I've been coordinating aid deliveries to Gaza for 15 years. What the media isn't showing you is the daily reality of how aid actually flows and where it goes...",
               "keyPoints": [
                 "Firsthand testimonies from aid workers",
-                "Visual proof of aid distribution",
-                "Hamas interference documented",
-                "Comparison to actual famine zones"
+                "Visual proof of aid distribution points",
+                "Hamas theft documented",
+                "Comparison to actual famine zones (Yemen, Sudan)"
               ],
-              "visualElements": ["Personal testimony", "Behind-the-scenes footage", "Comparison visuals"],
-              "projectedEffectiveness": 82,
-              "targetAudience": "Young adults, social media users"
+              "visualElements": [
+                "Personal testimony",
+                "Behind-the-scenes footage",
+                "Before/after comparisons"
+              ],
+              "targetAudience": "Young adults 18-35, social media users",
+              "estimatedReach": 2800000,
+              "estimatedEffectiveness": 85
             },
             {
-              "id": "video_003",
-              "type": "data_visualization",
-              "title": "By The Numbers: Gaza Food Supply",
-              "duration": 98,
-              "platform": "YouTube, LinkedIn",
-              "tone": "analytical",
-              "speaker": "AI Avatar - Data Analyst",
-              "script": "Let's look at the actual data. Here's what the numbers really show about food availability in Gaza...",
-              "keyPoints": [
-                "Caloric intake per capita statistics",
-                "Aid truck entry logs (official data)",
-                "Market prices and availability metrics",
-                "Comparison to WHO famine indicators"
+              "id": "vid_gh_003",
+              "title": "Gaza Markets Full of Food - See For Yourself",
+              "type": "visual_proof",
+              "duration": 90,
+              "speaker": "AI Avatar - Journalist",
+              "platforms": [
+                "TikTok",
+                "Instagram",
+                "Twitter/X"
               ],
-              "visualElements": ["Animated charts", "Data overlays", "Timeline graphics"],
-              "projectedEffectiveness": 91,
-              "targetAudience": "Professionals, analysts, media"
+              "tone": "investigative",
+              "script": "If there's a famine in Gaza, why are the markets overflowing with food? Here's footage from yesterday...",
+              "keyPoints": [
+                "Recent footage of Gaza markets",
+                "Prices vs availability data",
+                "Comparison to famine conditions",
+                "WHO famine indicators explained"
+              ],
+              "visualElements": [
+                "Market footage",
+                "Price comparison",
+                "Split-screen comparisons"
+              ],
+              "targetAudience": "Visual learners, skeptics",
+              "estimatedReach": 3200000,
+              "estimatedEffectiveness": 88
             }
           ],
-          "statements": [
+          "textResponses": [
             {
-              "id": "stmt_001",
+              "id": "txt_gh_001",
+              "persona": "Official Government Spokesperson",
               "platform": "Twitter/X",
-              "persona": "Official Government",
-              "length": 280,
-              "content": "False claims of famine in Gaza ignore the daily reality: Israel facilitates 500+ aid trucks while Hamas diverts resources for terror. UN data confirms no famine conditions exist. Facts matter. 🧵 Thread with data:",
-              "hashtags": ["#FactsMatter", "#GazaAid", "#HumanitarianTruth"],
-              "attachments": ["Data infographic"],
-              "projectedEngagement": 145000,
-              "projectedEffectiveness": 78
+              "format": "thread",
+              "length": "8 tweets",
+              "content": "🧵 THREAD: False claims of famine in Gaza ignore daily reality. Let's look at the facts:\n\n1/ Israel facilitates 500+ aid trucks into Gaza EVERY DAY. That's 2.4 million kg of food daily.\n\n2/ UN data confirms NO famine conditions exist in Gaza. Not even close to WHO famine indicators.\n\n3/ Hamas diverts ~60% of aid for military purposes (UN reports). This is the real crime.\n\n4/ Egypt controls Gaza's southern border. They've sent 0 trucks. Where's the outrage?\n\n5/ Gaza markets are full of food - see the videos yourself.\n\n6/ Compare to actual famines (Yemen, Sudan) - completely different reality.\n\n7/ This coordinated disinfo campaign serves Hamas, not Gazans.\n\n8/ We're committed to humanitarian aid while defending against terrorism. Facts matter. 📊",
+              "attachments": [
+                "data_infographic.jpg",
+                "market_video.mp4"
+              ],
+              "hashtags": [
+                "#FactsMatter",
+                "#GazaAid",
+                "#StopDisinfo"
+              ],
+              "estimatedReach": 1800000,
+              "estimatedEngagement": 245000,
+              "estimatedEffectiveness": 82
             },
             {
-              "id": "stmt_002",
+              "id": "txt_gh_002",
+              "persona": "Pro-Israel Influencer",
               "platform": "Twitter/X",
-              "persona": "Influential Pro-Israel Voice",
-              "length": 260,
-              "content": "Seeing the 'Gaza hunger' narrative trending again. Here's what's actually happening (thread with receipts): 1) Israel facilitates massive aid daily 2) Hamas steals ~60% for themselves 3) UN confirms no famine 4) Egypt controls Gaza border too. Read before you retweet.",
-              "hashtags": ["#CheckTheFacts", "#GazaTruth"],
-              "attachments": ["Video compilation"],
-              "projectedEngagement": 89000,
-              "projectedEffectiveness": 85
+              "format": "viral_thread",
+              "length": "12 tweets",
+              "content": "Seeing #GazaHunger trending. Before you retweet, here's what's ACTUALLY happening (with receipts):\n\n🧵 THREAD with evidence...\n\n1/ Israel sends 500+ trucks DAILY. Here's the COGAT data [link]\n\n2/ Here's video from Gaza markets TODAY. Does this look like famine? [video]\n\n3/ UN confirms no famine indicators. Here's their report [link]\n\n4/ Hamas steals 60% of aid. Here's the UN documentation [link]\n\n5/ Egypt sends ZERO trucks from their border. Why no outrage?\n\n6/ I've worked in actual famine zones (Yemen). This isn't one.\n\n7/ Want to see what real famine looks like? [comparison images]\n\n8/ Follow the money - who benefits from this narrative?\n\n9/ Gaza population has actually GROWN during conflict\n\n10/ Market prices in Gaza show abundant supply\n\n11/ This is coordinated disinfo. Here's the bot analysis [data]\n\n12/ Don't let propaganda win. Check facts before sharing. RT to spread truth.",
+              "attachments": [
+                "evidence_compilation.pdf",
+                "data_charts.jpg",
+                "market_videos.mp4"
+              ],
+              "hashtags": [
+                "#CheckTheFacts",
+                "#GazaTruth",
+                "#StopTheLies"
+              ],
+              "estimatedReach": 2400000,
+              "estimatedEngagement": 580000,
+              "estimatedEffectiveness": 89
             },
             {
-              "id": "stmt_003",
-              "platform": "LinkedIn",
+              "id": "txt_gh_003",
               "persona": "Humanitarian Expert",
-              "length": 800,
-              "content": "As someone who has worked in actual famine zones (Yemen, South Sudan, Ethiopia), I feel compelled to address the misinformation about Gaza...",
-              "hashtags": ["#HumanitarianWork", "#FactCheck"],
-              "attachments": ["Long-form article"],
-              "projectedEngagement": 34000,
-              "projectedEffectiveness": 92
+              "platform": "LinkedIn",
+              "format": "long_article",
+              "length": "1200 words",
+              "content": "As someone who has worked in actual famine zones (Yemen, South Sudan, Ethiopia, Somalia) for 18 years, I feel compelled to address the dangerous misinformation about Gaza.\n\nA real famine has specific WHO indicators:\n- 30%+ acute malnutrition\n- 2+ deaths per 10,000 daily\n- Widespread food access issues\n\nGaza has NONE of these...\n\n[Full article detailing professional analysis]",
+              "attachments": [
+                "professional_analysis.pdf"
+              ],
+              "hashtags": [
+                "#HumanitarianWork",
+                "#FactCheck",
+                "#ProfessionalAnalysis"
+              ],
+              "estimatedReach": 850000,
+              "estimatedEngagement": 120000,
+              "estimatedEffectiveness": 94
+            },
+            {
+              "id": "txt_gh_004",
+              "persona": "Jewish Community Leader",
+              "platform": "Facebook",
+              "format": "community_post",
+              "length": "500 words",
+              "content": "To our community and friends: There's a false narrative spreading about Gaza. Here's what you need to know to counter it with facts and compassion...",
+              "estimatedReach": 450000,
+              "estimatedEffectiveness": 76
+            },
+            {
+              "id": "txt_gh_005",
+              "persona": "Friendly Arab Voice",
+              "platform": "Twitter/X",
+              "format": "personal_thread",
+              "length": "6 tweets",
+              "content": "As an Arab Muslim, I'm tired of Hamas propaganda being spread as truth. Here's what's really happening in Gaza - from an Arab perspective:\n\n1/ Israel sends MORE aid than required...\n2/ Hamas steals it - this hurts Palestinians...\n3/ My family in the region confirms markets are full...\n[continues]",
+              "estimatedReach": 680000,
+              "estimatedEffectiveness": 87
             }
           ],
           "campaigns": [
             {
-              "id": "campaign_001",
+              "id": "camp_gh_001",
               "name": "They'll Tell You There's a Famine",
               "type": "preemptive",
-              "description": "Get ahead of the narrative with counter-messaging before it peaks",
-              "channels": ["Twitter/X", "TikTok", "Instagram", "YouTube"],
+              "description": "Get ahead of narrative peak with overwhelming factual counter-messaging",
+              "channels": [
+                "Twitter/X",
+                "TikTok",
+                "Instagram",
+                "YouTube",
+                "LinkedIn"
+              ],
               "duration": "72 hours",
+              "budget": "high",
               "phases": [
                 {
                   "phase": 1,
+                  "name": "Seed Truth",
                   "timing": "Hour 0-6",
-                  "action": "Seed factual content from credible voices",
-                  "content": ["Video 003", "Statement 003"]
+                  "action": "Deploy high-credibility factual content from experts and officials",
+                  "content": [
+                    "vid_gh_001",
+                    "txt_gh_003"
+                  ],
+                  "channels": [
+                    "LinkedIn",
+                    "YouTube",
+                    "Twitter/X"
+                  ],
+                  "estimatedReach": 2000000
                 },
                 {
                   "phase": 2,
+                  "name": "Viral Counter",
                   "timing": "Hour 6-24",
-                  "action": "Amplify through influencer network",
-                  "content": ["Video 001", "Statement 002"]
+                  "action": "Amplify through influencer network with emotional resonance",
+                  "content": [
+                    "vid_gh_002",
+                    "vid_gh_003",
+                    "txt_gh_002"
+                  ],
+                  "channels": [
+                    "TikTok",
+                    "Instagram",
+                    "Twitter/X"
+                  ],
+                  "estimatedReach": 6500000
                 },
                 {
                   "phase": 3,
+                  "name": "Sustain Pressure",
                   "timing": "Hour 24-72",
-                  "action": "Maintain counter-narrative pressure",
-                  "content": ["Video 002", "All statements"]
+                  "action": "Maintain counter-narrative dominance, activate all allies",
+                  "content": [
+                    "All videos",
+                    "All text responses"
+                  ],
+                  "channels": [
+                    "All platforms"
+                  ],
+                  "estimatedReach": 12000000
                 }
               ],
-              "estimatedReach": 8500000,
-              "estimatedEffectiveness": 73
+              "kpis": {
+                "reachTarget": 10000000,
+                "engagementTarget": 2500000,
+                "sentimentShift": "+35 points",
+                "narrativeDominance": "50%+ of conversation"
+              },
+              "estimatedEffectiveness": 78
             }
           ],
           "attackStrategies": [
             {
-              "id": "attack_001",
-              "type": "source_credibility",
-              "title": "Challenge Source Credibility",
-              "description": "Systematically document and expose the sources spreading this narrative",
+              "id": "attack_gh_001",
+              "type": "source_credibility_attack",
+              "name": "Expose the Sources",
+              "description": "Systematically document and expose Hamas-affiliated sources spreading false narrative",
               "tactics": [
-                "Track back to original sources",
-                "Expose connections to Hamas-affiliated accounts",
-                "Document past misinformation from same sources",
-                "Report coordinated inauthentic behavior to platforms"
+                "Track narrative to original Hamas-linked accounts",
+                "Document historical lies from same sources",
+                "Create visual network map of coordinated campaign",
+                "Expose bot networks amplifying content",
+                "Share findings with platform trust & safety teams"
               ],
-              "resources": ["Bot detection tools", "Network analysis", "Historical database"],
-              "estimatedEffectiveness": 68
+              "resources": [
+                "Bot detection AI",
+                "Network analysis tools",
+                "Historical database"
+              ],
+              "timeline": "24-48 hours",
+              "estimatedEffectiveness": 71
             },
             {
-              "id": "attack_002",
-              "type": "platform_reporting",
-              "title": "Mass Coordinated Reporting",
-              "description": "Organize reporting of violating content for misinformation/incitement",
+              "id": "attack_gh_002",
+              "type": "platform_enforcement",
+              "name": "Mass Coordinated Reporting",
+              "description": "Organize community reporting of policy violations",
               "tactics": [
-                "Identify posts violating platform policies",
-                "Coordinate reporting through community network",
-                "Provide evidence to platform trust & safety teams",
-                "Escalate to platform policy contacts"
+                "Identify posts violating misinformation policies",
+                "Create simple reporting guide for community",
+                "Coordinate reporting windows for maximum impact",
+                "Escalate to platform policy teams with evidence",
+                "Track removal success rate"
               ],
-              "resources": ["Community network", "Policy violation database"],
-              "estimatedEffectiveness": 45
+              "resources": [
+                "Community network (50K+)",
+                "Reporting templates"
+              ],
+              "timeline": "Ongoing",
+              "estimatedEffectiveness": 48
+            },
+            {
+              "id": "attack_gh_003",
+              "type": "narrative_inoculation",
+              "name": "Preemptive Truth Bombing",
+              "description": "Flood the zone with facts BEFORE peak virality",
+              "tactics": [
+                "Deploy all content within first 6 hours",
+                "Target neutral audiences before they're exposed to lies",
+                "Create 'fact-check' content that appears in searches",
+                "Activate friendly media to publish counter-stories",
+                "Use paid promotion to boost factual content"
+              ],
+              "resources": [
+                "Content arsenal",
+                "Ad budget",
+                "Media contacts"
+              ],
+              "timeline": "First 12 hours critical",
+              "estimatedEffectiveness": 82
             }
           ]
         },
-        "redTeam": {
-          "overallRisk": "MEDIUM_HIGH",
+        "redTeamAnalysis": {
+          "overallRisk": "MEDIUM-HIGH",
           "responseBackfireRisk": 42,
           "silenceRisk": 89,
-          "recommendation": "ENGAGE_IMMEDIATELY",
-          "analysis": {
-            "ifRespond": {
-              "bestCase": "Successfully counter narrative before viral, limit damage to 20% of projected reach",
-              "worstCase": "Response amplifies discussion, increases reach by 30% but shifts 40% to neutral/positive",
-              "likelyCase": "Moderate success - limits viral spread, converts 25% of neutrals to informed supporters",
-              "riskFactors": [
-                "Emotional topic - risk of being seen as defensive",
-                "Existing bias against Israel in some audiences",
-                "Hamas propaganda machinery will counter-attack"
-              ],
-              "mitigationStrategies": [
-                "Lead with third-party validators (UN, aid workers)",
-                "Use empathetic framing, not defensive tone",
-                "Focus on factual data, visual proof",
-                "Activate friendly Arab/Muslim voices"
-              ]
-            },
-            "ifSilent": {
-              "bestCase": "Narrative fizzles out naturally after 48 hours",
-              "worstCase": "Reaches full viral status, becomes accepted 'fact', permanent brand damage",
-              "likelyCase": "Narrative goes fully viral, reaches 12M+, establishes false perception for months",
-              "riskFactors": [
-                "Strong momentum already building",
-                "Multiple influential amplifiers active",
-                "Emotional resonance of 'hunger' narrative",
-                "No competing counter-narrative present"
-              ]
-            }
+          "recommendation": "ENGAGE_IMMEDIATELY_MAXIMUM_FORCE",
+          "confidenceLevel": 94,
+          "reasoning": "High emotional resonance + coordinated amplification + hostile influencer involvement = perfect viral storm. Window is closing fast.",
+          "ifRespond": {
+            "bestCase": "Limit damage to 20% of projected reach, shift 45% of conversation to facts",
+            "likelyCase": "Reach 40% of projection, shift 30% of conversation, establish counter-narrative",
+            "worstCase": "Amplify to 60% of projection but convert 25% to neutral/supportive",
+            "risks": [
+              "Emotional topic - defensive appearance risk",
+              "Existing anti-Israel bias in key demographics",
+              "Hamas counter-propaganda machinery will respond",
+              "Some audiences won't accept facts regardless"
+            ],
+            "mitigations": [
+              "Lead with third-party validators (UN, aid workers, Arab voices)",
+              "Use empathetic framing - 'we care about Gaza civilians'",
+              "Focus on visual proof and hard data",
+              "Activate diverse voices (not just Israeli officials)",
+              "Show Hamas as the villain, not Palestinians"
+            ]
+          },
+          "ifSilent": {
+            "bestCase": "Dies naturally after 72 hours (probability: 8%)",
+            "likelyCase": "Goes fully viral, reaches 12M+, becomes 'accepted fact' for months",
+            "worstCase": "Becomes permanent brand damage, triggers real-world consequences (protests, boycotts, policy changes)",
+            "consequences": [
+              "Narrative becomes default perception",
+              "Triggers global protests and boycott calls",
+              "Damages diplomatic relationships",
+              "Emboldens Hamas propaganda operations",
+              "Makes future counter-messaging harder"
+            ]
           },
           "historicalPrecedent": {
-            "similarCase": "Al-Ahli Hospital Explosion (Oct 2023)",
-            "outcomeWhenSilent": "False narrative dominated for 72+ hours, massive global protests",
-            "outcomeWhenResponded": "N/A - response was too slow (8+ hours)",
-            "lessons": "Speed is critical. First narrative often wins regardless of facts."
+            "case": "Al-Ahli Hospital Explosion",
+            "date": "October 2023",
+            "narrative": "Israel bombed hospital, killed 500",
+            "reality": "Hamas rocket misfired, ~50 casualties",
+            "responseTime": "8 hours",
+            "outcome": "False narrative dominated 72+ hours, massive global damage",
+            "lesson": "Speed matters more than perfection. First narrative usually wins."
           },
-          "timeDecayAnalysis": {
-            "hour0": {"effectiveness": 100, "reach": "Limited", "cost": "Low"},
-            "hour1": {"effectiveness": 77, "reach": "Growing", "cost": "Medium"},
-            "hour3": {"effectiveness": 54, "reach": "Spreading", "cost": "High"},
-            "hour6": {"effectiveness": 31, "reach": "Viral", "cost": "Very High"},
-            "hour12": {"effectiveness": 12, "reach": "Peak", "cost": "Extreme"},
-            "hour24": {"effectiveness": 3, "reach": "Entrenched", "cost": "Nearly Impossible"}
-          },
-          "deploymentRecommendation": {
-            "timing": "IMMEDIATE (within 1 hour)",
-            "priority": "CRITICAL",
-            "approvalLevel": "Fast-track - Senior official only",
-            "channels": "All available",
-            "budget": "Maximum allocation",
-            "reasoning": "Threat velocity and emotional resonance create perfect viral conditions. Window closing rapidly."
+          "timeDecayData": {
+            "hour_0": {
+              "effectiveness": 100,
+              "reach": "Limited (850K)",
+              "cost": "Low",
+              "difficulty": "Easy",
+              "recommendation": "DEPLOY NOW"
+            },
+            "hour_1": {
+              "effectiveness": 77,
+              "reach": "Growing (1.2M)",
+              "cost": "Medium",
+              "difficulty": "Moderate"
+            },
+            "hour_3": {
+              "effectiveness": 54,
+              "reach": "Spreading (2.5M)",
+              "cost": "High",
+              "difficulty": "Hard"
+            },
+            "hour_6": {
+              "effectiveness": 31,
+              "reach": "Viral (5M+)",
+              "cost": "Very High",
+              "difficulty": "Very Hard"
+            },
+            "hour_12": {
+              "effectiveness": 12,
+              "reach": "Peak (10M+)",
+              "cost": "Extreme",
+              "difficulty": "Nearly Impossible"
+            },
+            "hour_24": {
+              "effectiveness": 3,
+              "reach": "Entrenched (12M+)",
+              "cost": "Prohibitive",
+              "difficulty": "Futile"
+            }
           }
         },
-        "distributionChannels": {
-          "official": [
+        "distributionPlan": {
+          "immediate": [
             {
-              "name": "Government Social Media",
-              "platforms": ["Twitter/X", "Facebook", "Instagram"],
-              "reach": 2400000,
+              "channel": "Government Social Media",
+              "accounts": [
+                "@Israel",
+                "@IsraelMFA",
+                "@IDF"
+              ],
+              "totalReach": 5200000,
               "readiness": "ready",
-              "responseTime": "15 minutes"
+              "deployTime": "15 minutes",
+              "content": [
+                "txt_gh_001",
+                "vid_gh_001"
+              ]
             },
             {
-              "name": "Ministry of Foreign Affairs",
-              "platforms": ["Twitter/X", "LinkedIn"],
-              "reach": 890000,
-              "readiness": "ready",
-              "responseTime": "30 minutes"
-            },
-            {
-              "name": "IDF Spokesperson",
-              "platforms": ["Twitter/X", "Telegram", "YouTube"],
-              "reach": 1800000,
-              "readiness": "ready",
-              "responseTime": "20 minutes"
+              "channel": "Rapid Response Network",
+              "participants": 340,
+              "totalReach": 12000000,
+              "readiness": "on_standby",
+              "deployTime": "1 hour",
+              "content": [
+                "txt_gh_002",
+                "vid_gh_002",
+                "vid_gh_003"
+              ]
             }
           ],
-          "influencers": [
+          "phase2": [
             {
-              "name": "Pro-Israel Influencer Network",
-              "count": 47,
-              "combinedReach": 8900000,
-              "readiness": "on_standby",
-              "responseTime": "2 hours"
-            },
-            {
-              "name": "Jewish Community Leaders",
-              "count": 120,
-              "combinedReach": 3400000,
+              "channel": "Pro-Israel Influencers",
+              "participants": 47,
+              "totalReach": 8900000,
               "readiness": "requires_briefing",
-              "responseTime": "4 hours"
-            }
-          ],
-          "allies": [
-            {
-              "name": "Christian Zionist Network",
-              "count": 89,
-              "combinedReach": 12000000,
-              "readiness": "on_standby",
-              "responseTime": "3 hours"
+              "deployTime": "2-4 hours",
+              "content": [
+                "Customized versions of all content"
+              ]
             },
             {
-              "name": "Friendly Arab Voices",
-              "count": 12,
-              "combinedReach": 4200000,
-              "readiness": "requires_coordination",
-              "responseTime": "6 hours"
+              "channel": "Jewish Community Worldwide",
+              "participants": 120,
+              "totalReach": 3400000,
+              "readiness": "requires_assets",
+              "deployTime": "4-6 hours",
+              "content": [
+                "txt_gh_004",
+                "vid_gh_001"
+              ]
             }
           ],
-          "media": [
+          "phase3": [
             {
-              "name": "Friendly Media Outlets",
-              "count": 23,
-              "combinedReach": 45000000,
+              "channel": "Christian Zionist Network",
+              "participants": 89,
+              "totalReach": 12000000,
+              "readiness": "requires_coordination",
+              "deployTime": "6-12 hours",
+              "content": [
+                "Faith-framed versions"
+              ]
+            },
+            {
+              "channel": "Friendly Arab Voices",
+              "participants": 12,
+              "totalReach": 4200000,
+              "readiness": "requires_coordination",
+              "deployTime": "8-12 hours",
+              "content": [
+                "txt_gh_005",
+                "culturally-adapted content"
+              ]
+            },
+            {
+              "channel": "Mainstream Media",
+              "outlets": 23,
+              "totalReach": 45000000,
               "readiness": "requires_pitch",
-              "responseTime": "12 hours"
+              "deployTime": "12-24 hours",
+              "content": [
+                "Press releases",
+                "Expert interviews"
+              ]
             }
           ]
         },
-        "deploymentStatus": {
-          "stage": "awaiting_approval",
-          "approvedBy": null,
-          "approvedAt": null,
-          "deployedAt": null,
-          "humanReview": {
-            "required": true,
-            "level": "senior_official",
-            "modifications": []
+        "automationSettings": {
+          "humanApprovalRequired": true,
+          "approvalLevel": "Senior Official",
+          "autoDeployEnabled": false,
+          "autoMonitorEnabled": true,
+          "autoAlertEnabled": true,
+          "alertThresholds": {
+            "virality": 30,
+            "velocity": 5,
+            "reach": 500000,
+            "negativeInfluencers": 3
           }
+        },
+        "currentStatus": {
+          "stage": "early_warning_detected",
+          "detectedAt": "2024-12-06T06:22:00Z",
+          "alertSentAt": "2024-12-06T06:23:00Z",
+          "humanNotifiedAt": "2024-12-06T06:25:00Z",
+          "responseDecision": "pending",
+          "arsenalGenerated": true,
+          "distributionPlanned": true,
+          "awaitingApproval": true,
+          "approver": null,
+          "deployedAt": null
+        }
+      },
+      {
+        "id": "threat_idf_war_crimes_002",
+        "tenantId": "israel",
+        "title": "IDF War Crimes Allegations",
+        "description": "Viral spread of unverified civilian casualty claims with graphic imagery",
+        "narrative": "IDF deliberately targets civilians and commits war crimes",
+        "counterNarrative": "IDF follows international law, Hamas uses human shields and fabricates casualties",
+        "detectedAt": "2024-12-05T14:30:00Z",
+        "status": "viral",
+        "severity": "critical",
+        "viralityProgress": 78,
+        "viralityThreshold": 70,
+        "currentReach": 5200000,
+        "projectedReach": 18000000,
+        "velocityPerHour": 14.2,
+        "timeToViralHours": 0,
+        "responseWindowHours": 0.5,
+        "effectivenessDecayPerHour": 35,
+        "channels": [
+          {
+            "name": "Twitter/X",
+            "reach": 2100000,
+            "velocity": 18.5,
+            "sentiment": -88,
+            "posts24h": 45000,
+            "topHashtags": [
+              "#WarCrimes",
+              "#Gaza",
+              "#ICC"
+            ]
+          },
+          {
+            "name": "Instagram",
+            "reach": 1800000,
+            "velocity": 12.3,
+            "sentiment": -84,
+            "posts24h": 28000,
+            "topHashtags": [
+              "#FreePalestine",
+              "#StopTheGenocide"
+            ]
+          },
+          {
+            "name": "TikTok",
+            "reach": 1300000,
+            "velocity": 16.8,
+            "sentiment": -91,
+            "posts24h": 8900,
+            "topHashtags": [
+              "#Palestine",
+              "#SaveGaza"
+            ]
+          }
+        ],
+        "geography": {
+          "primary": "United States",
+          "secondary": [
+            "UK",
+            "France",
+            "Spain",
+            "Germany"
+          ],
+          "tertiary": [
+            "Canada",
+            "Australia",
+            "Ireland",
+            "Netherlands"
+          ]
+        },
+        "languages": {
+          "primary": {
+            "code": "en",
+            "percentage": 68
+          },
+          "secondary": {
+            "code": "ar",
+            "percentage": 18
+          },
+          "tertiary": {
+            "code": "es",
+            "percentage": 14
+          }
+        },
+        "keyInfluencers": [
+          {
+            "handle": "@ActivistVoice",
+            "platform": "Twitter/X",
+            "followers": 5800000,
+            "stance": "hostile",
+            "impact": 98,
+            "recentPosts": 23,
+            "engagement": 1200000
+          },
+          {
+            "handle": "@PalestineNow",
+            "platform": "Instagram",
+            "followers": 3400000,
+            "stance": "hostile",
+            "impact": 96,
+            "recentPosts": 18,
+            "engagement": 890000
+          }
+        ],
+        "sourceAnalysis": {
+          "organic": 35,
+          "coordinated": 48,
+          "automated": 17,
+          "suspiciousAccounts": 8900,
+          "botLikelihood": "VERY_HIGH"
+        },
+        "redTeamAnalysis": {
+          "overallRisk": "EXTREME",
+          "responseBackfireRisk": 67,
+          "silenceRisk": 95,
+          "recommendation": "DAMAGE_CONTROL_MODE",
+          "reasoning": "Already viral. Focus on limiting spread and establishing counter-narrative for next cycle.",
+          "timeDecayData": {
+            "current": {
+              "effectiveness": 18,
+              "status": "Viral peak passed, now damage control"
+            }
+          }
+        },
+        "currentStatus": {
+          "stage": "viral_damage_control",
+          "responseDecision": "engaged",
+          "deployedAt": "2024-12-05T15:45:00Z"
+        }
+      },
+      {
+        "id": "threat_settler_violence_003",
+        "tenantId": "israel",
+        "title": "West Bank Settler Violence Narrative",
+        "description": "Growing trend highlighting settler attacks on Palestinians in West Bank",
+        "narrative": "Israel encourages settler violence and ethnic cleansing",
+        "counterNarrative": "Israel condemns violence, prosecutes offenders, small extremist minority",
+        "detectedAt": "2024-12-04T11:15:00Z",
+        "status": "monitoring",
+        "severity": "medium",
+        "viralityProgress": 18,
+        "viralityThreshold": 70,
+        "currentReach": 125000,
+        "projectedReach": 2100000,
+        "velocityPerHour": 2.3,
+        "timeToViralHours": 22.6,
+        "responseWindowHours": 20.0,
+        "effectivenessDecayPerHour": 8,
+        "channels": [
+          {
+            "name": "Twitter/X",
+            "reach": 68000,
+            "velocity": 3.1,
+            "sentiment": -72,
+            "posts24h": 2400,
+            "topHashtags": [
+              "#WestBank",
+              "#SettlerViolence"
+            ]
+          },
+          {
+            "name": "Facebook",
+            "reach": 42000,
+            "velocity": 1.8,
+            "sentiment": -68,
+            "posts24h": 890,
+            "topHashtags": []
+          },
+          {
+            "name": "Instagram",
+            "reach": 15000,
+            "velocity": 1.2,
+            "sentiment": -65,
+            "posts24h": 340,
+            "topHashtags": [
+              "#Palestine",
+              "#HumanRights"
+            ]
+          }
+        ],
+        "geography": {
+          "primary": "United States",
+          "secondary": [
+            "UK",
+            "Canada"
+          ],
+          "tertiary": [
+            "France",
+            "Germany"
+          ]
+        },
+        "languages": {
+          "primary": {
+            "code": "en",
+            "percentage": 88
+          },
+          "secondary": {
+            "code": "ar",
+            "percentage": 8
+          },
+          "tertiary": {
+            "code": "he",
+            "percentage": 4
+          }
+        },
+        "keyInfluencers": [
+          {
+            "handle": "@HRWactivist",
+            "platform": "Twitter/X",
+            "followers": 890000,
+            "stance": "critical",
+            "impact": 74,
+            "recentPosts": 4,
+            "engagement": 45000
+          }
+        ],
+        "sourceAnalysis": {
+          "organic": 68,
+          "coordinated": 22,
+          "automated": 10,
+          "suspiciousAccounts": 340,
+          "botLikelihood": "MEDIUM"
+        },
+        "redTeamAnalysis": {
+          "overallRisk": "MEDIUM",
+          "responseBackfireRisk": 38,
+          "silenceRisk": 62,
+          "recommendation": "MONITOR_PREPARE_RESPONSE",
+          "reasoning": "Slow burn. Time to prepare quality response. If it accelerates, deploy immediately.",
+          "timeDecayData": {
+            "current": {
+              "effectiveness": 100,
+              "status": "Plenty of time to respond strategically"
+            }
+          }
+        },
+        "currentStatus": {
+          "stage": "monitoring",
+          "responseDecision": "preparing",
+          "arsenalGenerated": true
         }
       }
     ],
@@ -397,101 +901,284 @@
         "id": "threat_password_sharing_001",
         "tenantId": "netflix",
         "title": "Password Sharing Crackdown Backlash",
-        "description": "Negative sentiment spreading about new password sharing restrictions",
-        "narrative": "Netflix is greedy and anti-consumer",
-        "counterNarrative": "Reasonable policy to sustain quality content production",
-        "detectedAt": "2024-01-15T09:17:00Z",
-        "status": "pre_viral",
-        "severity": "medium",
-        "viralityProgress": 28,
+        "description": "Negative sentiment wave about password sharing restrictions and price increases",
+        "narrative": "Netflix is greedy, anti-consumer, and destroying what made it great",
+        "counterNarrative": "Fair policy supporting sustainable content creation, affordable add-member options available",
+        "detectedAt": "2024-12-06T09:45:00Z",
+        "status": "early_warning",
+        "severity": "high",
+        "viralityProgress": 42,
         "viralityThreshold": 70,
-        "currentReach": 340000,
-        "projectedReach": 4200000,
-        "velocityPerHour": 5.2,
-        "timeToViralHours": 8.1,
-        "responseWindowHours": 6.0,
-        "effectivenessDecayPerHour": 15,
+        "currentReach": 680000,
+        "projectedReach": 8900000,
+        "velocityPerHour": 7.8,
+        "timeToViralHours": 3.6,
+        "responseWindowHours": 3.6,
+        "effectivenessDecayPerHour": 19,
         "channels": [
           {
             "name": "Twitter/X",
-            "reach": 180000,
-            "velocity": 6.8,
-            "sentiment": -65
+            "reach": 340000,
+            "velocity": 9.2,
+            "sentiment": -68,
+            "posts24h": 12000,
+            "topHashtags": [
+              "#CancelNetflix",
+              "#GreedyNetflix",
+              "#PasswordSharing"
+            ]
           },
           {
             "name": "Reddit",
-            "reach": 95000,
-            "velocity": 4.2,
-            "sentiment": -72
+            "reach": 180000,
+            "velocity": 6.5,
+            "sentiment": -74,
+            "posts24h": 890,
+            "topHashtags": []
           },
           {
             "name": "TikTok",
-            "reach": 65000,
-            "velocity": 7.1,
-            "sentiment": -58
+            "reach": 120000,
+            "velocity": 8.9,
+            "sentiment": -62,
+            "posts24h": 2300,
+            "topHashtags": [
+              "#Netflix",
+              "#Streaming"
+            ]
+          },
+          {
+            "name": "Instagram",
+            "reach": 40000,
+            "velocity": 4.2,
+            "sentiment": -59,
+            "posts24h": 670,
+            "topHashtags": [
+              "#NetflixProblems"
+            ]
           }
         ],
         "geography": {
           "primary": "United States",
-          "secondary": ["Canada", "UK"],
-          "tertiary": ["Australia", "Germany"]
+          "secondary": [
+            "UK",
+            "Canada",
+            "Australia"
+          ],
+          "tertiary": [
+            "Germany",
+            "France",
+            "Brazil"
+          ]
         },
         "languages": {
-          "primary": {"code": "en", "percentage": 92},
-          "secondary": {"code": "es", "percentage": 5},
-          "tertiary": {"code": "de", "percentage": 3}
+          "primary": {
+            "code": "en",
+            "percentage": 85
+          },
+          "secondary": {
+            "code": "es",
+            "percentage": 8
+          },
+          "tertiary": {
+            "code": "pt",
+            "percentage": 7
+          }
         },
-        "aiArsenal": {
+        "keyInfluencers": [
+          {
+            "handle": "@TechCritic",
+            "platform": "Twitter/X",
+            "followers": 1200000,
+            "stance": "critical",
+            "impact": 82,
+            "recentPosts": 8,
+            "engagement": 180000
+          },
+          {
+            "handle": "@StreamingNews",
+            "platform": "Twitter/X",
+            "followers": 890000,
+            "stance": "neutral",
+            "impact": 68,
+            "recentPosts": 5,
+            "engagement": 95000
+          }
+        ],
+        "sourceAnalysis": {
+          "organic": 82,
+          "coordinated": 8,
+          "automated": 10,
+          "suspiciousAccounts": 890,
+          "botLikelihood": "LOW"
+        },
+        "aiResponses": {
           "videos": [
             {
-              "id": "video_n001",
-              "type": "creator_testimonial",
-              "title": "Why Password Sharing Fees Support Your Favorite Shows",
-              "duration": 120,
-              "platform": "TikTok, Instagram",
-              "tone": "relatable",
-              "speaker": "AI Avatar - Content Creator",
-              "keyPoints": [
-                "Production costs of quality content",
-                "Industry-standard practice",
-                "Affordable additional member option",
-                "Supports diverse content creation"
+              "id": "vid_ps_001",
+              "title": "The Real Cost of Your Favorite Shows",
+              "type": "educational",
+              "duration": 135,
+              "speaker": "AI Avatar - Content Producer",
+              "platforms": [
+                "YouTube",
+                "TikTok",
+                "Instagram"
               ],
-              "projectedEffectiveness": 76
+              "tone": "transparent",
+              "script": "Stranger Things costs $30M per episode. Squid Game cost $21M for season 1. Here's why password sharing affects the shows you love...",
+              "keyPoints": [
+                "Production costs increased 40% since 2020",
+                "Password sharing = $6B annual loss",
+                "Affects content budget and cancellation decisions",
+                "$7.99 extra member option is affordable",
+                "All major streamers have similar policies"
+              ],
+              "visualElements": [
+                "Production budget breakdowns",
+                "Cost comparisons",
+                "Industry standards"
+              ],
+              "targetAudience": "Netflix users, content enthusiasts",
+              "estimatedReach": 2400000,
+              "estimatedEffectiveness": 79
             }
           ],
-          "statements": [
+          "textResponses": [
             {
-              "id": "stmt_n001",
+              "id": "txt_ps_001",
+              "persona": "Netflix Official",
               "platform": "Twitter/X",
-              "persona": "Company Official",
-              "content": "We hear you. Password sharing has always been against our terms, but we looked the other way. As costs for creating your favorite shows have skyrocketed, we need a sustainable model. That's why we're offering affordable options to add members to your account.",
-              "projectedEffectiveness": 68
+              "format": "thread",
+              "length": "6 tweets",
+              "content": "We hear you, and we understand the frustration. Let's talk honestly about password sharing and why we made this change. 🧵\n\n1/ For years, we looked the other way on password sharing. But as content costs skyrocketed (+40% since 2020), we had to make tough choices.\n\n2/ Your favorite shows aren't cheap: Stranger Things = $30M/episode. Squid Game = $21M for S1. We invest $17B annually in content YOU love.\n\n3/ Password sharing costs the industry ~$6B/year. That's content that doesn't get made, shows that get canceled.\n\n4/ We're not alone - Disney+, Hulu, HBO Max all have similar policies. It's industry standard.\n\n5/ We're offering the most affordable option: Add a member for $7.99/month. That's less than a single movie ticket.\n\n6/ Bottom line: We want to keep making the shows you love. This helps us do that sustainably. We appreciate your understanding. ❤️",
+              "hashtags": [
+                "#Netflix",
+                "#Streaming"
+              ],
+              "estimatedReach": 1800000,
+              "estimatedEngagement": 340000,
+              "estimatedEffectiveness": 72
+            }
+          ],
+          "campaigns": [
+            {
+              "id": "camp_ps_001",
+              "name": "Behind The Stream",
+              "type": "transparency",
+              "description": "Show subscribers the value they get and cost of production",
+              "channels": [
+                "YouTube",
+                "TikTok",
+                "Instagram",
+                "Twitter/X"
+              ],
+              "duration": "2 weeks",
+              "estimatedEffectiveness": 68
             }
           ]
         },
-        "redTeam": {
-          "overallRisk": "LOW_MEDIUM",
-          "responseBackfireRisk": 35,
-          "silenceRisk": 58,
-          "recommendation": "MONITOR_AND_ENGAGE",
-          "timeDecayAnalysis": {
-            "hour0": {"effectiveness": 100},
-            "hour2": {"effectiveness": 85},
-            "hour6": {"effectiveness": 70},
-            "hour12": {"effectiveness": 55}
+        "redTeamAnalysis": {
+          "overallRisk": "MEDIUM",
+          "responseBackfireRisk": 45,
+          "silenceRisk": 71,
+          "recommendation": "ENGAGE_WITH_TRANSPARENCY",
+          "reasoning": "Organic frustration, not coordinated attack. Transparency and value messaging can shift sentiment.",
+          "timeDecayData": {
+            "hour_0": {
+              "effectiveness": 100,
+              "recommendation": "Deploy transparency campaign now"
+            }
           }
+        },
+        "currentStatus": {
+          "stage": "early_warning_detected",
+          "responseDecision": "preparing",
+          "arsenalGenerated": true
+        }
+      },
+      {
+        "id": "threat_content_removal_002",
+        "tenantId": "netflix",
+        "title": "Beloved Show Removal Outrage",
+        "description": "Backlash over removal of popular licensed content from library",
+        "narrative": "Netflix removes good content and replaces with garbage",
+        "counterNarrative": "Licensing costs vs. original content investment strategy",
+        "detectedAt": "2024-12-05T16:20:00Z",
+        "status": "monitoring",
+        "severity": "medium",
+        "viralityProgress": 22,
+        "viralityThreshold": 70,
+        "currentReach": 180000,
+        "projectedReach": 3200000,
+        "velocityPerHour": 3.4,
+        "timeToViralHours": 14.1,
+        "responseWindowHours": 12.0,
+        "effectivenessDecayPerHour": 11,
+        "channels": [
+          {
+            "name": "Twitter/X",
+            "reach": 95000,
+            "velocity": 4.2,
+            "sentiment": -71,
+            "posts24h": 3400,
+            "topHashtags": [
+              "#BringBackTheOffice",
+              "#Netflix"
+            ]
+          },
+          {
+            "name": "Reddit",
+            "reach": 68000,
+            "velocity": 2.8,
+            "sentiment": -76,
+            "posts24h": 560,
+            "topHashtags": []
+          }
+        ],
+        "geography": {
+          "primary": "United States",
+          "secondary": [
+            "UK",
+            "Canada"
+          ],
+          "tertiary": [
+            "Australia"
+          ]
+        },
+        "sourceAnalysis": {
+          "organic": 92,
+          "coordinated": 4,
+          "automated": 4,
+          "botLikelihood": "VERY_LOW"
+        },
+        "redTeamAnalysis": {
+          "overallRisk": "LOW-MEDIUM",
+          "responseBackfireRisk": 32,
+          "silenceRisk": 58,
+          "recommendation": "PREPARE_RESPONSE_MONITOR",
+          "timeDecayData": {
+            "current": {
+              "effectiveness": 100,
+              "status": "Plenty of response time"
+            }
+          }
+        },
+        "currentStatus": {
+          "stage": "monitoring"
         }
       }
     ]
   },
   "settings": {
     "viralityThreshold": 70,
-    "criticalSeverityMinVirality": 30,
-    "highSeverityMinVirality": 40,
-    "mediumSeverityMinVirality": 50,
-    "responseWindowBuffer": 1.0,
+    "earlyWarningThreshold": 30,
+    "criticalVelocity": 8.0,
+    "highVelocity": 5.0,
+    "mediumVelocity": 3.0,
     "autoAlertEnabled": true,
-    "autoGenerateArsenal": true
+    "autoGenerateArsenal": true,
+    "autoDeployEnabled": false,
+    "humanApprovalRequired": true
   }
 }

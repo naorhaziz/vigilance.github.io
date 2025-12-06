@@ -234,6 +234,7 @@ export default function Dashboard() {
             <AudienceDemographics
               geography={criticalThreats[0].geography}
               languages={criticalThreats[0].languages}
+              currentReach={criticalThreats[0].currentReach}
             />
           </div>
         </motion.div>

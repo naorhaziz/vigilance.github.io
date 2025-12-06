@@ -5,19 +5,29 @@ import { Link, useLocation } from 'react-router-dom';
 
 export default function Sidebar() {
   const { getCriticalThreats, getThreats } = useStore();
-  const [liveCount, setLiveCount] = useState(0);
+  const [eventsPerMin, setEventsPerMin] = useState(0);
   const location = useLocation();
 
   const criticalCount = getCriticalThreats().length;
   const totalThreats = getThreats().length;
 
-  // Simulate live activity counter
+  // Initialize and update events/min based on threat activity
   useEffect(() => {
+    const threats = getThreats();
+    const totalVelocity = threats.reduce((sum, t) => sum + (t.velocityPerHour || 0), 0);
+    const baseRate = Math.max(5, Math.round((totalVelocity * threats.length) / 60));
+
+    setEventsPerMin(baseRate);
+
     const interval = setInterval(() => {
-      setLiveCount(prev => (prev + 1) % 100);
-    }, 2000);
+      setEventsPerMin(prev => {
+        const variance = Math.floor(Math.random() * 10) - 3; // -3 to +6
+        return Math.max(1, baseRate + variance);
+      });
+    }, 3000 + Math.random() * 2000);
+
     return () => clearInterval(interval);
-  }, []);
+  }, [totalThreats]);
 
   const menuItems = [
     { id: 'dashboard', path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard', badge: null },
@@ -39,12 +49,12 @@ export default function Sidebar() {
           </div>
           <div>
             <div className="text-xl font-bold gradient-text">VIGILANCE</div>
-            <div className="text-xs text-gray-400">AI Early Warning</div>
+            <div className="text-xs text-gray-400">Real-time risk and sentiment analysis</div>
           </div>
         </div>
         <div className="flex items-center gap-2 text-xs text-green-400 mt-3 px-2 py-1 bg-green-500/10 rounded">
           <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-          LIVE · {liveCount} events/min
+          LIVE · {eventsPerMin} events/min
         </div>
       </div>
 
@@ -79,7 +89,7 @@ export default function Sidebar() {
       <div className="p-4 border-t border-white/10">
         <div className="text-xs text-gray-500 text-center">
           © 2025 Vigilance AI
-          <div className="text-gray-600 mt-1">v2.0.0 · All Systems Active</div>
+          <div className="text-gray-600 mt-1">All Systems Active</div>
         </div>
       </div>
     </div>

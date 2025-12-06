@@ -1,16 +1,27 @@
 import { TrendingUp, TrendingDown, Users, Globe, Shield, Activity, Zap, AlertTriangle, MessageSquare, Eye, Clock, Target, BarChart3, Smile, Meh, Frown } from 'lucide-react';
 import { useStore } from '../../store/useStore';
 import { formatNumber } from '../../lib/utils';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
 import WorldMap from '../WorldMap';
 
 export default function DashboardPage() {
-  const { getThreats, getCriticalThreats, database, currentTenant, setSelectedThreat } = useStore();
+  const { getThreats, getCriticalThreats, database, currentTenant } = useStore();
   const threats = getThreats();
   const criticalThreats = getCriticalThreats();
-  const navigate = useNavigate();
+
+  // Live updating state
+  const [liveStats, setLiveStats] = useState({
+    conversationVolume: 0,
+    activeThreats: 0,
+    sentiment: 0,
+    eventsPerMin: 0
+  });
+
+  const initializedRef = useRef(false);
+
+  // Tooltip state for sentiment chart
+  const [hoveredPoint, setHoveredPoint] = useState(null);
 
   // Calculate overall sentiment from all threats (0-100 scale)
   const calculateOverallSentiment = () => {
@@ -138,7 +149,66 @@ export default function DashboardPage() {
     setVolumeTimeline(data);
   }, [conversationVolume]);
 
-  // Get trending narratives
+  // Live data updates - subtle random changes to make it feel alive
+  useEffect(() => {
+    // Only initialize once
+    if (!initializedRef.current) {
+      const baseVolume = threats.reduce((sum, t) => sum + (t.currentReach || 0), 0);
+      const baseSentiment = calculateOverallSentiment();
+
+      // Calculate base events per minute based on threat activity
+      const totalVelocity = threats.reduce((sum, t) => sum + (t.velocityPerHour || 0), 0);
+      const baseEventsPerMin = Math.max(5, Math.round((totalVelocity * threats.length) / 60));
+
+      setLiveStats({
+        conversationVolume: baseVolume,
+        activeThreats: threats.length,
+        sentiment: baseSentiment,
+        eventsPerMin: baseEventsPerMin
+      });
+
+      initializedRef.current = true;
+    }
+  }, [threats]);
+
+  // Separate effect for live updates
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setLiveStats(prev => {
+        // Don't update if not initialized yet
+        if (prev.conversationVolume === 0) return prev;
+
+        const newStats = { ...prev };
+
+        // Volume increases gradually with small random increments (70% chance)
+        if (Math.random() > 0.3) {
+          newStats.conversationVolume = prev.conversationVolume + Math.floor(Math.random() * 50) + 10;
+        }
+
+        // Active threats occasionally change (5% chance)
+        if (Math.random() > 0.95) {
+          newStats.activeThreats = Math.max(1, prev.activeThreats + (Math.random() > 0.5 ? 1 : -1));
+        }
+
+        // Sentiment fluctuates slightly (20% chance)
+        if (Math.random() > 0.8) {
+          newStats.sentiment = Math.max(0, Math.min(100, prev.sentiment + (Math.random() > 0.5 ? 1 : -1)));
+        }
+
+        // Events per minute fluctuates based on activity (50% chance)
+        if (Math.random() > 0.5) {
+          // Calculate variance based on current stats
+          const baseRate = Math.max(5, Math.round(prev.activeThreats * 2));
+          const variance = Math.floor(Math.random() * 10) - 3; // -3 to +6
+          newStats.eventsPerMin = Math.max(1, baseRate + variance);
+        }
+
+        return newStats;
+      });
+    }, 3000 + Math.random() * 2000);
+
+    return () => clearInterval(interval);
+  }, []); // Only run once on mount  // Get trending narratives
   const getTrendingNarratives = () => {
     return threats
       .sort((a, b) => (b.velocityPerHour || 0) - (a.velocityPerHour || 0))
@@ -213,9 +283,15 @@ export default function DashboardPage() {
             </div>
           </div>
           <div className="flex items-baseline gap-2 mb-2">
-            <div className={`text-4xl font-bold ${sentimentDisplay.color}`}>
-              {overallSentiment}
-            </div>
+            <motion.div
+              key={liveStats.sentiment}
+              initial={{ scale: 1.05 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.3 }}
+              className={`text-4xl font-bold ${sentimentDisplay.color}`}
+            >
+              {liveStats.sentiment}
+            </motion.div>
             <span className="text-sm text-gray-500">/ 100</span>
           </div>
           <div className={`text-sm mb-3 font-semibold ${sentimentDisplay.color}`}>
@@ -224,7 +300,7 @@ export default function DashboardPage() {
           <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
             <motion.div
               initial={{ width: 0 }}
-              animate={{ width: `${overallSentiment}%` }}
+              animate={{ width: `${liveStats.sentiment}%` }}
               transition={{ duration: 1, delay: 0.3 }}
               className={`h-full ${sentimentDisplay.barColor}`}
             />
@@ -245,7 +321,15 @@ export default function DashboardPage() {
             </div>
           </div>
           <div className="flex items-baseline gap-2 mb-2">
-            <div className="text-4xl font-bold text-white">{formatNumber(conversationVolume)}</div>
+            <motion.div
+              key={liveStats.conversationVolume}
+              initial={{ scale: 1.1, color: '#a78bfa' }}
+              animate={{ scale: 1, color: '#ffffff' }}
+              transition={{ duration: 0.3 }}
+              className="text-4xl font-bold text-white"
+            >
+              {formatNumber(liveStats.conversationVolume)}
+            </motion.div>
           </div>
           <div className="flex items-center gap-1 text-sm">
             <TrendingUp className="w-4 h-4 text-green-400" />
@@ -319,7 +403,15 @@ export default function DashboardPage() {
             </div>
           </div>
           <div className="flex items-baseline gap-2 mb-2">
-            <div className="text-4xl font-bold text-white">{threats.length}</div>
+            <motion.div
+              key={liveStats.activeThreats}
+              initial={{ scale: 1.1, color: '#f87171' }}
+              animate={{ scale: 1, color: '#ffffff' }}
+              transition={{ duration: 0.3 }}
+              className="text-4xl font-bold text-white"
+            >
+              {liveStats.activeThreats}
+            </motion.div>
           </div>
           <div className="flex items-center gap-2 text-sm">
             <span className="px-2 py-0.5 bg-red-500/20 text-red-400 rounded-full font-semibold border border-red-500/30">
@@ -406,25 +498,117 @@ export default function DashboardPage() {
                       strokeLinejoin="round"
                     />
 
-                    {/* Data points */}
+                    {/* Data points with hover */}
                     {sentimentTimeline.map((point, i) => {
                       const x = (i / (sentimentTimeline.length - 1)) * 400;
                       const y = 100 - point.value;
-                      // Only show every 3rd point to reduce clutter
-                      if (i % 3 !== 0) return null;
+                      const isLastPoint = i === sentimentTimeline.length - 1;
+
+                      // Show every 3rd point plus the last point
+                      if (i % 3 !== 0 && !isLastPoint) return null;
+
                       return (
-                        <circle
-                          key={i}
-                          cx={x}
-                          cy={y}
-                          r="2.5"
-                          fill={getSentimentDisplay(overallSentiment).chartColor}
-                          stroke="rgba(15, 23, 42, 0.8)"
-                          strokeWidth="1.5"
-                          opacity="0.9"
-                        />
+                        <g key={i}>
+                          {!isLastPoint && (
+                            <circle
+                              cx={x}
+                              cy={y}
+                              r="2.5"
+                              fill={getSentimentDisplay(overallSentiment).chartColor}
+                              stroke="rgba(15, 23, 42, 0.8)"
+                              strokeWidth="1.5"
+                              opacity="0.9"
+                              style={{ cursor: 'pointer' }}
+                              onMouseEnter={() => setHoveredPoint({ x, y, value: point.value, hour: point.hour })}
+                              onMouseLeave={() => setHoveredPoint(null)}
+                            />
+                          )}
+
+                          {/* Blinking bullet at the last point */}
+                          {isLastPoint && (
+                            <>
+                              {/* Outer pulse ring */}
+                              <circle
+                                cx={x}
+                                cy={y}
+                                r="4"
+                                fill="none"
+                                stroke={getSentimentDisplay(overallSentiment).chartColor}
+                                strokeWidth="1.5"
+                                opacity="0.4"
+                              >
+                                <animate
+                                  attributeName="r"
+                                  values="4;8;4"
+                                  dur="2s"
+                                  repeatCount="indefinite"
+                                />
+                                <animate
+                                  attributeName="opacity"
+                                  values="0.4;0;0.4"
+                                  dur="2s"
+                                  repeatCount="indefinite"
+                                />
+                              </circle>
+                              {/* Main pulsing dot */}
+                              <circle
+                                cx={x}
+                                cy={y}
+                                r="3.5"
+                                fill={getSentimentDisplay(overallSentiment).chartColor}
+                                stroke="rgba(15, 23, 42, 0.9)"
+                                strokeWidth="2"
+                                style={{ cursor: 'pointer' }}
+                                onMouseEnter={() => setHoveredPoint({ x, y, value: point.value, hour: point.hour })}
+                                onMouseLeave={() => setHoveredPoint(null)}
+                              >
+                                <animate
+                                  attributeName="opacity"
+                                  values="1;0.6;1"
+                                  dur="2s"
+                                  repeatCount="indefinite"
+                                />
+                              </circle>
+                            </>
+                          )}
+                        </g>
                       );
                     })}
+
+                    {/* Tooltip */}
+                    {hoveredPoint && (
+                      <g>
+                        <rect
+                          x={hoveredPoint.x - 30}
+                          y={hoveredPoint.y - 35}
+                          width="60"
+                          height="28"
+                          rx="4"
+                          fill="rgba(15, 23, 42, 0.95)"
+                          stroke={getSentimentDisplay(overallSentiment).chartColor}
+                          strokeWidth="1"
+                        />
+                        <text
+                          x={hoveredPoint.x}
+                          y={hoveredPoint.y - 20}
+                          textAnchor="middle"
+                          fill={getSentimentDisplay(overallSentiment).chartColor}
+                          fontSize="12"
+                          fontWeight="bold"
+                        >
+                          {Math.round(hoveredPoint.value)}
+                        </text>
+                        <text
+                          x={hoveredPoint.x}
+                          y={hoveredPoint.y - 8}
+                          textAnchor="middle"
+                          fill="rgba(255, 255, 255, 0.6)"
+                          fontSize="9"
+                        >
+                          {hoveredPoint.hour}h ago
+                        </text>
+                      </g>
+                    )}
                   </>
                 )}
               </svg>
@@ -472,13 +656,22 @@ export default function DashboardPage() {
                 {volumeTimeline.map((point, i) => {
                   const maxValue = Math.max(...volumeTimeline.map(p => p.value), 1);
                   const heightPercent = (point.value / maxValue) * 100;
+                  const isLastBar = i === volumeTimeline.length - 1;
 
                   return (
                     <div key={i} className="flex-1 flex flex-col justify-end group relative h-full">
                       <motion.div
                         initial={{ scaleY: 0 }}
-                        animate={{ scaleY: 1 }}
-                        transition={{ duration: 0.5, delay: 0.7 + i * 0.02, ease: "easeOut" }}
+                        animate={{
+                          scaleY: 1,
+                          ...(isLastBar ? { opacity: [1, 0.7, 1] } : {})
+                        }}
+                        transition={{
+                          scaleY: { duration: 0.5, delay: 0.7 + i * 0.02, ease: "easeOut" },
+                          ...(isLastBar ? {
+                            opacity: { duration: 1.5, repeat: Infinity, ease: "easeInOut" }
+                          } : {})
+                        }}
                         className="w-full bg-gradient-to-t from-purple-500 to-pink-500 rounded-t origin-bottom"
                         style={{ height: `${heightPercent}%`, minHeight: heightPercent > 0 ? '2px' : '0' }}
                       />
@@ -545,14 +738,10 @@ export default function DashboardPage() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.0 + i * 0.1 }}
-                onClick={() => {
-                  setSelectedThreat(item);
-                  navigate(`/narratives/${item.id}`);
-                }}
-                className="flex items-start gap-3 p-3 bg-slate-800/30 rounded-lg hover:bg-slate-800/50 transition-all cursor-pointer hover:border-purple-500/50 border border-transparent"
+                className="flex items-start gap-3 p-3 bg-slate-800/30 rounded-lg hover:bg-slate-800/50 transition-all"
               >
                 <div className="flex-1">
-                  <div className="font-semibold text-sm mb-1 hover:text-purple-400 transition-colors">{item.title}</div>
+                  <div className="font-semibold text-sm mb-1">{item.title}</div>
                   <div className="text-xs text-gray-400 italic">"{item.narrative?.slice(0, 80)}..."</div>
                 </div>
                 <div className="text-right flex-shrink-0">
