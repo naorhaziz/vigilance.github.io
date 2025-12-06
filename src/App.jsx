@@ -5,7 +5,6 @@ import { Loader2, Shield } from 'lucide-react';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import DashboardPage from './components/pages/DashboardPage';
-import EarlyWarningPage from './components/pages/EarlyWarningPage';
 import AudiencePage from './components/pages/AudiencePage';
 import NarrativesPage from './components/pages/NarrativesPage';
 import AnalyticsPage from './components/pages/AnalyticsPage';
@@ -51,7 +50,6 @@ function App() {
             <Routes>
               <Route path="/" element={<Navigate to="/dashboard" replace />} />
               <Route path="/dashboard" element={<DashboardPage />} />
-              <Route path="/earlywarning" element={<EarlyWarningPage />} />
               <Route path="/audience" element={<AudiencePage />} />
               <Route path="/narratives" element={<NarrativesPage />} />
               <Route path="/narratives/:id" element={<NarrativesPage />} />

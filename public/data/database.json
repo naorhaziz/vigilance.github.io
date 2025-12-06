@@ -775,7 +775,303 @@
               "effectiveness": 18,
               "status": "Viral peak passed, now damage control"
             }
+          },
+          "ifRespond": {
+            "bestCase": "Limit further damage to 60% of projection, establish factual counter-narrative for 20% of audience",
+            "likelyCase": "Reach 75% of projection but plant seeds of doubt in 15% of viewers",
+            "worstCase": "Reach 85% but create documentation for future reference",
+            "risks": [
+              "Too late for primary prevention",
+              "Defensive posture perceived negatively",
+              "Hamas amplification machinery ready"
+            ],
+            "mitigations": [
+              "Focus on long-term narrative building",
+              "Document facts for future cycles",
+              "Activate sympathetic voices",
+              "Target neutral audiences only"
+            ]
+          },
+          "ifSilent": {
+            "bestCase": "Fades in 5-7 days (probability: 3%)",
+            "likelyCase": "Becomes permanent reference point, cited in future accusations",
+            "worstCase": "Triggers ICC investigation, policy changes, mass protests, permanent brand damage",
+            "consequences": [
+              "Accepted as historical fact",
+              "Used as precedent for future claims",
+              "Diplomatic isolation increases",
+              "Fundraising impacts",
+              "Legal exposure"
+            ]
           }
+        },
+        "aiResponses": {
+          "videos": [
+            {
+              "id": "vid_wc_001",
+              "title": "IDF Rules of Engagement - The Legal Framework",
+              "type": "legal_analysis",
+              "duration": 180,
+              "speaker": "AI Avatar - International Law Expert",
+              "platforms": [
+                "YouTube",
+                "LinkedIn",
+                "Twitter/X"
+              ],
+              "tone": "authoritative",
+              "script": "As an international law expert, let me explain the IDF's rules of engagement compared to other NATO forces. The IDF operates under stricter constraints than most Western armies...",
+              "keyPoints": [
+                "IDF ROE stricter than US/UK forces in urban combat",
+                "Roof-knocking warning system unique to IDF",
+                "Every strike reviewed by legal advisors",
+                "Hamas violations of Geneva Conventions documented",
+                "Civilian-to-combatant ratio lower than other modern conflicts"
+              ],
+              "visualElements": [
+                "Legal document comparisons",
+                "ROE flowcharts",
+                "NATO standards side-by-side",
+                "UN data charts"
+              ],
+              "targetAudience": "Educated, legal-minded, policy influencers",
+              "estimatedReach": 800000,
+              "estimatedEffectiveness": 73
+            },
+            {
+              "id": "vid_wc_002",
+              "title": "Hamas Human Shields Strategy - Documented Evidence",
+              "type": "investigative",
+              "duration": 240,
+              "speaker": "AI Avatar - Investigative Journalist",
+              "platforms": [
+                "YouTube",
+                "Twitter/X",
+                "TikTok"
+              ],
+              "tone": "investigative",
+              "script": "We've analyzed 47 incidents. In every case, Hamas operated from civilian areas. Here's the evidence they don't want you to see...",
+              "keyPoints": [
+                "Documented use of hospitals as command centers",
+                "Schools storing weapons (UN reports)",
+                "Rocket launches from residential areas",
+                "Civilians prevented from evacuating",
+                "International humanitarian law violations"
+              ],
+              "visualElements": [
+                "Satellite imagery",
+                "Video evidence compilations",
+                "UN report excerpts",
+                "Testimonies"
+              ],
+              "targetAudience": "Truth-seekers, skeptics, media consumers",
+              "estimatedReach": 1500000,
+              "estimatedEffectiveness": 79
+            },
+            {
+              "id": "vid_wc_003",
+              "title": "Fabricated Casualty Numbers - A Pattern of Deception",
+              "type": "fact_check",
+              "duration": 150,
+              "speaker": "AI Avatar - Data Analyst",
+              "platforms": [
+                "TikTok",
+                "Instagram",
+                "Twitter/X"
+              ],
+              "tone": "analytical",
+              "script": "The same sources that claimed 500 died in Al-Ahli hospital (actually 50) are now making new claims. Let's analyze their credibility...",
+              "keyPoints": [
+                "Al-Ahli Hospital case study: claimed 500, actual ~50",
+                "Pattern of inflated numbers from Hamas sources",
+                "No independent verification possible",
+                "Statistical anomalies in reported data",
+                "Media corrections after viral spread"
+              ],
+              "visualElements": [
+                "Number comparisons",
+                "Correction timeline",
+                "Source credibility ratings",
+                "Statistical analysis"
+              ],
+              "targetAudience": "Data-driven, analytical thinkers",
+              "estimatedReach": 950000,
+              "estimatedEffectiveness": 81
+            }
+          ],
+          "textResponses": [
+            {
+              "id": "txt_wc_001",
+              "persona": "Official IDF Spokesperson",
+              "platform": "Twitter/X",
+              "format": "official_thread",
+              "length": "10 tweets",
+              "content": "🧵 THREAD: Setting the record straight on recent allegations.\n\n1/ Every IDF operation is conducted under strict legal oversight. Our rules of engagement are reviewed by international law experts before every operation.\n\n2/ Unlike our adversaries, we take unprecedented steps to minimize civilian casualties: roof-knocking, phone warnings, leaflet drops, evacuation corridors.\n\n3/ Hamas deliberately operates from civilian areas. This is not opinion - it's documented by UN, Amnesty International, and independent journalists.\n\n4/ The IDF-to-civilian casualty ratio in Gaza is lower than NATO operations in Iraq, Afghanistan, or Syria. These are verified by independent military analysts.\n\n5/ We don't celebrate civilian deaths. We mourn every innocent life lost. Hamas celebrates and fabricates numbers.\n\n6/ Recent claims of 'war crimes' lack evidence, context, and ignore Hamas's documented use of human shields.\n\n7/ We invite international observers, cooperate with investigations, and hold soldiers accountable when rules are violated.\n\n8/ Our enemies operate from hospitals, schools, and mosques - all documented. They prevent civilians from evacuating - all documented.\n\n9/ The real war crime is using civilians as shields while firing rockets at our civilian population.\n\n10/ We will continue operating within international law while defending our people. Truth matters. Facts matter. #IDF #InternationalLaw",
+              "hashtags": [
+                "#IDF",
+                "#InternationalLaw",
+                "#FactsMatter",
+                "#RulesOfEngagement"
+              ],
+              "estimatedReach": 2100000,
+              "estimatedEngagement": 420000,
+              "estimatedEffectiveness": 68
+            },
+            {
+              "id": "txt_wc_002",
+              "persona": "Pro-Israel Military Analyst",
+              "platform": "Twitter/X",
+              "format": "analytical_thread",
+              "length": "15 tweets",
+              "content": "Let's talk about urban warfare and international law. As someone who's studied military operations for 20 years, the misinformation about IDF operations is stunning.\n\n🧵 THREAD:\n\n1/ Urban warfare is the most difficult military challenge. Civilian presence makes every decision fraught with moral complexity.\n\n2/ The IDF's civilian casualty ratio is 1:1 to 1.5:1 (civilian to combatant). Compare this to:\n- Mosul (ISIS): 10:1\n- Raqqa: 8:1  \n- Aleppo: 12:1\n\n3/ How? Warning systems. The IDF calls, texts, drops leaflets, and uses 'roof knocking' before strikes. No other military does this at scale.\n\n4/ 'But hospitals!' Hamas stores weapons in hospitals. This isn't Israeli propaganda - it's documented by the UN, journalists, even their own videos.\n\n5/ International law ALLOWS strikes on civilian infrastructure if it's being used for military purposes. The law also says the party using civilians as shields bears responsibility.\n\n6/ Every IDF airstrike is approved by legal advisors. Every target is reviewed for proportionality. This is not standard in most militaries.\n\n7/ The fabricated casualty numbers are a strategy. Remember Al-Ahli Hospital? Headlines screamed '500 dead' - turned out to be a Hamas rocket, ~50 casualties.\n\n8/ By the time corrections come, the damage is done. The lie spreads globally while the truth limps behind.\n\n9/ Hamas's strategy REQUIRES civilian casualties. They fire from schools HOPING for return fire. They film it. They inflate numbers. They weaponize sympathy.\n\n10/ None of this means civilians aren't dying. War is horrific. But legal ≠ moral, and moral ≠ comfortable.\n\n11/ The IDF operates within international law. Period. No Western military has faced this operational challenge with these constraints.\n\n12/ If you're outraged, ask: Who started this war? Who uses civilians as shields? Who fires rockets at civilian populations? Who celebrates terrorism?\n\n13/ The asymmetry isn't just military - it's moral. One side tries to minimize civilian deaths. The other side weaponizes them.\n\n14/ You don't have to like Israel's politics to recognize the IDF operates legally and with unprecedented caution in impossible circumstances.\n\n15/ Read the Geneva Conventions. Read international law. Compare to other conflicts. The facts are clear. #UrbanWarfare #InternationalLaw #FactCheck",
+              "hashtags": [
+                "#UrbanWarfare",
+                "#InternationalLaw",
+                "#FactCheck",
+                "#MilitaryAnalysis"
+              ],
+              "estimatedReach": 1800000,
+              "estimatedEngagement": 340000,
+              "estimatedEffectiveness": 84
+            }
+          ],
+          "campaigns": [
+            {
+              "id": "camp_wc_001",
+              "name": "Legal Framework Defense",
+              "type": "damage_control",
+              "description": "Establish IDF legal compliance as counter-narrative to war crimes claims",
+              "channels": [
+                "Twitter/X",
+                "YouTube",
+                "LinkedIn",
+                "Mainstream Media"
+              ],
+              "duration": "96 hours",
+              "budget": "very_high",
+              "phases": [
+                {
+                  "phase": 1,
+                  "name": "Legal Authority Positioning",
+                  "timing": "Hour 0-12",
+                  "action": "Deploy international law experts and military analysts",
+                  "content": [
+                    "vid_wc_001",
+                    "txt_wc_002"
+                  ],
+                  "channels": [
+                    "LinkedIn",
+                    "YouTube",
+                    "Twitter/X"
+                  ],
+                  "estimatedReach": 2500000
+                },
+                {
+                  "phase": 2,
+                  "name": "Evidence Bombardment",
+                  "timing": "Hour 12-48",
+                  "action": "Flood with documented evidence of Hamas violations",
+                  "content": [
+                    "vid_wc_002",
+                    "vid_wc_003"
+                  ],
+                  "channels": [
+                    "All platforms",
+                    "Media pitches"
+                  ],
+                  "estimatedReach": 5000000
+                },
+                {
+                  "phase": 3,
+                  "name": "Sustained Counter-Narrative",
+                  "timing": "Hour 48-96",
+                  "action": "Maintain factual presence for search engines and future reference",
+                  "content": [
+                    "All content",
+                    "Op-eds",
+                    "Interviews"
+                  ],
+                  "channels": [
+                    "All platforms",
+                    "Traditional media"
+                  ],
+                  "estimatedReach": 8000000
+                }
+              ],
+              "kpis": {
+                "reachTarget": 7000000,
+                "engagementTarget": 1400000,
+                "sentimentShift": "+12 points among neutrals",
+                "searchDominance": "30% of 'IDF war crimes' searches show counter-narrative"
+              },
+              "estimatedEffectiveness": 41
+            }
+          ],
+          "attackStrategies": [
+            {
+              "id": "attack_wc_001",
+              "type": "credibility_destruction",
+              "name": "Expose Source Unreliability",
+              "description": "Systematically document and expose pattern of false claims from accusers",
+              "tactics": [
+                "Create database of previous false claims from same sources",
+                "Highlight Al-Ahli hospital case as precedent",
+                "Document number corrections timeline",
+                "Compare to verified independent assessments",
+                "Show pattern of no independent verification"
+              ],
+              "resources": [
+                "Historical data compilation",
+                "Side-by-side comparisons",
+                "Independent analyst testimonies"
+              ],
+              "timeline": "48-72 hours",
+              "estimatedEffectiveness": 67
+            }
+          ]
+        },
+        "distributionPlan": {
+          "immediate": [
+            {
+              "channel": "IDF Official Channels",
+              "accounts": [
+                "@IDF",
+                "@IDFSpokesperson"
+              ],
+              "totalReach": 3800000,
+              "readiness": "ready",
+              "deployTime": "30 minutes",
+              "content": [
+                "txt_wc_001",
+                "vid_wc_001"
+              ]
+            }
+          ],
+          "phase2": [
+            {
+              "channel": "Military Analysts Network",
+              "participants": 23,
+              "totalReach": 5200000,
+              "readiness": "on_standby",
+              "deployTime": "2-4 hours",
+              "content": [
+                "txt_wc_002",
+                "vid_wc_002"
+              ]
+            }
+          ],
+          "phase3": [
+            {
+              "channel": "Mainstream Media",
+              "outlets": 18,
+              "totalReach": 25000000,
+              "readiness": "requires_pitch",
+              "deployTime": "24-48 hours",
+              "content": [
+                "Expert interviews",
+                "Op-eds"
+              ]
+            }
+          ]
         },
         "currentStatus": {
           "stage": "viral_damage_control",
@@ -887,7 +1183,270 @@
               "effectiveness": 100,
               "status": "Plenty of time to respond strategically"
             }
+          },
+          "ifRespond": {
+            "bestCase": "Narrative shifts to Israel's law enforcement actions against extremists, reducing international criticism",
+            "likelyCase": "Mixed reception - some acknowledge enforcement efforts, critics claim it's insufficient or selective",
+            "worstCase": "Response seen as defensive deflection, increases focus on systemic issues and government protection of settlers"
+          },
+          "ifSilent": {
+            "bestCase": "Narrative remains contained within activist circles, doesn't reach mainstream consciousness",
+            "likelyCase": "Story grows slowly, accumulates credibility through lack of official response",
+            "worstCase": "Silence interpreted as admission, narrative becomes established 'fact' in international discourse"
           }
+        },
+        "aiResponses": {
+          "videos": [
+            {
+              "id": "video_settler_enforcement_001",
+              "title": "Israel's Law Enforcement Against Settler Violence",
+              "type": "Factual Presentation",
+              "duration": 135,
+              "speaker": "IDF Legal Affairs Officer",
+              "platforms": [
+                "YouTube",
+                "Twitter/X",
+                "LinkedIn"
+              ],
+              "tone": "authoritative, data-driven",
+              "script": "Opening with statistics: In 2024, Israeli authorities arrested 127 settlers for violence against Palestinians, with 43 indictments filed. The video presents a timeline of prosecutions, including high-profile cases where settlers received prison sentences. Features testimony from Israeli legal experts explaining the judicial process and challenges. Includes statements from Israeli leaders explicitly condemning extremist violence. Concludes with data on security forces deployed to prevent settler attacks.",
+              "keyPoints": [
+                "127 arrests of violent settlers in 2024, 43 indictments filed",
+                "Multiple prison sentences handed down to convicted settlers",
+                "Israeli government public condemnations of extremist violence",
+                "Increased IDF presence in hotspot areas to prevent attacks",
+                "Legal challenges: witness intimidation, regional court dynamics"
+              ],
+              "visualElements": [
+                "Court documents and arrest records",
+                "Map showing enforcement zones",
+                "Timeline of major prosecutions",
+                "Statements from Israeli officials"
+              ],
+              "targetAudience": "International media, policymakers, human rights organizations",
+              "estimatedReach": 890000,
+              "estimatedEffectiveness": 71
+            },
+            {
+              "id": "video_settler_data_002",
+              "title": "Settler Violence vs. Palestinian Violence: Statistical Context",
+              "type": "Data Analysis",
+              "duration": 180,
+              "speaker": "Independent Security Analyst",
+              "platforms": [
+                "YouTube",
+                "Twitter/X"
+              ],
+              "tone": "analytical, comparative",
+              "script": "Comprehensive statistical breakdown comparing settler violence incidents (yearly average: 400-600 incidents) with Palestinian attacks on Israeli civilians (yearly average: 2,000-3,500 incidents including shootings, stabbings, car-rammings). Presents data on casualties, property damage, and security responses on both sides. Discusses the asymmetric coverage of settler violence vs. Palestinian terrorism in international media. Features interviews with West Bank residents from both communities about security concerns.",
+              "keyPoints": [
+                "Settler violence: 400-600 incidents/year, primarily property damage",
+                "Palestinian attacks: 2,000-3,500 incidents/year, targeting civilians",
+                "Media coverage ratio: 8:1 focus on settler violence vs. Palestinian attacks",
+                "Israeli security forces arrest both settlers and Palestinians",
+                "Context of broader Israeli-Palestinian conflict complexity"
+              ],
+              "visualElements": [
+                "Comparative incident charts",
+                "Media coverage analysis graphs",
+                "Geographic heat maps",
+                "Casualty statistics"
+              ],
+              "targetAudience": "Fact-checkers, journalists, political analysts",
+              "estimatedReach": 1200000,
+              "estimatedEffectiveness": 68
+            },
+            {
+              "id": "video_settler_minority_003",
+              "title": "The Extremist Minority: Israeli Settler Population Context",
+              "type": "Contextual Explainer",
+              "duration": 120,
+              "speaker": "Israeli Affairs Journalist",
+              "platforms": [
+                "YouTube",
+                "Instagram",
+                "TikTok"
+              ],
+              "tone": "explanatory, nuanced",
+              "script": "Explains that of 450,000 West Bank settlers, violent extremists represent less than 1% of the population. Profiles mainstream settler communities: teachers, doctors, commuters to Tel Aviv and Jerusalem. Shows Israeli civil society opposition to violence, including settler rabbis condemning attacks. Discusses the distinction between authorized settlements and illegal outposts. Features Israeli polling data showing majority of settlers support rule of law.",
+              "keyPoints": [
+                "450,000 total settlers, violent extremists <1% of population",
+                "Mainstream settlers are professionals, families, commuters",
+                "Israeli settler leaders and rabbis condemn violence",
+                "Distinction between legal settlements and illegal outposts",
+                "Israeli public opinion polls show settler support for law enforcement"
+              ],
+              "visualElements": [
+                "Infographics on settler demographics",
+                "Interviews with moderate settlers",
+                "Polling data visualization",
+                "Community footage"
+              ],
+              "targetAudience": "General public, educators, students",
+              "estimatedReach": 750000,
+              "estimatedEffectiveness": 74
+            }
+          ],
+          "textResponses": [
+            {
+              "id": "stmt_settler_official_001",
+              "persona": "Official Israeli Government Account",
+              "platform": "Twitter/X",
+              "format": "Thread",
+              "length": 8,
+              "content": "1/ Israel unequivocally condemns ALL violence against civilians - Palestinian or Israeli. Settler violence is criminal and contradicts our values.\n\n2/ In 2024: 127 arrests of violent settlers, 43 indictments filed. This isn't rhetoric - it's enforcement. Our justice system treats Jewish extremism as the crime it is.\n\n3/ Recent cases: 3 settlers received prison sentences (2-7 years) for attacks on Palestinian property. Appeals were denied. Justice system is functioning.\n\n4/ Context matters: Settler violence (~500 incidents/year) exists alongside Palestinian terrorism (~3,000 incidents/year). Both are wrong. Both are prosecuted.\n\n5/ The extremists represent <1% of 450,000 settlers. Vast majority are law-abiding citizens: teachers, doctors, families. Don't judge communities by their worst actors.\n\n6/ Israeli civil society - including settler leaders and rabbis - actively condemns violence. This is a shared Israeli value across political spectrum.\n\n7/ We've increased IDF presence in hotspot areas, established special investigation units, and streamlined prosecution processes. More work needed, but progress is real.\n\n8/ Zero tolerance for violence. Zero tolerance for collective blame. We'll continue enforcing law against ALL extremists while seeking peace with our Palestinian neighbors.",
+              "hashtags": [
+                "#RuleOfLaw",
+                "#Israel",
+                "#FactsMatter"
+              ],
+              "estimatedReach": 1800000,
+              "estimatedEngagement": 145000,
+              "estimatedEffectiveness": 69
+            },
+            {
+              "id": "stmt_settler_analyst_002",
+              "persona": "Middle East Security Analyst",
+              "platform": "Twitter/X",
+              "format": "Thread",
+              "length": 12,
+              "content": "1/ Thread on settler violence context, since nuance is apparently forbidden in 2024. Let's talk data.\n\n2/ Israeli authorities arrested 127 settlers for violence in 2024. That's more arrests per capita than most Western countries for hate crimes. Enforcement is happening.\n\n3/ Are prosecutions perfect? No. Witness intimidation, sympathetic local courts, and regional politics create challenges. Israel's own legal experts acknowledge this.\n\n4/ But claiming 'Israel encourages settler violence' contradicts the documented enforcement actions, public condemnations, and prison sentences.\n\n5/ Statistical reality: ~500 settler violence incidents/year vs ~3,000 Palestinian attacks on Israelis. Media coverage ratio: 8:1 focused on settler violence.\n\n6/ This isn't whataboutism - it's asking why international community applies different standards. Violence is violence. Both should be condemned equally.\n\n7/ The 'encouragement' narrative ignores: Israeli Supreme Court rulings against extremists, demolition of illegal outposts, settler leaders condemning violence.\n\n8/ Extremists exist in every society - including Israeli settler communities. They represent <1% of 450,000 settlers. Collective blame is lazy analysis.\n\n9/ Yes, some Israeli politicians enable extremism through rhetoric. That's a legitimate criticism. But it's not the same as official policy 'encouraging' violence.\n\n10/ Israeli security establishment views settler violence as threat to stability and international standing. Strategic interest is in preventing it, not enabling it.\n\n11/ The conversation should be: How can Israel improve enforcement? How can Palestinian Authority reciprocate? How do we break the cycle?\n\n12/ Instead we get: 'Israel = apartheid = settler violence.' That's not analysis. That's activism pretending to be journalism. We can do better.",
+              "hashtags": [
+                "#MiddleEast",
+                "#Context",
+                "#Analysis"
+              ],
+              "estimatedReach": 1500000,
+              "estimatedEngagement": 120000,
+              "estimatedEffectiveness": 76
+            }
+          ],
+          "campaigns": [
+            {
+              "id": "campaign_settler_enforcement_001",
+              "name": "Law Enforcement Reality",
+              "objective": "Demonstrate Israel's active prosecution of settler violence through documented cases",
+              "duration": "72 hours",
+              "phases": [
+                {
+                  "phase": 1,
+                  "timing": "0-24 hours",
+                  "actions": [
+                    "Release compilation of arrest records and court documents",
+                    "Official statement from Ministry of Justice on prosecutions",
+                    "Deploy video on law enforcement actions across platforms",
+                    "Coordinate with international legal experts to validate data"
+                  ],
+                  "targets": "International media, human rights organizations"
+                },
+                {
+                  "phase": 2,
+                  "timing": "24-48 hours",
+                  "actions": [
+                    "Settler community leaders issue condemnation statements",
+                    "Release comparative violence statistics video",
+                    "Op-eds in international press from Israeli legal scholars",
+                    "Social media campaign highlighting specific prosecution cases"
+                  ],
+                  "targets": "Policymakers, journalists, fact-checkers"
+                },
+                {
+                  "phase": 3,
+                  "timing": "48-72 hours",
+                  "actions": [
+                    "Long-form content on extremist minority context",
+                    "Israeli civil society voices amplified",
+                    "Interactive data dashboard launched",
+                    "Academic partnerships for ongoing monitoring"
+                  ],
+                  "targets": "General public, educators, researchers"
+                }
+              ],
+              "estimatedReach": 6800000,
+              "kpis": [
+                "Media corrections of 'encouragement' narrative",
+                "Increased awareness of enforcement actions",
+                "Shift in international discourse tone"
+              ]
+            }
+          ],
+          "attackStrategies": [
+            {
+              "id": "attack_settler_narrative_001",
+              "name": "Expose Selective Outrage",
+              "description": "Challenge the asymmetric focus on settler violence while Palestinian terrorism receives minimal coverage",
+              "tactics": [
+                "Compile media coverage analysis: 8:1 ratio settler vs. Palestinian violence",
+                "Highlight specific Palestinian attacks that received no international attention",
+                "Question why 500 settler incidents generate more outrage than 3,000 Palestinian attacks",
+                "Document cases where Palestinian violence against settlers was ignored by same outlets"
+              ],
+              "targets": "Media organizations, journalists, advocacy groups",
+              "estimatedEffectiveness": 64,
+              "risks": [
+                "Could be seen as deflection rather than legitimate comparison",
+                "May alienate moderate critics who acknowledge both sides",
+                "Risk of appearing insensitive to Palestinian victims"
+              ]
+            }
+          ]
+        },
+        "distributionPlan": {
+          "immediate": [
+            {
+              "channel": "Israeli Government Twitter/X",
+              "participants": [
+                "@IsraelMFA",
+                "@IsraeliPM_ENG"
+              ],
+              "totalReach": 4200000,
+              "readiness": "ready",
+              "deployTime": "immediate"
+            },
+            {
+              "channel": "Ministry of Justice",
+              "participants": [
+                "@MOJIsrael"
+              ],
+              "totalReach": 890000,
+              "readiness": "ready",
+              "deployTime": "immediate"
+            }
+          ],
+          "phase2": [
+            {
+              "channel": "Settler Community Leaders",
+              "participants": [
+                "Yesha Council",
+                "Regional Rabbis"
+              ],
+              "totalReach": 1200000,
+              "readiness": "coordination required",
+              "deployTime": "12-24 hours"
+            },
+            {
+              "channel": "Israeli Civil Society",
+              "participants": [
+                "Peace NGOs",
+                "Legal Advocacy Groups"
+              ],
+              "totalReach": 680000,
+              "readiness": "ready",
+              "deployTime": "24 hours"
+            }
+          ],
+          "phase3": [
+            {
+              "channel": "International Media Op-Eds",
+              "participants": [
+                "Legal scholars",
+                "Security analysts"
+              ],
+              "totalReach": 2400000,
+              "readiness": "drafts prepared",
+              "deployTime": "48-72 hours"
+            }
+          ]
         },
         "currentStatus": {
           "stage": "monitoring",
@@ -1162,10 +1721,260 @@
               "effectiveness": 100,
               "status": "Plenty of response time"
             }
+          },
+          "ifRespond": {
+            "bestCase": "Transparent explanation builds trust, users understand business realities, some appreciate honesty",
+            "likelyCase": "Mixed reaction - some accept explanation, others remain frustrated, conversation shifts to original content quality",
+            "worstCase": "Response seen as corporate excuse-making, amplifies criticism, users cite other streaming services with better libraries"
+          },
+          "ifSilent": {
+            "bestCase": "Outrage fades naturally as users move on, becomes routine complaint without momentum",
+            "likelyCase": "Grievance accumulates, becomes part of broader 'Netflix declining quality' narrative",
+            "worstCase": "Silence allows narrative to solidify, becomes ammunition for competitors, drives cancellations"
           }
         },
+        "aiResponses": {
+          "videos": [
+            {
+              "id": "video_netflix_licensing_001",
+              "title": "The Real Cost of Licensed Content: A Netflix Explainer",
+              "type": "Educational/Transparency",
+              "duration": 150,
+              "speaker": "Netflix Content Strategy VP",
+              "platforms": [
+                "YouTube",
+                "Twitter/X",
+                "Instagram"
+              ],
+              "tone": "transparent, educational, empathetic",
+              "script": "Opens with acknowledging fan frustration over losing beloved shows. Explains streaming licensing model: studios charge per-title fees that increase exponentially with viewership. Shows specific example: 'The Office' cost $100M/year in final license period vs. $500M invested in original series with permanent ownership. Discusses industry shift: studios reclaiming content for their own platforms (Peacock, Paramount+, etc.). Presents Netflix's strategic pivot: invest in owned content that stays forever vs. temporary licensed rentals. Shows data on original content quality improvements and audience satisfaction. Ends with preview of upcoming original content.",
+              "keyPoints": [
+                "Licensed content costs increase 300-500% when contracts renew",
+                "Studios reclaiming content for their own streaming platforms",
+                "$500M invested in original content vs. $100M for single licensed show",
+                "Owned content provides permanent value vs. temporary licenses",
+                "Netflix Originals quality and audience scores have improved 40% since 2020"
+              ],
+              "visualElements": [
+                "Licensing cost comparison charts",
+                "Timeline of studio-owned platform launches",
+                "Original content investment breakdown",
+                "Audience satisfaction metrics",
+                "Preview clips of upcoming originals"
+              ],
+              "targetAudience": "General subscribers, entertainment media, investors",
+              "estimatedReach": 1200000,
+              "estimatedEffectiveness": 73
+            },
+            {
+              "id": "video_netflix_value_002",
+              "title": "What You're Actually Paying For: Netflix Value Proposition 2024",
+              "type": "Brand Value Messaging",
+              "duration": 120,
+              "speaker": "Netflix Marketing Director",
+              "platforms": [
+                "YouTube",
+                "TikTok",
+                "Instagram"
+              ],
+              "tone": "confident, value-focused, modern",
+              "script": "Fast-paced montage showing breadth of Netflix library: 15,000+ titles across genres, languages, formats. Highlights exclusive originals: Stranger Things, The Crown, Wednesday, Squid Game - content you can't get anywhere else. Shows investment in diverse content: 180 countries, 40+ languages, representing global stories. Compares cost per hour of entertainment vs. cable TV, movie tickets, other streaming. Features subscriber testimonials about discovery and variety. Demonstrates how algorithm helps users find hidden gems. Ends with: 'We're not just renting shows anymore - we're building a library that's uniquely Netflix.'",
+              "keyPoints": [
+                "15,000+ titles available across all genres and languages",
+                "Exclusive originals that define pop culture globally",
+                "Content from 180 countries in 40+ languages",
+                "Cost: $6-15/month vs. $50+ cable or $15 per movie ticket",
+                "Personalization helps discover content you'll love"
+              ],
+              "visualElements": [
+                "Library size visualization",
+                "Hit original series montage",
+                "Global content map",
+                "Cost comparison graphics",
+                "Discovery algorithm demo"
+              ],
+              "targetAudience": "Current subscribers, potential subscribers, entertainment media",
+              "estimatedReach": 980000,
+              "estimatedEffectiveness": 71
+            }
+          ],
+          "textResponses": [
+            {
+              "id": "stmt_netflix_official_001",
+              "persona": "Netflix Official Account",
+              "platform": "Twitter/X",
+              "format": "Thread",
+              "length": 7,
+              "content": "1/ We hear you. Saying goodbye to The Office (or Friends, or your favorite show) sucks. We get it. Let's talk about why this happens. 🧵\n\n2/ Here's the reality: We don't own most licensed shows. Studios loan them to us for specific time periods. When contracts end, we either renew at new (much higher) rates or let them go.\n\n3/ Example: The Office's final license cost us $100M/year. That's more than we spent on entire seasons of Stranger Things, The Crown, or Wednesday - shows that stay on Netflix forever.\n\n4/ Here's what changed: Studios like NBC/Universal, Paramount, Warner Bros. all launched their own streaming services. They're taking their shows back to boost their platforms. It's not about us - it's industry-wide.\n\n5/ Our choice: Spend hundreds of millions renting shows temporarily OR invest that money in original content we own permanently. We chose to build a library that's uniquely Netflix.\n\n6/ Since 2020, we've released 850+ original series and films. Quality's improved too - our originals now score 40% higher in audience satisfaction vs. 2019. That's your subscription dollars at work.\n\n7/ The shows leaving? They hurt. But what's coming? A library of content that stays, evolves, and belongs to the Netflix community. That's the trade-off. We think it's worth it.",
+              "hashtags": [
+                "#Netflix",
+                "#StreamingReality"
+              ],
+              "estimatedReach": 2100000,
+              "estimatedEngagement": 180000,
+              "estimatedEffectiveness": 75
+            },
+            {
+              "id": "stmt_netflix_content_002",
+              "persona": "Netflix Content Team",
+              "platform": "Instagram",
+              "format": "Carousel Post",
+              "length": 5,
+              "content": "Slide 1: 'Why your favorite show left Netflix (the honest version)'\nSlide 2: 'Studios charge us per year. Those costs go UP dramatically when contracts renew. The Office: $100M/year in 2020.'\nSlide 3: 'Then studios launched their own platforms. NBC took The Office to Peacock. Warner took Friends to Max. They want you to subscribe to them too.'\nSlide 4: 'So we made a choice: Rent shows temporarily OR build our own library permanently. We chose permanent.'\nSlide 5: 'Result: 850+ Netflix Originals since 2020. Content that stays. Content you can't find anywhere else. Content that's OURS (and yours). 🎬'",
+              "hashtags": [
+                "#Netflix",
+                "#OriginalContent",
+                "#StreamingExplained"
+              ],
+              "estimatedReach": 1400000,
+              "estimatedEngagement": 95000,
+              "estimatedEffectiveness": 69
+            },
+            {
+              "id": "stmt_netflix_value_003",
+              "persona": "Netflix Community Manager",
+              "platform": "Reddit",
+              "format": "AMA Response Style",
+              "length": 3,
+              "content": "Hey r/netflix - seeing a lot of frustration about [Show X] leaving. Real talk from someone who works here:\n\nLicensing is brutal. Studios literally own the shows, and they're launching their own platforms. They want their content back. We can't force them to renew, and honestly, the prices they're asking are insane.\n\nWe're not perfect, but here's what we ARE doing: Investing $17 billion/year in content we own. That means shows like Stranger Things, Wednesday, Squid Game, The Crown - they're not going anywhere. Ever. Compare that to licensing The Office for $100M/year just to have it yanked away.\n\nI get the nostalgia factor. Comfort shows are real. But would you rather pay for a rotating library of rentals, or a growing library of originals that actually stay? We chose option B. Not everyone will agree with that call, and that's fair.\n\nWhat would genuinely help: Tell us what genres/types of shows you want MORE of. We're listening, and that feedback directly influences what we greenlight.",
+              "hashtags": [],
+              "estimatedReach": 650000,
+              "estimatedEngagement": 45000,
+              "estimatedEffectiveness": 78
+            }
+          ],
+          "campaigns": [
+            {
+              "id": "campaign_netflix_transparency_001",
+              "name": "Streaming Economics 101",
+              "objective": "Educate subscribers on licensing realities and Netflix's strategic shift to original content",
+              "duration": "96 hours",
+              "phases": [
+                {
+                  "phase": 1,
+                  "timing": "0-24 hours",
+                  "actions": [
+                    "Release licensing explainer video across all platforms",
+                    "Official Twitter/X thread on licensing economics",
+                    "Instagram carousel on why shows leave",
+                    "Push notification to affected users with transparency message"
+                  ],
+                  "targets": "Current subscribers, entertainment media"
+                },
+                {
+                  "phase": 2,
+                  "timing": "24-48 hours",
+                  "actions": [
+                    "Value proposition video showcasing library breadth",
+                    "Reddit AMA-style engagement addressing concerns",
+                    "Email to subscribers: 'What's Coming vs. What's Leaving'",
+                    "Influencer partnerships explaining streaming industry shifts"
+                  ],
+                  "targets": "Frustrated users, general audience, tech media"
+                },
+                {
+                  "phase": 3,
+                  "timing": "48-96 hours",
+                  "actions": [
+                    "Highlight upcoming original content releases",
+                    "Behind-the-scenes content on original productions",
+                    "User testimonials on discovering new favorites",
+                    "Data visualization: Netflix library growth 2020-2024"
+                  ],
+                  "targets": "Potential subscribers, investors, entertainment industry"
+                }
+              ],
+              "estimatedReach": 8500000,
+              "kpis": [
+                "Increased understanding of licensing model (survey-based)",
+                "Reduced cancellation rate during content removal periods",
+                "Positive sentiment shift in media coverage",
+                "Increased engagement with original content recommendations"
+              ]
+            }
+          ],
+          "attackStrategies": [
+            {
+              "id": "attack_netflix_competitor_001",
+              "name": "Spotlight Competitor Library Shrinkage",
+              "description": "Highlight that ALL streaming platforms face the same licensing challenges - Netflix just being transparent about it",
+              "tactics": [
+                "Document recent content removals from Disney+, Hulu, Max, Paramount+",
+                "Show data on competitor library shrinkage rates",
+                "Highlight instances where competitors removed their OWN original content to cut costs",
+                "Point out competitor price increases (Disney+ up 75% since launch)",
+                "Compare library stability: Netflix originals stay, licensed content rotates everywhere"
+              ],
+              "targets": "Tech media, entertainment journalists, cord-cutters",
+              "estimatedEffectiveness": 66,
+              "risks": [
+                "Could seem defensive or petty",
+                "May drive users to examine ALL streaming subscriptions critically",
+                "Competitors could respond with their own comparative attacks"
+              ]
+            }
+          ]
+        },
+        "distributionPlan": {
+          "immediate": [
+            {
+              "channel": "Netflix Official Social Media",
+              "participants": [
+                "@netflix",
+                "@NetflixFilm",
+                "@NetflixGeeked"
+              ],
+              "totalReach": 85000000,
+              "readiness": "ready",
+              "deployTime": "immediate"
+            },
+            {
+              "channel": "Netflix App Push Notifications",
+              "participants": [
+                "In-app messaging to affected users"
+              ],
+              "totalReach": 12000000,
+              "readiness": "ready",
+              "deployTime": "immediate"
+            }
+          ],
+          "phase2": [
+            {
+              "channel": "Community Managers on Reddit/Forums",
+              "participants": [
+                "Official Netflix community team"
+              ],
+              "totalReach": 2400000,
+              "readiness": "ready",
+              "deployTime": "12 hours"
+            },
+            {
+              "channel": "Entertainment Media Outreach",
+              "participants": [
+                "Variety, THR, Deadline, IndieWire"
+              ],
+              "totalReach": 8900000,
+              "readiness": "coordination required",
+              "deployTime": "24 hours"
+            }
+          ],
+          "phase3": [
+            {
+              "channel": "Creator/Influencer Partnerships",
+              "participants": [
+                "Tech YouTubers",
+                "Entertainment commentators"
+              ],
+              "totalReach": 15000000,
+              "readiness": "outreach in progress",
+              "deployTime": "48-72 hours"
+            }
+          ]
+        },
         "currentStatus": {
-          "stage": "monitoring"
+          "stage": "monitoring",
+          "responseDecision": "preparing",
+          "arsenalGenerated": true
         }
       }
     ]
