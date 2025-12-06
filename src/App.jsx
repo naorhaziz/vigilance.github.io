@@ -31,10 +31,21 @@ function App() {
   const { setDatabase, isLoading } = useStore();
 
   useEffect(() => {
-    fetch(`${import.meta.env.BASE_URL}data/database.json`)
-      .then(res => res.json())
-      .then(data => setDatabase(data))
-      .catch(err => console.error('Error loading database:', err));
+    // Add a minimum 1 second delay to show loading screen
+    const loadData = async () => {
+      try {
+        const [response] = await Promise.all([
+          fetch(`${import.meta.env.BASE_URL}data/database.json`),
+          new Promise(resolve => setTimeout(resolve, 1000)) // 1 second minimum
+        ]);
+        const data = await response.json();
+        setDatabase(data);
+      } catch (err) {
+        console.error('Error loading database:', err);
+      }
+    };
+
+    loadData();
   }, [setDatabase]);
 
   if (isLoading) {
@@ -46,7 +57,6 @@ function App() {
             <div className="absolute inset-0 bg-blue-500/30 blur-3xl animate-pulse"></div>
           </div>
           <h2 className="text-3xl font-bold mb-3 gradient-text">Vigilance AI</h2>
-          <p className="text-gray-400 mb-6">Early Warning System Initializing...</p>
           <Loader2 className="w-8 h-8 mx-auto animate-spin text-blue-500" />
           <div className="mt-4 text-xs text-gray-600">
             Loading threat intelligence database...
@@ -57,7 +67,7 @@ function App() {
   }
 
   return (
-    <Router>
+    <Router basename="/vigilance.github.io">
       <ScrollToTop />
       <div className="flex min-h-screen">
         <Sidebar />
