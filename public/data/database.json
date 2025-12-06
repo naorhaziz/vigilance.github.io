@@ -90,12 +90,23 @@
           "secondary": [
             "UK",
             "France",
-            "Germany"
-          ],
-          "tertiary": [
+            "Germany",
             "Canada",
             "Australia",
+            "Spain",
+            "Italy",
             "Netherlands"
+          ],
+          "tertiary": [
+            "Sweden",
+            "Norway",
+            "Poland",
+            "Brazil",
+            "Argentina",
+            "South Africa",
+            "New Zealand",
+            "India",
+            "Japan"
           ]
         },
         "languages": {
@@ -714,13 +725,24 @@
             "UK",
             "France",
             "Spain",
-            "Germany"
-          ],
-          "tertiary": [
+            "Germany",
             "Canada",
             "Australia",
+            "Italy",
+            "Netherlands",
+            "Sweden"
+          ],
+          "tertiary": [
+            "Norway",
+            "Belgium",
             "Ireland",
-            "Netherlands"
+            "New Zealand",
+            "Brazil",
+            "Argentina",
+            "South Africa",
+            "India",
+            "Malaysia",
+            "Indonesia"
           ]
         },
         "languages": {
@@ -1133,11 +1155,24 @@
           "primary": "United States",
           "secondary": [
             "UK",
-            "Canada"
+            "Canada",
+            "France",
+            "Germany",
+            "Australia",
+            "Netherlands",
+            "Spain"
           ],
           "tertiary": [
-            "France",
-            "Germany"
+            "Italy",
+            "Sweden",
+            "Norway",
+            "Belgium",
+            "Brazil",
+            "Argentina",
+            "Japan",
+            "South Korea",
+            "India",
+            "Singapore"
           ]
         },
         "languages": {
@@ -1522,12 +1557,24 @@
           "secondary": [
             "UK",
             "Canada",
-            "Australia"
-          ],
-          "tertiary": [
+            "Australia",
             "Germany",
             "France",
-            "Brazil"
+            "Brazil",
+            "Spain",
+            "Italy"
+          ],
+          "tertiary": [
+            "Netherlands",
+            "Sweden",
+            "Mexico",
+            "Argentina",
+            "Japan",
+            "South Korea",
+            "India",
+            "Thailand",
+            "Philippines",
+            "Turkey"
           ]
         },
         "languages": {
