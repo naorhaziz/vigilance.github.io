@@ -137,7 +137,9 @@ export default function ThreatCard({ threat }) {
         <div className="text-center p-3 glass rounded-lg">
           <Zap className="w-5 h-5 mx-auto mb-1 text-green-500" />
           <div className="text-xs text-gray-400 mb-1">AI Responses</div>
-          <div className="text-sm font-bold text-green-400">{threat.aiArsenal?.videos?.length || 0} Ready</div>
+          <div className="text-sm font-bold text-green-400">
+            {((threat.aiResponses?.videos?.length || 0) + (threat.aiResponses?.textResponses?.length || 0))} Ready
+          </div>
         </div>
       </div>
 
@@ -178,8 +180,8 @@ export default function ThreatCard({ threat }) {
         whileHover={{ scale: isDeploying ? 1 : 1.02, boxShadow: isDeploying ? 'none' : '0 10px 40px rgba(59, 130, 246, 0.5)' }}
         whileTap={{ scale: isDeploying ? 1 : 0.98 }}
         className={`w-full mt-4 px-4 py-3 rounded-lg font-semibold transition-all ${isDeploying
-            ? 'bg-blue-700 cursor-wait'
-            : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500'
+          ? 'bg-blue-700 cursor-wait'
+          : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500'
           }`}
       >
         {isDeploying ? (

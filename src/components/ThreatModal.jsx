@@ -417,8 +417,8 @@ export default function ThreatModal() {
                   onClick={() => handleDeploymentAction('full_arsenal')}
                   disabled={loadingDeployment}
                   className={`flex-1 px-6 py-3 rounded-lg font-semibold transition-all ${loadingDeployment && deploymentAction === 'full_arsenal'
-                      ? 'bg-green-700 cursor-wait'
-                      : 'bg-green-600 hover:bg-green-500 hover:shadow-lg hover:shadow-green-500/50'
+                    ? 'bg-green-700 cursor-wait'
+                    : 'bg-green-600 hover:bg-green-500 hover:shadow-lg hover:shadow-green-500/50'
                     }`}
                 >
                   {loadingDeployment && deploymentAction === 'full_arsenal' ? (
@@ -504,21 +504,30 @@ export default function ThreatModal() {
                     {arsenal.videos?.map((video, index) => (
                       <div key={video.id} className="glass rounded-lg p-4 border border-white/10 hover:border-purple-500/50 transition-all">
                         <div
-                          className="aspect-video bg-gradient-to-br from-blue-900/20 to-purple-900/20 rounded-lg mb-3 flex items-center justify-center relative overflow-hidden group cursor-pointer"
-                          onClick={() => video.videoFile && setFullscreenVideo(video)}
+                          className={`aspect-video bg-gradient-to-br from-blue-900/20 to-purple-900/20 rounded-lg mb-3 flex items-center justify-center relative overflow-hidden group ${video.videoFile ? 'cursor-pointer' : ''}`}
+                          onClick={() => {
+                            if (video.videoFile) {
+                              console.log('Opening video:', video);
+                              setFullscreenVideo(video);
+                            }
+                          }}
                         >
                           {video.videoFile ? (
                             <>
                               <video
-                                className="w-full h-full object-cover rounded-lg"
+                                className="w-full h-full object-cover rounded-lg pointer-events-none"
                                 preload="metadata"
-                                onClick={(e) => e.stopPropagation()}
                               >
                                 <source src={`${import.meta.env.BASE_URL}${video.videoFile}`} type="video/mp4" />
                                 Your browser does not support the video tag.
                               </video>
-                              <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                                <Play className="w-16 h-16 text-white" />
+                              <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <div className="bg-white/20 backdrop-blur-sm rounded-full p-4">
+                                  <Play className="w-12 h-12 text-white" />
+                                </div>
+                              </div>
+                              <div className="absolute top-2 left-2 px-2 py-1 bg-black/70 rounded text-xs">
+                                Click to play fullscreen
                               </div>
                             </>
                           ) : (
@@ -947,10 +956,16 @@ export default function ThreatModal() {
       {fullscreenVideo && (
         <div
           className="fixed inset-0 bg-black z-[60] flex items-center justify-center"
-          onClick={() => setFullscreenVideo(null)}
+          onClick={(e) => {
+            e.stopPropagation();
+            setFullscreenVideo(null);
+          }}
         >
           <button
-            onClick={() => setFullscreenVideo(null)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setFullscreenVideo(null);
+            }}
             className="absolute top-4 right-4 p-2 bg-black/50 hover:bg-black/70 rounded-lg transition-colors z-10"
           >
             <X className="w-6 h-6" />
