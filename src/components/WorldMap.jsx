@@ -230,7 +230,7 @@ export default function WorldMap({ threats = [] }) {
         className="absolute inset-0 w-full h-full pointer-events-none"
         style={{
           filter: 'drop-shadow(0 0 20px rgba(59, 130, 246, 0.3))',
-          opacity: 0.25
+          opacity: 0.4
         }}
       >
         <img
@@ -238,7 +238,7 @@ export default function WorldMap({ threats = [] }) {
           alt="World Map"
           className="w-full h-full object-contain"
           style={{
-            filter: 'brightness(0) saturate(100%) invert(48%) sepia(79%) saturate(2476%) hue-rotate(196deg) brightness(101%) contrast(97%)'
+            filter: 'brightness(0.4) saturate(100%) invert(48%) sepia(79%) saturate(2476%) hue-rotate(196deg) brightness(101%) contrast(97%)'
           }}
         />
       </div>

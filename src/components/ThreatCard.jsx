@@ -1,4 +1,4 @@
-import { AlertTriangle, Clock, TrendingUp, Users, Flame, Zap, Shield as ShieldIcon } from 'lucide-react';
+import { AlertTriangle, Clock, TrendingUp, Users, Flame, Zap, Shield as ShieldIcon, Loader2 } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { formatTimeRemaining, formatNumber, getSeverityColor, getViralityColor } from '../lib/utils';
 import TimeCounter from './TimeCounter';
@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 
 export default function ThreatCard({ threat }) {
   const { setSelectedThreat } = useStore();
+  const [isDeploying, setIsDeploying] = useState(false);
 
   // Live updating numbers
   const [liveReach, setLiveReach] = useState(threat.currentReach);
@@ -49,8 +50,8 @@ export default function ThreatCard({ threat }) {
       whileHover={{ scale: 1.01, y: -2 }}
       transition={{ duration: 0.2 }}
       className={`glass rounded-xl p-6 cursor-pointer border transition-all ${threat.severity === 'critical'
-          ? 'border-red-500/30 hover:border-red-500/50 hover:shadow-2xl hover:shadow-red-500/20'
-          : 'border-white/5 hover:border-white/10 hover:shadow-xl hover:shadow-blue-500/10'
+        ? 'border-red-500/30 hover:border-red-500/50 hover:shadow-2xl hover:shadow-red-500/20'
+        : 'border-white/5 hover:border-white/10 hover:shadow-xl hover:shadow-blue-500/10'
         }`}
       onClick={() => setSelectedThreat(threat)}
     >
@@ -166,16 +167,32 @@ export default function ThreatCard({ threat }) {
 
       {/* Action Button */}
       <motion.button
-        onClick={(e) => {
+        onClick={async (e) => {
           e.stopPropagation();
+          setIsDeploying(true);
+          await new Promise(resolve => setTimeout(resolve, 1000)); // 1 second loading
+          setIsDeploying(false);
           setSelectedThreat(threat);
         }}
-        whileHover={{ scale: 1.02, boxShadow: '0 10px 40px rgba(59, 130, 246, 0.5)' }}
-        whileTap={{ scale: 0.98 }}
-        className="w-full mt-4 px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 rounded-lg font-semibold transition-all"
+        disabled={isDeploying}
+        whileHover={{ scale: isDeploying ? 1 : 1.02, boxShadow: isDeploying ? 'none' : '0 10px 40px rgba(59, 130, 246, 0.5)' }}
+        whileTap={{ scale: isDeploying ? 1 : 0.98 }}
+        className={`w-full mt-4 px-4 py-3 rounded-lg font-semibold transition-all ${isDeploying
+            ? 'bg-blue-700 cursor-wait'
+            : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500'
+          }`}
       >
-        <Zap className="w-4 h-4 inline mr-2" />
-        Deploy AI Arsenal
+        {isDeploying ? (
+          <>
+            <Loader2 className="w-4 h-4 inline mr-2 animate-spin" />
+            Loading Arsenal...
+          </>
+        ) : (
+          <>
+            <Zap className="w-4 h-4 inline mr-2" />
+            Deploy AI Arsenal
+          </>
+        )}
       </motion.button>
     </motion.div>
   );

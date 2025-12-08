@@ -5,6 +5,7 @@ import { useState, useMemo, useEffect } from 'react';
 export default function ThreatModal() {
   const { selectedThreat, setSelectedThreat } = useStore();
   const [activeTab, setActiveTab] = useState('overview');
+  const [fullscreenVideo, setFullscreenVideo] = useState(null);
 
   // Reset to overview tab when modal opens
   useEffect(() => {
@@ -413,11 +414,24 @@ export default function ThreatModal() {
               {/* Quick Actions */}
               <div className="flex gap-3">
                 <button
-                  onClick={() => setActiveTab('deployment')}
-                  className="flex-1 px-6 py-3 bg-green-600 hover:bg-green-500 rounded-lg font-semibold transition-all hover:shadow-lg hover:shadow-green-500/50"
+                  onClick={() => handleDeploymentAction('full_arsenal')}
+                  disabled={loadingDeployment}
+                  className={`flex-1 px-6 py-3 rounded-lg font-semibold transition-all ${loadingDeployment && deploymentAction === 'full_arsenal'
+                      ? 'bg-green-700 cursor-wait'
+                      : 'bg-green-600 hover:bg-green-500 hover:shadow-lg hover:shadow-green-500/50'
+                    }`}
                 >
-                  <Rocket className="w-4 h-4 inline mr-2" />
-                  Deploy Arsenal
+                  {loadingDeployment && deploymentAction === 'full_arsenal' ? (
+                    <>
+                      <Loader2 className="w-4 h-4 inline mr-2 animate-spin" />
+                      Deploying...
+                    </>
+                  ) : (
+                    <>
+                      <Rocket className="w-4 h-4 inline mr-2" />
+                      Deploy Arsenal
+                    </>
+                  )}
                 </button>
                 <button
                   onClick={() => setActiveTab('redteam')}
@@ -489,14 +503,35 @@ export default function ThreatModal() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {arsenal.videos?.map((video, index) => (
                       <div key={video.id} className="glass rounded-lg p-4 border border-white/10 hover:border-purple-500/50 transition-all">
-                        <div className="aspect-video bg-gradient-to-br from-blue-900/20 to-purple-900/20 rounded-lg mb-3 flex items-center justify-center relative overflow-hidden group">
-                          <Play className="w-16 h-16 text-white/50 group-hover:scale-110 transition-transform" />
-                          <div className="absolute top-2 right-2 px-2 py-1 bg-black/70 rounded text-xs">
-                            {Math.floor(video.duration / 60)}:{(video.duration % 60).toString().padStart(2, '0')}
-                          </div>
-                          <div className="absolute bottom-2 left-2 px-2 py-1 bg-black/70 rounded text-xs">
-                            Video {index + 1}
-                          </div>
+                        <div
+                          className="aspect-video bg-gradient-to-br from-blue-900/20 to-purple-900/20 rounded-lg mb-3 flex items-center justify-center relative overflow-hidden group cursor-pointer"
+                          onClick={() => video.videoFile && setFullscreenVideo(video)}
+                        >
+                          {video.videoFile ? (
+                            <>
+                              <video
+                                className="w-full h-full object-cover rounded-lg"
+                                preload="metadata"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                <source src={`${import.meta.env.BASE_URL}${video.videoFile}`} type="video/mp4" />
+                                Your browser does not support the video tag.
+                              </video>
+                              <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                                <Play className="w-16 h-16 text-white" />
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              <Play className="w-16 h-16 text-white/50 group-hover:scale-110 transition-transform" />
+                              <div className="absolute top-2 right-2 px-2 py-1 bg-black/70 rounded text-xs">
+                                {Math.floor(video.duration / 60)}:{(video.duration % 60).toString().padStart(2, '0')}
+                              </div>
+                              <div className="absolute bottom-2 left-2 px-2 py-1 bg-black/70 rounded text-xs">
+                                Video {index + 1}
+                              </div>
+                            </>
+                          )}
                         </div>
 
                         <h4 className="font-semibold mb-2">{video.title}</h4>
@@ -907,6 +942,34 @@ export default function ThreatModal() {
           )}
         </div>
       </div>
+
+      {/* Fullscreen Video Modal */}
+      {fullscreenVideo && (
+        <div
+          className="fixed inset-0 bg-black z-[60] flex items-center justify-center"
+          onClick={() => setFullscreenVideo(null)}
+        >
+          <button
+            onClick={() => setFullscreenVideo(null)}
+            className="absolute top-4 right-4 p-2 bg-black/50 hover:bg-black/70 rounded-lg transition-colors z-10"
+          >
+            <X className="w-6 h-6" />
+          </button>
+          <div className="w-full h-full flex items-center justify-center p-8" onClick={(e) => e.stopPropagation()}>
+            <video
+              className="max-w-full max-h-full"
+              controls
+              autoPlay
+              src={`${import.meta.env.BASE_URL}${fullscreenVideo.videoFile}`}
+            >
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 bg-black/80 px-6 py-3 rounded-lg">
+            <h3 className="text-lg font-semibold text-center">{fullscreenVideo.title}</h3>
+          </div>
+        </div>
+      )}
     </div >
   );
 }
