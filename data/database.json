@@ -865,6 +865,7 @@
               "type": "investigative",
               "duration": 240,
               "speaker": "AI Avatar - Investigative Journalist",
+              "videoFile": "videos/idf-video2-hamas-human-shields.mp4",
               "platforms": [
                 "YouTube",
                 "Twitter/X",
@@ -895,6 +896,7 @@
               "type": "fact_check",
               "duration": 150,
               "speaker": "AI Avatar - Data Analyst",
+              "videoFile": "videos/idf-video3-fabricated-numbers.mp4",
               "platforms": [
                 "TikTok",
                 "Instagram",
