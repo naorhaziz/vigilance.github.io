@@ -1,130 +1,145 @@
-# Vigilance - Early Warning Detection System
+# Vigilance
 
-An AI-powered threat monitoring and analytics platform for detecting and responding to disinformation campaigns before they go viral.
+Narrative Security Platform - Landing Page
 
-✅ **Modern React application - All data JSON-configurable**
+## Overview
 
-Running at: **http://localhost:5173**
+Vigilance treats misinformation as a cybersecurity threat. This is the "Book a Demo" landing page showcasing our Narrative Security Platform with real-time visualizations and legal case studies.
 
----
+## Features
 
-## 🚀 Quick Start
+- **3D Hero Section**: Interactive tilt card with parallax depth layers
+- **Force-Directed Graph**: Real-time narrative flow visualization
+- **Interactive Demos**: Legal scenarios (Hood v. OpenAI, Moffatt v. Air Canada)
+- **Scroll-Based Timeline**: Animated breach sequence
+- **Smart Booking Form**: Corporate email validation with multi-step feedback
+
+## Tech Stack
+
+- **Framework**: Next.js 14 (App Router)
+- **Styling**: Tailwind CSS with custom design tokens
+- **Animation**: Framer Motion (physics-based interactions)
+- **Icons**: Lucide React
+- **Visualization**: react-force-graph-2d
+
+## Design System
+
+### Color Palette
+
+- **Base**: `#1F2A38` (Ebony Clay) - Global background
+- **Surface**: `#2D364C` (Light Clay) - Cards/Modals
+- **Primary**: `#00D891` (Caribbean Green) - Success/Safe states
+- **Secondary**: `#97F7E2` (Ice Cold) - Accents/Links
+- **Danger**: `#FF4D4D` (Cherry Fizz) - Threats/Hallucinations
+
+### Typography
+
+- **UI Text**: Inter
+- **Data/Metrics**: Geist Mono
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18+ 
+- npm/yarn/pnpm
 
 ### Installation
-```bash
-npm install
-```
 
-### Development
 ```bash
+# Install dependencies
+npm install
+
+# Run development server
 npm run dev
 ```
 
-### Build for Production
-```bash
-npm run build
-```
+Visit `http://localhost:3000`
 
----
+### Font Setup (Optional)
 
-## 📝 **Managing Data - NO CODING REQUIRED!**
+Download Geist Mono from https://vercel.com/font and place `GeistMonoVF.woff` in `app/fonts/`
 
-### ⭐ Main Configuration File
-```
-/public/data/database.json
-```
-
-**This single JSON file controls EVERYTHING:**
-- ✅ All tenants (organizations/clients)
-- ✅ All threats and incidents  
-- ✅ Map pins and geographic locations
-- ✅ Analytics and KPIs
-- ✅ AI-generated content
-- ✅ Channel statistics
-- ✅ Influencer data
-- ✅ Everything shown on screen!
-
-### How to Add/Edit Data
-
-1. **Open** `/public/data/database.json`
-2. **Edit** the JSON structure (add tenants, threats, etc.)
-3. **Save** the file
-4. **Refresh** browser - changes appear instantly!
-
-### 📖 Complete Guide
-See **[DATA_CONFIGURATION_GUIDE.md](./DATA_CONFIGURATION_GUIDE.md)** for detailed instructions on:
-- Adding new tenants
-- Creating threats/incidents
-- Configuring map locations
-- Setting up analytics
-- Managing AI-generated content
-- Complete field reference
-
----
-
-## 📁 Project Structure
+## Project Structure
 
 ```
-src/
+vigilance/
+├── app/
+│   ├── fonts/          # Custom fonts
+│   ├── globals.css     # Tailwind + custom utilities
+│   ├── layout.tsx      # Root layout with metadata
+│   └── page.tsx        # Main landing page
 ├── components/
-│   ├── Header.jsx          # Top nav with tenant switcher
-│   ├── Dashboard.jsx       # Main dashboard with KPIs
-│   ├── ThreatCard.jsx      # Individual threat cards
-│   ├── TimeCounter.jsx     # Live countdown timer
-│   └── ThreatModal.jsx     # Full threat details
-├── store/
-│   └── useStore.js         # State management
-├── lib/
-│   └── utils.js            # Helper functions
-└── App.jsx                 # Main app
+│   ├── Hero.tsx        # 3D tilt card hero section
+│   ├── NarrativeGraph.tsx  # Force-directed graph
+│   ├── Timeline.tsx    # Scroll-animated timeline
+│   ├── DemoTabs.tsx    # Legal scenario demos
+│   └── BookingForm.tsx # Demo booking form
+└── tailwind.config.ts  # Design system tokens
 ```
 
-## 🚀 Features
+## Key Components
 
-**Dashboard:**
-- 4 KPI cards (Critical Threats, Time Windows, Virality, AI Responses)
-- Real-time threat cards
-- Live countdown timers
-- Virality progress bars
+### Hero (`components/Hero.tsx`)
+- Mouse-responsive 3D tilt effect using Framer Motion
+- Parallax depth layers (base, content, particles)
+- Spring physics (stiffness: 150, damping: 15)
 
-**Threat Cards:**
-- Severity indicators
-- Pre-viral status
-- Response window countdown
-- Velocity metrics
-- AI arsenal ready count
-- Red Team warnings
+### Narrative Graph (`components/NarrativeGraph.tsx`)
+- 50-node force-directed graph
+- Interactive threat/protection states
+- Canvas-based rendering for performance
+- Particle speed increases to 400% during breach simulation
 
-**Threat Modal (click any threat):**
-- Videos Tab: AI-generated response videos
-- Statements Tab: Platform-specific statements
-- Red Team Tab: Risk analysis (respond vs. silence)
-- Deployment Tab: Approval workflow
+### Demo Tabs (`components/DemoTabs.tsx`)
+- Hood v. OpenAI: Defamation scenario with source verification
+- Moffatt v. Air Canada: Policy guardrail demonstration
+- Animated scanning overlay with progress bars
+- Morphing tab indicators using `layoutId`
 
-## 💾 Data
+### Timeline (`components/Timeline.tsx`)
+- SVG path animation driven by scroll position
+- Color gradient from danger (red) to safe (green)
+- Responsive opacity based on scroll progress
 
-Everything in `/public/data/database.json`:
-- Tenants (Israel, Netflix)
-- Threats with full details
-- AI Arsenal content
-- Red Team assessments
-- Distribution channels
+### Booking Form (`components/BookingForm.tsx`)
+- Corporate email validation (rejects generic domains)
+- Shake animation on validation error
+- Multi-step submission: Verifying → Allocating → Success
+- Graph reaction on URL field focus
 
-## ✅ Partner Requirements Met
+## Performance Optimizations
 
-- Early detection (30-40% virality)
-- Time emphasis (live countdowns)
-- AI-generated arsenal
-- Red Team backfire analysis
-- Human approval workflow
-- Clean, professional UI
+- Server-side rendering for static content
+- Client components isolated with `"use client"`
+- Dynamic import for graph visualization (`ssr: false`)
+- Motion values to prevent React re-renders
+- Canvas rendering for graph (60 FPS target)
 
-## 🔧 Tech
+## Aesthetic Philosophy
 
-- React + Vite
-- Tailwind CSS v4
-- Zustand (state)
-- Lucide React (icons)
-- Framer Motion ready
+"Soft Tech" design inspired by data observability platforms:
+- Deep glass effects with backdrop blur
+- Subtle gradient borders
+- Physics-based organic motion
+- Calm, trusted color palette (no aggressive hacker aesthetic)
 
-Built clean from scratch in `/vigilance` directory.
+## Legal Context
+
+The demos reference real legal cases:
+- **Hood v. OpenAI (2023)**: ChatGPT hallucination about Brian Hood
+- **Moffatt v. Air Canada (2024)**: Chatbot liability ruling
+
+All factual claims are documented and accurate.
+
+## License
+
+Proprietary - All rights reserved
+
+## Contact
+
+For demo requests or inquiries: [contact information]
+
+---
+
+Built with precision for the AI Era 🛡️

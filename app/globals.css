@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --font-inter: 'Inter', sans-serif;
+        --font-geist-mono: 'Geist Mono', monospace;
+    }
+
+    body {
+        @apply bg-vigilance-base text-white antialiased;
+    }
+
+    * {
+        @apply border-white/10;
+    }
+}
+
+@layer components {
+    .glass-panel {
+        @apply bg-vigilance-surface/30 backdrop-blur-xl border border-white/[0.08];
+    }
+
+    .glass-card {
+        @apply bg-vigilance-surface/40 backdrop-blur-xl border border-white/10;
+    }
+
+    .code-input {
+        @apply bg-[#111] font-mono text-sm px-4 py-3 rounded-lg border-0 focus:outline-none focus:ring-2 focus:ring-vigilance-primary/50 caret-vigilance-primary;
+    }
+
+    .btn-primary {
+        @apply bg-vigilance-primary text-vigilance-base font-semibold px-6 py-3 rounded-lg hover:bg-vigilance-primary/90 transition-colors;
+    }
+
+    .btn-secondary {
+        @apply glass-panel text-white font-semibold px-6 py-3 rounded-lg hover:bg-vigilance-surface/50 transition-colors;
+    }
+}
+
+@layer utilities {
+    .preserve-3d {
+        transform-style: preserve-3d;
+    }
+
+    .backface-hidden {
+        backface-visibility: hidden;
+    }
+
+    .perspective-1000 {
+        perspective: 1000px;
+    }
+}

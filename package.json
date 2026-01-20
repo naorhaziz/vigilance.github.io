@@ -1,42 +1,31 @@
 {
-  "name": "vigilance",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "homepage": "https://naorhaziz.com/vigilance.github.io",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
-  },
-  "dependencies": {
-    "framer-motion": "^12.23.25",
-    "leaflet": "^1.9.4",
-    "lucide-react": "^0.556.0",
-    "mapbox-gl": "^3.17.0",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "react-leaflet": "^5.0.0",
-    "react-map-gl": "^8.1.0",
-    "react-router-dom": "^7.10.1",
-    "zustand": "^5.0.9"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.39.1",
-    "@tailwindcss/postcss": "^4.1.17",
-    "@types/react": "^19.2.5",
-    "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^5.1.1",
-    "autoprefixer": "^10.4.22",
-    "eslint": "^9.39.1",
-    "eslint-plugin-react-hooks": "^7.0.1",
-    "eslint-plugin-react-refresh": "^0.4.24",
-    "gh-pages": "^6.3.0",
-    "globals": "^16.5.0",
-    "postcss": "^8.5.6",
-    "vite": "^7.2.4"
-  }
+    "name": "vigilance",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint"
+    },
+    "dependencies": {
+        "framer-motion": "^11.0.0",
+        "geist": "^1.5.1",
+        "lucide-react": "^0.344.0",
+        "next": "^14.2.0",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "react-force-graph-2d": "^1.25.0"
+    },
+    "devDependencies": {
+        "@types/node": "^20.11.0",
+        "@types/react": "^18.2.0",
+        "@types/react-dom": "^18.2.0",
+        "autoprefixer": "^10.4.0",
+        "eslint": "^8.57.0",
+        "eslint-config-next": "^14.2.0",
+        "postcss": "^8.4.0",
+        "tailwindcss": "^3.4.0",
+        "typescript": "^5.4.0"
+    }
 }
