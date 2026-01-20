@@ -198,7 +198,7 @@ function GoogleDemo({ isProtected, setIsProtected }: { isProtected: boolean; set
                     <div className="bg-white p-4 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors">
                         <div className="text-blue-600 text-sm mb-1">theverge.com › ai-defamation</div>
                         <h3 className="text-lg font-medium text-blue-800 mb-1 hover:underline">
-                            Google&apos;s AI Overview faces defamation lawsuit - The Verge
+                            Google's AI Overview faces defamation lawsuit - The Verge
                         </h3>
                         <p className="text-sm text-gray-600">
                             Wolf River Electric is suing Google after its AI Overview feature generated false information...
@@ -210,7 +210,7 @@ function GoogleDemo({ isProtected, setIsProtected }: { isProtected: boolean; set
                             Small business takes on Google over AI-generated false claims
                         </h3>
                         <p className="text-sm text-gray-600">
-                            Tennessee electrical contractor says Google&apos;s Gemini AI damaged reputation with false bankruptcy...
+                            Tennessee electrical contractor says Google's Gemini AI damaged reputation with false bankruptcy...
                         </p>
                     </div>
                 </div>
@@ -233,7 +233,7 @@ function GoogleDemo({ isProtected, setIsProtected }: { isProtected: boolean; set
                                     The Story
                                 </h4>
                                 <p className="text-sm text-vigilance-muted leading-relaxed">
-                                    Wolf River Electric, a Tennessee-based electrical contractor, discovered Google&apos;s AI Overview was telling potential clients they had filed for bankruptcy—a complete fabrication. The false information appeared prominently in search results for their company name, potentially devastating for a business that relies on customer trust and creditworthiness.
+                                    Wolf River Electric, a Tennessee-based electrical contractor, discovered Google's AI Overview was telling potential clients they had filed for bankruptcy—a complete fabrication. The false information appeared prominently in search results for their company name, potentially devastating for a business that relies on customer trust and creditworthiness.
                                 </p>
                             </div>
 
@@ -377,7 +377,7 @@ function ChatGPTDemo({ isProtected, setIsProtected }: { isProtected: boolean; se
                                             <span className="bg-green-500/20 text-green-300 px-1 mx-1 rounded font-semibold">
                                                 whistleblower who exposed the bribery scandal
                                             </span>
-                                            at Securency International, Australia&apos;s banknote printer. He reported illegal payments to foreign officials and was never charged or imprisoned. His role as a whistleblower led to criminal prosecutions of others involved.
+                                            at Securency International, Australia's banknote printer. He reported illegal payments to foreign officials and was never charged or imprisoned. His role as a whistleblower led to criminal prosecutions of others involved.
                                         </p>
                                         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between mt-3">
                                             <div className="flex items-center gap-2 text-green-400 text-xs">
